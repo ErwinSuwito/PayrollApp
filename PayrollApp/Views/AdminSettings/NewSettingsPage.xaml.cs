@@ -120,7 +120,9 @@ namespace PayrollApp.Views.AdminSettings
             locationSelector.ItemsSource = getLocation;
             loadTimer.Stop();
 
+            // Gets the latest setting for minimum hours.
             minHoursBox.Text = await SettingsHelper.Instance.da.GetMinHours();
+            SettingsHelper.Instance.MinHours = minHoursBox.Text;
 
             refreshLocationIndex();
             locationSelector.SelectedIndex = locationIndex;

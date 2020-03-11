@@ -55,6 +55,7 @@ namespace PayrollApp
         public ObservableCollection<Meeting> meetings;
         public DataAccess da;
         public Operations op;
+        public string MinHours;
 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
@@ -115,6 +116,8 @@ namespace PayrollApp
                         appLocation = da.GetLocationById(selectedLocation);
                         if (appLocation != null && appLocation.isDisabled != true)
                         {
+                            MinHours = await da.GetMinHours();
+
                             if (appLocation.enableGM == true)
                             {
                                 meetings = await da.GetMeetings(appLocation);

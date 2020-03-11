@@ -102,7 +102,7 @@
                                 <TextBlock Text="View and modify shifts available in this location." 
                                            TextWrapping="Wrap"/>
                                 <Button x:Name="openShiftsBtn" Content="View shifts" Margin="0,8,0,0"  
-                                    Click="openShiftsBtn_Click"/>
+                                        Click="openShiftsBtn_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
