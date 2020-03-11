@@ -119,10 +119,13 @@ namespace PayrollApp.Views.AdminSettings
             ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.da.GetLocations(false);
             locationSelector.ItemsSource = getLocation;
             loadTimer.Stop();
-            loadGrid.Visibility = Visibility.Collapsed;
+
+            minHoursBox.Text = await SettingsHelper.Instance.da.GetMinHours();
 
             refreshLocationIndex();
             locationSelector.SelectedIndex = locationIndex;
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
@@ -226,9 +229,32 @@ namespace PayrollApp.Views.AdminSettings
 
         }
 
-        private void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
+        private async void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
         {
+            bool IsSuccess = await SettingsHelper.Instance.da.UpdateMinHours(minHoursBox.Text);
 
+            if (IsSuccess == false)
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Can't save",
+                    Content = "There is a problem that prevents this setting to be saved. Please try again later.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Minimum Hours updated",
+                    Content = "Minimum hours has been updated. Other locations will also use this settings.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
         }
     }
 }

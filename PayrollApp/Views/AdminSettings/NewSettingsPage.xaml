@@ -112,10 +112,11 @@
                         <StackPanel Margin="0,4,0,0">
                             <StackPanel>
                                 <TextBlock Text="Minimum Hours" Style="{ThemeResource TitleTextBlockStyle}" />
-                                <TextBlock Text="Set the minimum hours for all users across all locations. Changes are saved automatically and synced across all devices." 
+                                <TextBlock Text="Set the minimum hours for all users across all locations. Tap on the Save button to save changes to this setting." 
                                            TextWrapping="Wrap"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBox x:Name="minHoursBox" Text="{Binding MinDutyHours, Mode=TwoWay}" MinWidth="152" PlaceholderText="Minimum hours" />
+                                    <TextBox x:Name="minHoursBox" MinWidth="152" PlaceholderText="Minimum hours" />
+                                    <Button x:Name="saveMinHoursBtn" Content="Save" Margin="8,0,0,0" Click="saveMinHoursBtn_Click"/>
                                 </StackPanel>
                             </StackPanel>
 

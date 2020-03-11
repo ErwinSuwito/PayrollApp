@@ -222,14 +222,6 @@ namespace PayrollApp
             {
                 this.CustomFaceApiEndpoint = value.ToString();
             }
-
-            value = ApplicationData.Current.RoamingSettings.Values["MinDutyHours"];
-            if (value != null)
-            {
-                int.TryParse(value.ToString(), out int minHours);
-                this.MinDutyHours = minHours;
-            }
-
         }
 
         public string GetRegionEndpoint(string region)
@@ -244,17 +236,6 @@ namespace PayrollApp
         public void RestoreAllSettings()
         {
             ApplicationData.Current.RoamingSettings.Values.Clear();
-        }
-
-        private int minDutyHours = 0;
-        public int MinDutyHours
-        {
-            get { return this.minDutyHours; }
-            set
-            {
-                this.minDutyHours = value;
-                this.OnSettingChanged("MinDutyHours", value);
-            }
         }
 
         private string faceApiKey = string.Empty;

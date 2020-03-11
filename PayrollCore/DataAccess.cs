@@ -1290,6 +1290,67 @@ namespace PayrollCore
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
             }
 
+            return IsSuccess;
+        }
+
+        public async Task<string> GetMinHours()
+        {
+            string MinHours = "";
+            string Query = "SELECT SettingValue FROM global_settings WHERE SettingKey='MinHours'";
+            ObservableCollection<Rate> rates = new ObservableCollection<Rate>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            MinHours = dr.GetString(0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return MinHours;
+        }
+
+        public async Task<bool> UpdateMinHours(string MinHours)
+        {
+            bool IsSuccess = false;
+            string Query = "UPDATE global_settings SET SettingValue=@SettingValue WHERE SettingKey='MinHours'";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        cmd.Parameters.Add(new SqlParameter("@SettingValue", MinHours));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
 
             return IsSuccess;
         }
