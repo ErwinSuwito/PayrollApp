@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +17,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ServiceHelpers;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using Windows.UI.Core;
 
 namespace PayrollApp
 {
@@ -30,6 +38,9 @@ namespace PayrollApp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            // Added AppCenter integration
+            AppCenter.Start("c0435fcf-6e04-4356-a3d9-fda41bff20fb", typeof(Analytics), typeof(Crashes));
         }
 
         /// <summary>
@@ -68,6 +79,32 @@ namespace PayrollApp
                     // parameter
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
+
+                // propogate settings to the core library
+                SettingsHelper.Instance.SettingsChanged += (target, args) =>
+                {
+                    FaceServiceHelper.ApiKey = SettingsHelper.Instance.FaceApiKey;
+                    FaceServiceHelper.ApiEndpoint = SettingsHelper.Instance.FaceApiKeyEndpoint;
+                    FaceListManager.FaceListsUserDataFilter = SettingsHelper.Instance.WorkspaceKey;
+                    CoreUtil.MinDetectableFaceCoveragePercentage = SettingsHelper.Instance.MinDetectableFaceCoveragePercentage;
+                };
+
+                SettingsHelper.Instance.Initializev2();
+
+                //Extend view to title bar
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
+                //Set window title bar and buttons to transparent
+                ApplicationView appView = ApplicationView.GetForCurrentView();
+                appView.TitleBar.BackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonForegroundColor = Colors.White;
+                appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
+
+                //Hides the navigation bar
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
