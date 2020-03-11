@@ -1,0 +1,87 @@
+﻿<ContentDialog
+    x:Class="PayrollApp.Views.AdminSettings.Location.NewMeetingDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views.AdminSettings.Location"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Meeting Details"
+    PrimaryButtonText="Save"
+    SecondaryButtonText="Disable"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Loaded="ContentDialog_Loaded">
+
+    <Grid Width="352" Height="172">
+        <StackPanel x:Name="formPanel" >
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="12, 0, 0" To="0, 0, 0" />
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="0" To="-12,0,0"/>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            
+            <TextBox x:Name="meetingNameTextBox" Header="Meeting name"/>
+            <ComboBox x:Name="daySelector" Header="Meeting day" Margin="0,4,0,0">
+                <x:String>Monday</x:String>
+                <x:String>Tuesday</x:String>
+                <x:String>Wednesday</x:String>
+                <x:String>Thursday</x:String>
+                <x:String>Friday</x:String>
+            </ComboBox>
+            <ToggleSwitch x:Name="bmOnly" Header="Board Members only" Margin="0,4,0,0"
+                          OnContent="Yes" OffContent="No"/>
+        </StackPanel>
+
+        <StackPanel x:Name="loadPanel" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Orientation="Horizontal" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="12, 0, 0" To="0, 0, 0" />
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="0" To="-12,0,0"/>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+
+            </animations:Implicit.HideAnimations>
+            <ProgressRing IsActive="True" />
+            <TextBlock Text="Making changes..." Margin="4,0,0,0" />
+        </StackPanel>
+
+        <StackPanel x:Name="savedPanel" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Orientation="Horizontal" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="12, 0, 0" To="0, 0, 0" />
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="0" To="-12,0,0"/>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            
+            <FontIcon Glyph="&#xE0E7;" />
+            <TextBlock Text="Changes saved. You can close this now." Margin="12,0,0,0" />
+        </StackPanel>
+
+        <StackPanel x:Name="failedPanel" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Orientation="Horizontal" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="12, 0, 0" To="0, 0, 0" />
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:0.2" From="0" To="-12,0,0"/>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+
+            <FontIcon Glyph="&#xE106;" />
+            <TextBlock Text="Failed to save changes. Please try again later." Margin="12,0,0,0" 
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

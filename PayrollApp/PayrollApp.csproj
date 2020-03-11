@@ -120,10 +120,119 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClientSecret.cs" />
+    <Compile Include="Controls\CameraControl.xaml.cs">
+      <DependentUpon>CameraControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Converters.cs" />
+    <Compile Include="Controls\DevControl.xaml.cs">
+      <DependentUpon>DevControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EmotionEmojiControl.xaml.cs">
+      <DependentUpon>EmotionEmojiControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RealTimeFaceIdentificationBorder.xaml.cs">
+      <DependentUpon>RealTimeFaceIdentificationBorder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsHelper.cs" />
+    <Compile Include="unhandledExParam.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="Views\AdminSettings\Location\LocationDetailsPage.xaml.cs">
+      <DependentUpon>LocationDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Location\LocationListPage.xaml.cs">
+      <DependentUpon>LocationListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Location\MeetingDetailsPage.xaml.cs">
+      <DependentUpon>MeetingDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Location\NewLocationPage.xaml.cs">
+      <DependentUpon>NewLocationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\NewSettingsPage.xaml.cs">
+      <DependentUpon>NewSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Rates\RateDetailsPage.xaml.cs">
+      <DependentUpon>RateDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Rates\RateListPage.xaml.cs">
+      <DependentUpon>RateListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Shifts\ShiftDetailsPage.xaml.cs">
+      <DependentUpon>ShiftDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Shifts\ShiftsListPage.xaml.cs">
+      <DependentUpon>ShiftsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\UserGroups\UserGroupDetailsPage.xaml.cs">
+      <DependentUpon>UserGroupDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\UserGroups\UserGroupListPage.xaml.cs">
+      <DependentUpon>UserGroupListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\UserManagement\AddUserPage.xaml.cs">
+      <DependentUpon>AddUserPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\UserManagement\UserDetailsPage.xaml.cs">
+      <DependentUpon>UserDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\UserManagement\UserListPage.xaml.cs">
+      <DependentUpon>UserListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\CardDbSetupPage.xaml.cs">
+      <DependentUpon>CardDbSetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\DbSetupPage.xaml.cs">
+      <DependentUpon>DbSetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\FaceAPISetupPage.xaml.cs">
+      <DependentUpon>FaceAPISetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\GraphSetupPage.xaml.cs">
+      <DependentUpon>GraphSetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\LocationSetupPage.xaml.cs">
+      <DependentUpon>LocationSetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\SetupFinishedPage.xaml.cs">
+      <DependentUpon>SetupFinishedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewUserOnboarding\FaceRecIntroPage.xaml.cs">
+      <DependentUpon>FaceRecIntroPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewUserOnboarding\FaceRecSetupPage.xaml.cs">
+      <DependentUpon>FaceRecSetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewUserOnboarding\RegisterUserPage.xaml.cs">
+      <DependentUpon>RegisterUserPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\Meeting\AttendanceRecordedPage.xaml.cs">
+      <DependentUpon>AttendanceRecordedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\SignInOut\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\SignInOut\SignOutPage.xaml.cs">
+      <DependentUpon>SignOutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\SpecialTask\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\SpecialTask\SignOutPage.xaml.cs">
+      <DependentUpon>SignOutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\UserProfilePage.xaml.cs">
+      <DependentUpon>UserProfilePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -145,7 +254,147 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CameraControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DevControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\EmotionEmojiControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RealTimeFaceIdentificationBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Location\LocationDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Location\LocationListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Location\MeetingDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Location\NewLocationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\NewSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Rates\RateDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Rates\RateListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Shifts\ShiftDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Shifts\ShiftsListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserGroups\UserGroupDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserGroups\UserGroupListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserManagement\AddUserPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserManagement\UserDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserManagement\UserListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\CardDbSetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\DbSetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\FaceAPISetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\GraphSetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\LocationSetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\SetupFinishedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\WelcomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewUserOnboarding\FaceRecIntroPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewUserOnboarding\FaceRecSetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewUserOnboarding\RegisterUserPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\Meeting\AttendanceRecordedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\SignInOut\SignInPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\SignInOut\SignOutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\SpecialTask\SignInPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\SpecialTask\SignOutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\UserProfilePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -175,6 +424,16 @@
     <PackageReference Include="System.Data.SqlClient">
       <Version>4.8.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PayrollCore\PayrollCore.csproj">
+      <Project>{9738a2e8-8e81-44a9-abdb-f07467f1cccb}</Project>
+      <Name>PayrollCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="ServiceHelpers\ServiceHelpers.csproj">
+      <Project>{568b29f2-d125-4bc4-b07e-f7b385dbb6d9}</Project>
+      <Name>ServiceHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

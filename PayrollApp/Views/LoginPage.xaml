@@ -1,0 +1,55 @@
+﻿<Page
+    x:Class="PayrollApp.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    HorizontalAlignment="Left"
+    Height="740" Width="540"
+    Background="{ThemeResource SystemControlAcrylicElementBrush}"
+    Loaded="Page_Loaded">
+
+    <Grid x:Name="rootGrid" CornerRadius="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="52" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*" x:Name="centerColumn"/>
+            <ColumnDefinition Width="48" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="pageTopBar" VerticalAlignment="Top" 
+              Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Payroll" Style="{ThemeResource TitleTextBlockStyle}"
+                           VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock x:Name="currentTime" TextAlignment="Right" 
+                               FontWeight="SemiBold" Text="12:30 PM"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock x:Name="currentDate" TextAlignment="Right"
+                               Text="2/4/2019"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1"
+                    Tapped="pageContent_Tapped">
+            <StackPanel x:Name="pageHeader">
+                <TextBlock Text="Hello!" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="Step in front of the camera or tap your card to get started." 
+                       Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Name="footerContent" Margin="0,0,0,0" VerticalAlignment="Bottom"
+                    Grid.Row="2" Grid.Column="1">
+            <TextBlock Text="Can't login?"  FontWeight="SemiBold" FontSize="18"/>
+            <TextBlock Text="Contact Chiefs or any of the TA HR Functional Unit members to help you login."
+                       FontSize="16" TextWrapping="Wrap" Margin="0,2,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>

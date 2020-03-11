@@ -1,0 +1,220 @@
+﻿<Page
+    x:Class="PayrollApp.Views.AdminSettings.NewSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp"
+    xmlns:entity="using:PayrollCore.Entities"
+    xmlns:ctl="using:PayrollApp.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:controls="using:Microsoft.Toolkit.Graph.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    HorizontalAlignment="Left"
+    Height="740" Width="540"
+    Background="{ThemeResource SystemControlAcrylicElementBrush}"
+    Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="PivotHeaderItem">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style TargetType="Rectangle">
+            <Setter Property="Fill" Value="Red" />
+        </Style>
+    </Page.Resources>
+
+    <Grid x:Name="rootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="52" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48"/>
+            <ColumnDefinition Width="*" x:Name="centerColumn"/>
+            <ColumnDefinition Width="48" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="pageTopBar" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
+            <Button x:Name="logoutButton" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Height="40" Width="92"  Margin="-12,0,0,0" Opacity="1"
+                    Background="Transparent" Click="logoutButton_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE72B;" 
+                                          FontSize="18"/>
+                        <TextBlock Text="Back" FontSize="16" 
+                                           Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock x:Name="currentTime" TextAlignment="Right" 
+                               FontWeight="SemiBold" Text="12:30 PM"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock x:Name="currentDate" TextAlignment="Right"
+                               Text="2/4/2019"/>
+            </StackPanel>
+        </Grid>
+
+
+        <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
+            <StackPanel x:Name="pageHeader">
+                <TextBlock Text="Admin Settings" 
+                           FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+            </StackPanel>
+
+            <Pivot x:Name="rootPivot" Margin="-12,0,0,0">
+                <PivotItem Header="location+meetings">
+                    <ScrollViewer Height="480">
+                        <StackPanel Margin="0,4,0,0">
+                            <StackPanel>
+                                <TextBlock Text="App Location" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Sign in location will use this setting to identify user login and app feature." 
+                                           TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <ComboBox x:Name="locationSelector" SelectionChanged="locationSelector_SelectionChanged"
+                                          MinWidth="120">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="entity:Location">
+                                                <TextBlock Text="{Binding locationName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button x:Name="saveLocationBtn" Content="Save" 
+                                            Click="saveLocationBtn_Click" Margin="8,0,0,0"/>
+                                </StackPanel>
+                                <TextBlock x:Name="changeText" Text="Tap or click on the Save button to apply your changes." 
+                                           Margin="0,4,0,0" Foreground="Yellow" Visibility="Collapsed"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Locations and Meetings" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View, edit and create new locations. Manage meetings that are available at each locations." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="manageLocationBtn" Content="Manage locations" 
+                                        Click="manageLocationText_Click" Margin="0,8,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Shifts" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View and modify shifts available in this location." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="openShiftsBtn" Content="View shifts" Margin="0,8,0,0"  
+                                    Click="openShiftsBtn_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="users+shifts">
+                    <ScrollViewer Height="480">
+                        <StackPanel Margin="0,4,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Minimum Hours" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Set the minimum hours for all users across all locations. Changes are saved automatically and synced across all devices." 
+                                           TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <TextBox x:Name="minHoursBox" Text="{Binding MinDutyHours, Mode=TwoWay}" MinWidth="152" PlaceholderText="Minimum hours" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Manage users" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View existing users, add or remove users, and register face data." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="openUsersBtn" Content="Open user list" Margin="0,8,0,0"  
+                                    Click="openUsersBtn_Click"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Users groups" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View all user groups, and add, edit or remove them." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="editUserGroupsBtn" Content="Open user groups" Margin="0,8,0,0" Click="editUserGroupsBtn_Click" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Rates" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View and modify rates." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="openRatesBtn" Content="Manage rates" Margin="0,8,0,0"  
+                                    Click="openRatesBtn_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="connections">
+                    <ScrollViewer Height="480">
+                        <StackPanel x:Name="ConnectionsStackPanel" Margin="0,4,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Database Connection" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View or edit saved database connection." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="dbConnSettingsBtn" VerticalAlignment="Bottom" Margin="0,12,0,0" 
+                                        Content="Manage database connections" Click="dbConnSettingsBtn_Click"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Face API" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="The following are the Face API endpoint and key that are used by the application. Changes automatically saved." 
+                                           TextWrapping="Wrap"/>
+                                <TextBox x:Name="faceApiEndpointTextBox" Text="{Binding CustomFaceApiEndpoint, Mode=TwoWay}" HorizontalAlignment="Left"
+                                         Header="Face API Endpoint" PlaceholderText="Endpoint (e.g. https://virginia.api.cognitive.microsoft.us)" Margin="0,8,0,0" 
+                                         Width="{Binding ElementName=ConnectionsStackPanel, Path=ActualWidth}"/>
+                                <PasswordBox x:Name="faceApiKeyTextBox" Password="{Binding FaceApiKey, Mode=TwoWay}" HorizontalAlignment="Left"
+                                             Header="Face API Key" PlaceholderText="Any of the 2 API Keys" Margin="0,8,0,0" 
+                                             PasswordRevealMode="Peek" Width="{Binding ElementName=ConnectionsStackPanel, Path=ActualWidth}"/>
+                                <Button x:Name="useDefaultFaceApi" VerticalAlignment="Bottom" Margin="0,12,0,0" 
+                                        Content="Use Default Endpoint and API Key" Click="useDefaultFaceApi_Click"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Office 365" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Sending emails requires you to be logged in to the E-Docs account. Click the button below to sign in or sign out." 
+                                           TextWrapping="Wrap"/>
+                                <controls:LoginButton x:Name="loginButton" Margin="0,12,0,0" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+                <PivotItem Header="general">
+                    <ScrollViewer Height="480">
+                        <StackPanel Margin="0,4,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Reset app" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="If you're having problems with Payroll, resetting might work. This will sign you out and remove all settings. You'll then need to set up Payroll again." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="resetBtn" Content="Reset" Margin="0,8,0,0"  
+                                    Click="resetBtn_Click"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="About" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Payroll" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                                <TextBlock Text="Preview 1.0" Margin="0,4,0,0"/>
+                                <TextBlock Text="Dev features enabled" Style="{ThemeResource BaseTextBlockStyle}" />
+                            </StackPanel>
+
+                            <ctl:DevControl Margin="0,16,0,0" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+            </Pivot>
+        </StackPanel>
+
+        <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
+              Background="#B7000000" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressRing IsActive="True" />
+                <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

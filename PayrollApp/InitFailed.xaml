@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="PayrollApp.InitFailed"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemAccentColorDark1}">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="120,172,152,0"
+                    x:Name="errorPanel">
+            <TextBlock x:Name="titleText" Style="{ThemeResource HeaderTextBlockStyle}"
+                       Text="An error occurred" FontWeight="Bold"/>
+            <TextBlock x:Name="subtitleText" Style="{ThemeResource SubheaderTextBlockStyle}"
+                       Text="You can try to restart the app or contact Top 3 to resolve this issue" 
+                       MaxWidth="1000" HorizontalAlignment="Left" />
+            <TextBlock Text="If the problem persists and prevents you to sign in, you can exit the app and use the old payroll system. Contact Top 3 for instructions to do this." 
+                       Style="{ThemeResource SubtitleTextBlockStyle}" 
+                       Margin="0,4,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,32,0,0">
+                <Button x:Name="moreInfo" Content="More info" Click="moreInfo_Click"/>
+                <Button x:Name="changeSettings" Content="Modify settings" Margin="8,0,0,0" />
+            </StackPanel>
+
+        </StackPanel>
+        
+        <TextBlock Text="Payroll" Style="{ThemeResource TitleTextBlockStyle}" 
+                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                   Margin="120,12,92,92" />
+
+        <ContentDialog x:Name="errorDialog" Title="More details" PrimaryButtonText="Close" >
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" 
+                              HorizontalScrollBarVisibility="Visible" 
+                              HorizontalScrollMode="Enabled" VerticalScrollMode="Enabled">
+                    <StackPanel>
+                        <TextBlock x:Name="message" TextWrapping="Wrap" HorizontalAlignment="Left"
+                                   Width="620"/>
+                        <TextBlock x:Name="stackTrace" TextWrapping="Wrap" HorizontalAlignment="Left"
+                                   Width="620"/>
+                        <TextBlock x:Name="source" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </ContentDialog>
+    </Grid>
+
+    
+</Page>
