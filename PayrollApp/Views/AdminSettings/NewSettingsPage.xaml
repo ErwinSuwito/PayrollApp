@@ -137,7 +137,7 @@
 
                             <StackPanel Margin="0,16,0,0">
                                 <TextBlock Text="Default User Group" Style="{ThemeResource TitleTextBlockStyle}" />
-                                <TextBlock Text="Set the default user group for new accounts." 
+                                <TextBlock Text="Set the default user group for new accounts. These settings are synced across locations. Tap or click on the Save button to save." 
                                            TextWrapping="Wrap"/>
                                 <ComboBox x:Name="defaultTraineeGroup" Header="Default user group for account starts with TP" 
                                           Margin="0,8,0,0">
@@ -155,8 +155,6 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-
-
                                 <Button x:Name="saveDefaultGroup" Content="Save" Margin="0,8,0,0"  
                                         Click="saveDefaultGroup_Click"/>
                             </StackPanel>
