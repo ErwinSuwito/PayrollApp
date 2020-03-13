@@ -1354,5 +1354,36 @@ namespace PayrollCore
 
             return IsSuccess;
         }
+
+        public async Task<bool> UpdateGlobalSetting(string SettingKey, string SettingValue)
+        {
+            bool IsSuccess = false;
+            string Query = "UPDATE global_settings SET SettingValue=@SettingValue WHERE SettingKey=@SettingKey";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        cmd.Parameters.Add(new SqlParameter("@SettingKey", SettingKey));
+                        cmd.Parameters.Add(new SqlParameter("@SettingValue", SettingValue));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return IsSuccess;
+        }
     }
 }

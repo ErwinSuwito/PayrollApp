@@ -233,7 +233,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private async void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
         {
-            bool IsSuccess = await SettingsHelper.Instance.da.UpdateMinHours(minHoursBox.Text);
+            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("MinHours", minHoursBox.Text);
 
             if (IsSuccess == false)
             {
@@ -262,6 +262,11 @@ namespace PayrollApp.Views.AdminSettings
         private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
+
+        private void saveDefaultGroup_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

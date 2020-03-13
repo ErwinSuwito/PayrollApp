@@ -113,6 +113,9 @@ namespace PayrollApp
                     {
                         string selectedLocation = localSettings.Values["selectedLocation"].ToString();
 
+                        int defaultTraineeGroup;
+                        int defaultGroup;
+
                         appLocation = da.GetLocationById(selectedLocation);
                         if (appLocation != null && appLocation.isDisabled != true)
                         {

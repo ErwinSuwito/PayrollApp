@@ -121,14 +121,6 @@
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Text="Face Identification Setup" Style="{ThemeResource TitleTextBlockStyle}" />
-                                <TextBlock Text="View, edit or delete all registered facial data." 
-                                           TextWrapping="Wrap"/>
-                                <Button x:Name="faceIdSetupBtn" Content="Face Identification Setup" Margin="0,8,0,0"  
-                                         Click="faceIdSetupBtn_Click"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="0,16,0,0">
                                 <TextBlock Text="Manage users" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="View existing users, add or remove users, and register face data." 
                                            TextWrapping="Wrap"/>
@@ -141,6 +133,32 @@
                                 <TextBlock Text="View all user groups, and add, edit or remove them." 
                                            TextWrapping="Wrap"/>
                                 <Button x:Name="editUserGroupsBtn" Content="Open user groups" Margin="0,8,0,0" Click="editUserGroupsBtn_Click" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Default User Group" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Set the default user group for new accounts." 
+                                           TextWrapping="Wrap"/>
+                                <ComboBox x:Name="defaultTraineeGroup" Header="Default user group for account starts with TP" 
+                                          Margin="0,8,0,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="entity:UserGroup">
+                                            <TextBlock Text="{Binding groupName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox x:Name="defaultOtherGroup" Header="Default user group for all other accounts" 
+                                          Margin="0,8,0,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="entity:UserGroup">
+                                            <TextBlock Text="{Binding groupName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+
+                                <Button x:Name="saveDefaultGroup" Content="Save" Margin="0,8,0,0"  
+                                        Click="saveDefaultGroup_Click"/>
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">

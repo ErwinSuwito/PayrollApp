@@ -32,7 +32,9 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        IProvider provider = ProviderManager.Instance.GlobalProvider;
         string upn;
+        bool AccNotEnabledOrNotFound = false;
 
         public RegisterUserPage()
         {
@@ -70,9 +72,11 @@ namespace PayrollApp.Views.NewUserOnboarding
         {
             loadTimer.Stop();
             bool IsUserEnabled = false;
+            User user;
+
             if (upn != null)
             {
-                User user = await SettingsHelper.Instance.da.GetUserFromDbById(upn);
+                user = await SettingsHelper.Instance.da.GetUserFromDbById(upn);
                 if (user != null)
                 {
                     pageTitle.Text = user.fullName;
@@ -96,6 +100,10 @@ namespace PayrollApp.Views.NewUserOnboarding
                 {
                     progText.Text = "Please wait. We're setting up your account...";
                     // Do account setup
+
+                    user = new User();
+                    user.userID = upn;
+
                 }
 
                 if (IsUserEnabled == false)
@@ -129,8 +137,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         private async Task<bool> IsUserEnabledAD(string upn)
         {
-            var provider = ProviderManager.Instance.GlobalProvider;
-
+            
             if (provider != null && provider.State == ProviderState.SignedIn)
             {
                 try
@@ -180,6 +187,49 @@ namespace PayrollApp.Views.NewUserOnboarding
             await contentDialog.ShowAsync();
 
             return true;
+        }
+
+        private async Task<bool> GetUserFromAD(string upn)
+        {
+            User user = new User();
+            if (provider != null && provider.State == ProviderState.SignedIn)
+            {
+                try
+                {
+                    var adUser = await provider.Graph.Users[upn].Request().GetAsync();
+                    if (adUser.AccountEnabled == true)
+                    {
+                        user.userID = upn;
+                        user.fullName = adUser.DisplayName;
+                        user.userGroup = new UserGroup();
+                        
+                    }
+                    else
+                    {
+                        AccNotEnabledOrNotFound = true;
+                        return false;
+                    }
+                }
+                catch (Microsoft.Graph.ServiceException graphEx)
+                {
+                    if (graphEx.Message.Contains("Request_ResourceNotFound"))
+                    {
+                        AccNotEnabledOrNotFound = true;
+                        return false;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Graph Service Exception: " + graphEx.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Check user AD Exception: " + ex.Message);
+                }
+
+            }
+
+            return false;
         }
     }
 }
