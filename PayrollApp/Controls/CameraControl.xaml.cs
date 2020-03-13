@@ -32,6 +32,8 @@
 // 
 
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using PayrollApp;
+using PayrollApp.Controls;
 using ServiceHelpers;
 using System;
 using System.Collections.Generic;
@@ -587,9 +589,9 @@ namespace PayrollApp.Controls
                     this.webCamCaptureElement.Visibility = Visibility.Collapsed;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //await Util.GenericApiCallExceptionHandler(ex, "Error stopping the camera.");
+                await Util.GenericApiCallExceptionHandler(ex, "Error stopping the camera.");
             }
         }
 

@@ -25,11 +25,11 @@
             </Rectangle>
         </Grid>
 
-        <Frame x:Name="rootFrame" Background="Transparent" Height="740" Width="720"
+        <Frame x:Name="rootFrame" Background="Transparent" Height="740" MaxWidth="920"
                Margin="132,0,0,0" HorizontalAlignment="Left" />
 
         <StackPanel Margin="24,0,0,24" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <!-- Future content here -->
+            <TextBlock Text="{Binding WorkspaceKey}" />
         </StackPanel>
 
     </Grid>

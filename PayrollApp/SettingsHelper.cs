@@ -60,7 +60,7 @@ namespace PayrollApp
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
         public static readonly string CustomEndpointName = "Custom";
-        public static readonly string DefaultApiEndpoint = "https://westus.api.cognitive.microsoft.com";
+        public static readonly string DefaultApiEndpoint = "Custom";
 
         public static readonly string[] AvailableApiRegions = new string[]
         {

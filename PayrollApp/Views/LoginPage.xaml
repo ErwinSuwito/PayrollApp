@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
+    xmlns:ctl="using:PayrollApp.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -40,8 +41,9 @@
                     Tapped="pageContent_Tapped">
             <StackPanel x:Name="pageHeader">
                 <TextBlock Text="Hello!" Style="{ThemeResource HeaderTextBlockStyle}"/>
-                <TextBlock Text="Step in front of the camera or tap your card to get started." 
+                <TextBlock x:Name="greetingTextBlock" Text="Step in front of the camera or tap your card to get started." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <ctl:CameraControl x:Name="cameraControl" Margin="0,12,0,0" MinHeight="252" />
             </StackPanel>
         </StackPanel>
 

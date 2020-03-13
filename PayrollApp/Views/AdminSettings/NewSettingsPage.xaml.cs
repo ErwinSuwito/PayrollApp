@@ -258,5 +258,10 @@ namespace PayrollApp.Views.AdminSettings
                 await contentDialog.ShowAsync();
             }
         }
+
+        private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
     }
 }

@@ -56,7 +56,7 @@
 
                     <TextBlock Text="Login faster and easier" Style="{ThemeResource SubheaderTextBlockStyle}"
                                Margin="0,8,0,0"/>
-                    <TextBlock Text="Login into Payroll by teaching Payroll how to recognize you." 
+                    <TextBlock Text="Login easier by teaching Payroll how to recognize you." 
                                Style="{ThemeResource TitleTextBlockStyle}"/>
                 </StackPanel>
             </ScrollViewer>

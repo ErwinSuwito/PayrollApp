@@ -29,6 +29,7 @@ namespace PayrollApp
         public MainPage()
         {
             this.InitializeComponent();
+            this.DataContext = SettingsHelper.Instance;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

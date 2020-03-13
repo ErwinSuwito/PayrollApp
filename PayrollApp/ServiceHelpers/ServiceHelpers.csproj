@@ -106,30 +106,40 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnomalyDetectorHelper.cs" />
+    <Compile Include="BingSearchHelper.cs" />
     <Compile Include="CoreUtil.cs" />
     <Compile Include="ErrorTrackingHelper.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
     <Compile Include="FaceListManager.cs" />
     <Compile Include="FaceServiceHelper.cs" />
+    <Compile Include="FormRecognizerService.cs" />
     <Compile Include="ImageAnalyzer.cs" />
+    <Compile Include="InkRecognizer.cs" />
+    <Compile Include="Models\AnomalyDetectResult.cs" />
+    <Compile Include="Models\TranslationTextResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceBase.cs" />
+    <Compile Include="TranslatorTextService.cs" />
     <Compile Include="Utilities\HttpClientUtility.cs" />
     <Compile Include="VisionServiceHelper.cs" />
     <EmbeddedResource Include="Properties\ServiceHelpers.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.FormRecognizer">
+      <Version>0.8.0-preview</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics">
+      <Version>4.1.0-preview.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision">
-      <Version>5.0.0</Version>
+      <Version>6.0.0-dev.20190919.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.Face">
-      <Version>2.5.0-preview.1</Version>
+      <Version>2.3.0-preview</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
-    </PackageReference>
-    <PackageReference Include="WriteableBitmapEx">
-      <Version>1.6.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

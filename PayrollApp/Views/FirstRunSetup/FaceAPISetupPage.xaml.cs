@@ -39,6 +39,7 @@ namespace PayrollApp.Views.FirstRunSetup
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+            workspaceBox.Text = "payroll";
         }
 
         private void TimeUpdater_Tick(object sender, object e)
