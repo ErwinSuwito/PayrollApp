@@ -76,15 +76,20 @@ namespace PayrollApp.Views.NewUserOnboarding
                 if (user != null)
                 {
                     pageTitle.Text = user.fullName;
+                    progText.Text = "Logging you in...";
 
-                    bool IsUserADEnabled = await IsUserEnabledAD(upn);
-                    if (IsUserADEnabled == true)
+                    if (user.fromAD)
                     {
-                        // Do login
-                    }
-                    else
-                    {
-                        IsUserEnabled = false;
+                        bool IsUserADEnabled = await IsUserEnabledAD(upn);
+                        if (IsUserADEnabled == false)
+                        {
+                            if (IsUserADEnabled != user.isDisabled && !user.userID.Contains("TP"))
+                            {
+                                user.isDisabled = true;
+                                IsUserEnabled = true;
+                                await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                            }
+                        }
                     }
                 }
                 else
@@ -95,6 +100,17 @@ namespace PayrollApp.Views.NewUserOnboarding
 
                 if (IsUserEnabled == false)
                 {
+                    // Syncs account enabled state
+                    if (user.fromAD == true)
+                    {
+                        bool IsUserADEnabled = await IsUserEnabledAD(upn);
+                        if (IsUserADEnabled == true)
+                        {
+                            user.isDisabled = false;
+                            await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                            loadTimer.Start();
+                        }
+                    }
                     await ShowAccountDisabledMessage();
                     this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                 }

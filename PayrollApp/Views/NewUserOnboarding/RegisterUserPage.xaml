@@ -54,7 +54,7 @@
                 <StackPanel x:Name="actualContent">
                     <StackPanel Orientation="Horizontal">
                         <ProgressRing IsActive="True" Height="24" Width="24" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="progText" Text="Logging you in..." Margin="12,0,0,0"
+                        <TextBlock x:Name="progText" Text="Just a moment..." Margin="12,0,0,0"
                                    FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
