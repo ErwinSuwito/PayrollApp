@@ -31,10 +31,21 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        string upn;
 
         public RegisterUserPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                upn = e.Parameter.ToString();
+            }
+
+            base.OnNavigatedTo(e);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -44,6 +55,8 @@ namespace PayrollApp.Views.NewUserOnboarding
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+            pageTitle.Text = upn;
         }
 
         private void TimeUpdater_Tick(object sender, object e)

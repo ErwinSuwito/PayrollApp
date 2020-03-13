@@ -45,7 +45,7 @@
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
                 <TextBlock Text="Welcome, " Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBlock x:Name="pageTitle" Text="Erwin Suwitoandojo" 
+                <TextBlock x:Name="pageTitle" Text="" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
             </StackPanel>
 
@@ -54,7 +54,7 @@
                 <StackPanel x:Name="actualContent">
                     <StackPanel Orientation="Horizontal">
                         <ProgressRing IsActive="True" Height="24" Width="24" VerticalAlignment="Center"/>
-                        <TextBlock Text="Please wait. We're setting up your account..." Margin="12,0,0,0"
+                        <TextBlock Text="Logging you in..." Margin="12,0,0,0"
                                    FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>

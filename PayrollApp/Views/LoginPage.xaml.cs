@@ -31,6 +31,7 @@ namespace PayrollApp.Views
         private Task processingLoopTask;
         private bool isProcessingLoopInProgress;
         private bool isProcessingPhoto;
+        private bool isLogginIn = false;
 
         public LoginPage()
         {
@@ -91,7 +92,31 @@ namespace PayrollApp.Views
             if (e.DetectedFaces.Any())
             {
                 await e.IdentifyFacesAsync();
-                this.greetingTextBlock.Text = this.GetGreettingFromFaces(e);
+                //this.greetingTextBlock.Text = this.GetGreettingFromFaces(e);
+                if (e.IdentifiedPersons.Any())
+                {
+                    string upn = e.IdentifiedPersons.First().Person.Name;
+
+                    if (e.DetectedFaces.Count() > e.IdentifiedPersons.Count())
+                    {
+                        greetingTextBlock.Text = "Hi! One person at a time please...";
+                    }
+                    else
+                    {
+                        this.Frame.Navigate(typeof(NewUserOnboarding.RegisterUserPage), upn, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
+                }
+                else
+                {
+                    if (e.DetectedFaces.Count() > 1)
+                    {
+                        greetingTextBlock.Text = "Hi! One person at a time please...";
+                    }
+                    else
+                    {
+                        greetingTextBlock.Text = "Nice to meet you! Scan your card to get started.";
+                    }
+                }
             }
             else
             {
@@ -103,34 +128,6 @@ namespace PayrollApp.Views
             Debug.WriteLine(ApiLatency);
 
             this.isProcessingPhoto = false;
-        }
-
-        private string GetGreettingFromFaces(ImageAnalyzer img)
-        {
-            if (img.IdentifiedPersons.Any())
-            {
-                string names = img.IdentifiedPersons.Count() > 1 ? string.Join(", ", img.IdentifiedPersons.Select(p => p.Person.Name)) : img.IdentifiedPersons.First().Person.Name;
-
-                if (img.DetectedFaces.Count() > img.IdentifiedPersons.Count())
-                {
-                    return string.Format("Hi, {0} and others! One person at a time please.", names);
-                }
-                else
-                {
-                    return string.Format("Welcome back, {0}!", names);
-                }
-            }
-            else
-            {
-                if (img.DetectedFaces.Count() > 1)
-                {
-                    return "Hi everyone! If I knew any of you by name I would say it...";
-                }
-                else
-                {
-                    return "Nice to meet you! Scan your card to get started.";
-                }
-            }
         }
 
         private void UpdateUIForNoFacesDetected()
@@ -178,14 +175,21 @@ namespace PayrollApp.Views
         {
             PayrollCore.LoginInfoReturn loginInfo;
 
-            bool ADEnabled = await IsUserEnabledAD(upn);
-            if (ADEnabled == true)
+            if (isLogginIn != true)
             {
-                //loginInfo = await SettingsHelper.Instance.op.StartLogin(upn, ADEnabled);
-            }
-            else
-            {
-                //loginInfo = await SettingsHelper.Instance.op.StartLogin(upn, ADEnabled);
+                isLogginIn = true;
+
+                bool ADEnabled = await IsUserEnabledAD(upn);
+                if (ADEnabled == true)
+                {
+                    //loginInfo = await SettingsHelper.Instance.op.StartLogin(upn, ADEnabled);
+                }
+                else
+                {
+                    
+                }
+
+                isLogginIn = false;
             }
         }
 
@@ -212,18 +216,53 @@ namespace PayrollApp.Views
 
             if (provider != null && provider.State == ProviderState.SignedIn)
             {
-                var user = await provider.Graph.Users[upn].Request().GetAsync();
-
-                if (user != null)
+                try
                 {
-                    if (user.AccountEnabled == true)
+                    var user = await provider.Graph.Users[upn].Request().GetAsync();
+                    if (user != null)
                     {
-                        return true;
+                        if (user.AccountEnabled == true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
+                }
+                catch (Microsoft.Graph.ServiceException graphEx)
+                {
+                    if (graphEx.Message.Contains("Request_ResourceNotFound"))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Graph Service Exception: " + graphEx.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Check user AD Exception: " + ex.Message);
                 }
             }
 
             return false;
+        }
+
+        private async Task<bool> ShowAccountDisabledMessage()
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Your account is disabled.",
+                Content = "If you believe that your account has been disabled by mistake, contact TA Supervisor, Chiefs, or TA HR Functional Unit to enable your account.",
+                PrimaryButtonText = "Ok"
+            };
+
+            await contentDialog.ShowAsync();
+
+            return true;
         }
     }
 }

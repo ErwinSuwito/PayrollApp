@@ -29,7 +29,7 @@
                Margin="132,0,0,0" HorizontalAlignment="Left" />
 
         <StackPanel Margin="24,0,0,24" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <TextBlock Text="{Binding WorkspaceKey}" />
+            <!-- Future content here -->
         </StackPanel>
 
     </Grid>
