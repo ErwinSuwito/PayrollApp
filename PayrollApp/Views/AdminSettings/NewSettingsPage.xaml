@@ -221,7 +221,7 @@
                                 <TextBlock Text="Dev features enabled" Style="{ThemeResource BaseTextBlockStyle}" />
                             </StackPanel>
 
-                            <ctl:DevControl Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <ctl:DevControl x:Name="devControl" Margin="0,16,0,0" HorizontalAlignment="Left" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>

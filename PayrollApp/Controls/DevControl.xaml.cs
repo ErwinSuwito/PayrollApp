@@ -25,6 +25,10 @@ namespace PayrollApp.Controls
             this.InitializeComponent();
         }
 
+        public delegate void NavigateFaceIDSetup(object source, EventArgs e);
+
+        public event NavigateFaceIDSetup OnNavigateParentReady;
+
         private async void ResetBtn_Click(object sender, RoutedEventArgs e)
         {
             var provider = ProviderManager.Instance.GlobalProvider;
@@ -77,6 +81,11 @@ namespace PayrollApp.Controls
                 }
                 
             }
+        }
+
+        private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OnNavigateParentReady(this, null);
         }
     }
 }
