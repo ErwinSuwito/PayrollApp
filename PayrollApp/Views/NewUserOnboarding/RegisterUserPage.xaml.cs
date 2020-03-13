@@ -64,6 +64,8 @@ namespace PayrollApp.Views.NewUserOnboarding
             pageTitle.Text = upn;
         }
 
+        // The code to do actual login is here. To be moved to PayrollCore when
+        // The Graph controls are compatible with .NET Standard 2.0
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
