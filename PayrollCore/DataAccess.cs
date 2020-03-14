@@ -1382,7 +1382,7 @@ namespace PayrollCore
                             if (dr.GetInt32(5) != 0)
                             {
                                 var startShift = new Shift();
-                                startShift.
+                                startShift.dr
                             }
 
                             return activity;
