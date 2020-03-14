@@ -71,7 +71,6 @@ namespace PayrollApp.Views.NewUserOnboarding
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            bool IsUserEnabled = false;
             User user;
 
             if (upn != null)
@@ -81,52 +80,88 @@ namespace PayrollApp.Views.NewUserOnboarding
                 {
                     pageTitle.Text = user.fullName;
                     progText.Text = "Logging you in...";
-
-                    if (user.fromAD)
+                    // User is already registered. Proceed to check if it is from AD and sync their Allow Login status if does not contains TP.
+                    if (user.fromAD == true && !user.userID.Contains("TP"))
                     {
-                        bool IsUserADEnabled = await IsUserEnabledAD(upn);
-                        if (IsUserADEnabled == false)
-                        {
-                            if (IsUserADEnabled != user.isDisabled && !user.userID.Contains("TP"))
-                            {
-                                user.isDisabled = true;
-                                IsUserEnabled = true;
-                                await SettingsHelper.Instance.da.UpdateUserInfo(user);
-                            }
-                        }
+                        bool IsEnabledInAd = await IsUserEnabledAD(upn);
+                        user.isDisabled = !IsEnabledInAd;
+
+                        await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                    }
+
+                    if (user.isDisabled == false)
+                    {
+                        // Copies user to loggedInUser
+                        SettingsHelper.Instance.loggedInUser = user;
+                        this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
                 }
                 else
                 {
-                    progText.Text = "Please wait. We're setting up your account...";
-                    // Do account setup
-
-                    user = new User();
-                    user.userID = upn;
-
-                }
-
-                if (IsUserEnabled == false)
-                {
-                    // Syncs account enabled state
-                    if (user.fromAD == true)
-                    {
-                        bool IsUserADEnabled = await IsUserEnabledAD(upn);
-                        if (IsUserADEnabled == true)
-                        {
-                            user.isDisabled = false;
-                            await SettingsHelper.Instance.da.UpdateUserInfo(user);
-                            loadTimer.Start();
-                        }
-                    }
-                    await ShowAccountDisabledMessage();
-                    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                    // User not registered in system yet, proceed to set up user account.
                 }
             }
             else
             {
                 this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
+
+            //if (upn != null)
+            //{
+            //    user = await SettingsHelper.Instance.da.GetUserFromDbById(upn);
+
+            //    if (user != null)
+            //    {
+            //        IsUserEnabled = !user.isDisabled;
+            //        pageTitle.Text = user.fullName;
+            //        progText.Text = "Logging you in...";
+
+            //        if (user.fromAD)
+            //        {
+            //            bool IsUserADEnabled = await IsUserEnabledAD(upn);
+            //            if (IsUserADEnabled == false)
+            //            {
+            //                // Syncs account enabled state
+            //                if (IsUserADEnabled != IsUserEnabled && !user.userID.Contains("TP"))
+            //                {
+            //                    user.isDisabled = true;
+            //                    IsUserEnabled = true;
+            //                    await SettingsHelper.Instance.da.UpdateUserInfo(user);
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        progText.Text = "Please wait. We're setting up your account...";
+            //        // Do account setup
+
+            //        user = new User();
+            //        user.userID = upn;
+
+            //    }
+
+            //    if (IsUserEnabled == false)
+            //    {
+            //        // Syncs account enabled state
+            //        if (user.fromAD == true)
+            //        {
+            //            bool IsUserADEnabled = await IsUserEnabledAD(upn);
+            //            if (IsUserADEnabled == true)
+            //            {
+            //                user.isDisabled = false;
+            //                await SettingsHelper.Instance.da.UpdateUserInfo(user);
+            //                loadTimer.Start();
+            //            }
+            //        }
+            //        await ShowAccountDisabledMessage();
+            //        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            //    }
+            //}
+            //else
+            //{
+            //    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            //}
         }
 
         private void TimeUpdater_Tick(object sender, object e)

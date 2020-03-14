@@ -15,67 +15,8 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
-        /*
-        /// <summary>
-        /// Checks database for the specifc username and generates a response
-        /// to user allow login.
-        /// </summary>
-        /// <param name="username">The username or UPN of the user</param>
-        /// <param name="ADEnabled">If the UPN is enabled in AD</param>
-        /// <returns>LoginInfoReturn</returns>
-        public async Task<LoginInfoReturn> StartLogin(string username, bool ADEnabled)
-        {
-            LoginInfoReturn loginInfo = new LoginInfoReturn();
 
-            User user = await da.GetUserFromDbById(username);
-            loginInfo.user = user;
-            loginInfo.IsSuccess = true;
-            if (user != null)
-            {
-                loginInfo.NewUser = false;
-
-                if (user.fromAD == true)
-                {
-                    if (user.isDisabled == false && ADEnabled == true)
-                    {
-                        loginInfo.AllowLogin = true;
-                    }
-                    else if (user.isDisabled == true && ADEnabled == true)
-                    {
-                        if (user.isTrainee != true)
-                        {
-                            loginInfo.AllowLogin = true;
-
-                            user.isDisabled = false;
-                            await da.UpdateUserInfo(user);
-                        }
-                        else
-                        {
-                            loginInfo.AllowLogin = false;
-                        }
-                    }
-                }
-                else if (user.fromAD == false)
-                {
-
-                    if (user.isDisabled == true)
-                    {
-                        loginInfo.AllowLogin = false;
-                    }
-                }
-                else
-                {
-                    loginInfo.AllowLogin = false;
-                }
-            }
-            else
-            {
-                loginInfo.NewUser = true;
-            }
-
-            return loginInfo;
-        }
-        */
+        public async Task<LoginInfoReturn> GenerateUserState
 
         public async Task<SignInOut> GenerateSignInInfo(User user, DateTime startTime, Shift startShift, Shift endShift)
         {

@@ -7,11 +7,10 @@ using PayrollCore.Entities;
 
 namespace PayrollCore
 {
-    public  class LoginInfoReturn
+    public  class UserState
     {
-        public bool IsSuccess { get; set; }
-        public bool AllowLogin { get; set; }
-        public bool NewUser { get; set; }
         public User user { get; set; }
+        public MeetingAttendance meetingAttendance { get; set; }
+        public SignInOut signInInfo { get; set; }
     }
 }

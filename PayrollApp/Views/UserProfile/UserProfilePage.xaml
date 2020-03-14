@@ -50,7 +50,7 @@
             <StackPanel x:Name="pageHeader">
                 <TextBlock x:Name="fullNameTextBlock" Text="Erwin Suwitoandojo" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                <TextBlock Text="Your meeting attendnace has been recorded." 
+                <TextBlock x:Name="greetingTextBlock" Text="Your meeting attendnace has been recorded." 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
@@ -68,7 +68,7 @@
                         <TextBlock Text="Special Task" Margin="6,0,0,0"/>
                     </Button.Content>
                 </Button>
-                <Button x:Name="meetingButton" Style="{StaticResource DefaultButtonStyle}"
+                <Button x:Name="meetingButton" Style="{StaticResource DefaultButtonStyle}" Visibility="Collapsed"
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18">
                     <Button.Content>
                         <TextBlock Text="Meeting Attendance" Margin="6,0,0,0"/>
@@ -83,7 +83,8 @@
                 </Button>
                 <Button x:Name="adminSettingsButton" Style="{StaticResource DefaultButtonStyle}"
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" 
-                        Margin="0,12,0,0" FontSize="18" Click="adminSettingsButton_Click">
+                        Margin="0,12,0,0" FontSize="18" Click="adminSettingsButton_Click"
+                        Visibility="Collapsed">
                     <Button.Content>
                         <TextBlock Text="Admin Settings" Margin="6,0,0,0"/>
                     </Button.Content>

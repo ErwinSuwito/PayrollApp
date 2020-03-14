@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PayrollCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace PayrollApp.Views.UserProfile
     /// </summary>
     public sealed partial class UserProfilePage : Page
     {
+        UserState userState = SettingsHelper.Instance.userState;
+
         public UserProfilePage()
         {
             this.InitializeComponent();
@@ -40,7 +43,29 @@ namespace PayrollApp.Views.UserProfile
 
             if (SettingsHelper.Instance.appLocation.enableGM == false)
             {
-                meetingButton.Visibility = Visibility.Collapsed;
+                meetingButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.user.userGroup.ShowAdminSettings == true)
+            {
+                adminSettingsButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.signInInfo != null)
+            {
+                if (userState.signInInfo.inTime.Date == DateTime.Today)
+                {
+                    greetingTextBlock.Text = "You are already signed in for " + userState.signInInfo.StartShift.shiftName + " today.";
+                }
+                else
+                {
+                    greetingTextBlock.Text = "You are still signed in for " + userState.signInInfo.StartShift.shiftName + " on " + userState.signInInfo.inTime.ToShortDateString();
+                }
+            }
+
+            if (userState.meetingAttendance != null)
+            {
+                greetingTextBlock.Text = "Your attendance for the meeting has been recorded.";
             }
         }
 

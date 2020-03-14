@@ -50,7 +50,7 @@ namespace PayrollApp
         string DbConnectionString;
         string CardConnString;
 
-        public User loggedInUser;
+        public UserState userState;
         public Location appLocation;
         public ObservableCollection<Meeting> meetings;
         public DataAccess da;

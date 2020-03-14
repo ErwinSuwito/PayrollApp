@@ -13,8 +13,8 @@ namespace PayrollCore.Entities
         public string userID { get; set; }
         public DateTime inTime { get; set; }
         public DateTime outTime { get; set; }
-        public int startShiftId { get; set; }
-        public int endShiftId { get; set; }
+        public Shift StartShift { get; set; }
+        public Shift EndShift { get; set; }
         public float approvedHours { get; set; }
         public float claimableAmount { get; set; }
         public bool RequireNotification { get; set; }
