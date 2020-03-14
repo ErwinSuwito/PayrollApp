@@ -1356,12 +1356,6 @@ namespace PayrollCore
             return IsSuccess;
         }
 
-        public async Task<MeetingAttendance> GetLatestMeetingAttendance(string upn)
-        {
-            string Query = "SELECT * FROM meeting_attendance WHERE UserID=@";
-
-        }
-
         public async Task<UserState> GetUserStateInfo(string upn)
         {
             string Query = "SELECT * FROM global_settings WHERE SettingKey='MinHours'";

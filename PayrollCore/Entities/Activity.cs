@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace PayrollCore.Entities
 {
-    public class SignInOut : INotifyPropertyChanged
+    public class Activity : INotifyPropertyChanged
     {
-        public int loginID { get; set; }
+        public int ActivityID { get; set; }
         public string userID { get; set; }
         public DateTime inTime { get; set; }
         public DateTime outTime { get; set; }
         public Shift StartShift { get; set; }
         public Shift EndShift { get; set; }
-        public float approvedHours { get; set; }
-        public float claimableAmount { get; set; }
+        public Meeting meeting { get; set; }
         public bool RequireNotification { get; set; }
+
         /// <summary>
         /// The reason to send a notification
         /// 1 - Late sign in

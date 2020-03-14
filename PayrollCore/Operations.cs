@@ -25,11 +25,11 @@ namespace PayrollCore
             return state;
         }
 
-        public async Task<SignInOut> GenerateSignInInfo(User user, DateTime startTime, Shift startShift, Shift endShift)
+        public async Task<Activity> GenerateSignInInfo(User user, DateTime startTime, Shift startShift, Shift endShift)
         {
             DateTime signInTime = DateTime.Now;
 
-            SignInOut signInInfo = new SignInOut();
+            Activity signInInfo = new Activity();
 
             TimeSpan.TryParse(DateTime.Now.ToString(), out TimeSpan currentTime);
 
@@ -53,7 +53,7 @@ namespace PayrollCore
             return signInInfo;
         }
         
-        public async Task<SignInOut> GenerateSignOutInfo(User user, SignInOut signInInfo)
+        public async Task<Activity> GenerateSignOutInfo(User user, Activity signInInfo)
         {
             DateTime signInTime = signInInfo.inTime;
             DateTime signOutTime = DateTime.Now;

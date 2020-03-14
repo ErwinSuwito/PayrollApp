@@ -10,7 +10,6 @@ namespace PayrollCore
     public  class UserState
     {
         public User user { get; set; }
-        public MeetingAttendance meetingAttendance { get; set; }
-        public SignInOut signInInfo { get; set; }
+        public float ClaimableHours { get; set; }
     }
 }
