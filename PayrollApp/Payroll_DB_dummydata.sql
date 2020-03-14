@@ -70,6 +70,7 @@ CREATE TABLE meeting_group(
 CREATE TABLE Activity(
 	ActivityID int PRIMARY KEY IDENTITY(1,1),
 	UserID nvarchar(60),
+	LocationID int,
 	inTime datetime,
 	outTime datetime,
 	startShift int,
@@ -78,6 +79,7 @@ CREATE TABLE Activity(
 	approvedHours float(1),
 	claimableAmount float(1),
 	FOREIGN KEY (UserID) REFERENCES usr(UserID),
+	FOREIGN KEY (LocationID) REFERENCES locations(locationID),
 	FOREIGN KEY (startShift) REFERENCES shifts(shiftID),
 	FOREIGN KEY (endShift) REFERENCES shifts(shiftID),
 	FOREIGN KEY (meetingID) REFERENCES meetings(meetingID)
@@ -89,7 +91,7 @@ CREATE TABLE claims(
 	ApprovedHours float (1),
 	ClaimableAmount float(1),
 	GeneratedDate date,
-	FOREIGN KEY (loginID) REFERENCES Activity(ActivityID)
+	FOREIGN KEY (ActivityID) REFERENCES Activity(ActivityID)
 );
 
 CREATE TABLE global_settings(
@@ -100,6 +102,8 @@ CREATE TABLE global_settings(
 /* DUMMY DATA */
 
 INSERT INTO global_settings VALUES('MinHours', '40');
+INSERT INTO global_settings VALUES('DefaultTraineeGroup', '1');
+INSERT INTO global_settings VALUES('DefaultGroup', '2');
 
 INSERT INTO rate(rateDesc, rate) VALUES('Default Duty', 5);
 INSERT INTO rate(rateDesc, rate) VALUES('Sunday Special Task', 10);

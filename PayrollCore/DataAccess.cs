@@ -1356,9 +1356,9 @@ namespace PayrollCore
             return IsSuccess;
         }
 
-        public async Task<UserState> GetUserStateInfo(string upn)
+        public async Task<UserState> GetLatestActivityByUserId(string upn, )
         {
-            string Query = "SELECT * FROM global_settings WHERE SettingKey='MinHours'";
+            string Query = "SELECT * FROM Activity WHERE SettingKey='MinHours'";
             UserState state = new UserState();
 
             try
