@@ -108,8 +108,9 @@ INSERT INTO global_settings VALUES('DefaultGroup', '2');
 INSERT INTO rate(rateDesc, rate) VALUES('Default Duty', 5);
 INSERT INTO rate(rateDesc, rate) VALUES('Sunday Special Task', 10);
 INSERT INTO rate(rateDesc, rate) VALUES('Chiefs Normal Duty or Special Task', 8);
+INSERT INTO rate(rateDesc, rate) VALUES('Zero', 0);
 
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Trainee', 1, 0, 0);
+INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Trainee', 4, 0, 0);
 INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Technical Assistant', 1, 0, 1);
 INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member', 1, 0, 1);
 INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member, HR Member', 1, 1, 1);
@@ -134,7 +135,7 @@ INSERT INTO locations(locationName, enableGM) VALUES('APU', 1);
 INSERT INTO locations(locationName, enableGM) VALUES('APIIT', 0);
 
 INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'GM', 2, 1);
-INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1;
+INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1);
 
 INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 1);
 INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 2);
