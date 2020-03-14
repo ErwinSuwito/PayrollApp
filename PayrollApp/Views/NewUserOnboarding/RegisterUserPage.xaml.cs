@@ -63,7 +63,7 @@ namespace PayrollApp.Views.NewUserOnboarding
             loadTimer.Tick += LoadTimer_Tick;
             loadTimer.Start();
 
-            pageTitle.Text = upn;
+            pageTitle.Text = upn.ToLower();
         }
 
         // The code to do actual login is here. To be moved to PayrollCore when
