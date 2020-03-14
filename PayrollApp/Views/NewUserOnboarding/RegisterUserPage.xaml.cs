@@ -92,7 +92,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                     if (user.isDisabled == false)
                     {
                         // Copies user to loggedInUser
-                        SettingsHelper.Instance.loggedInUser = user;
+                        SettingsHelper.Instance.userState.user = user;
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
                 }

@@ -1325,36 +1325,6 @@ namespace PayrollCore
             return MinHours;
         }
 
-        public async Task<bool> UpdateMinHours(string MinHours)
-        {
-            bool IsSuccess = false;
-            string Query = "UPDATE global_settings SET SettingValue=@SettingValue WHERE SettingKey='MinHours'";
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(DbConnString))
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = Query;
-
-                        cmd.Parameters.Add(new SqlParameter("@SettingValue", MinHours));
-
-                        await cmd.ExecuteNonQueryAsync();
-
-                        return true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
-            }
-
-            return IsSuccess;
-        }
-
         public async Task<bool> UpdateGlobalSetting(string SettingKey, string SettingValue)
         {
             bool IsSuccess = false;
@@ -1384,6 +1354,43 @@ namespace PayrollCore
             }
 
             return IsSuccess;
+        }
+
+        public async Task<MeetingAttendance> GetLatestMeetingAttendance(string upn)
+        {
+            string Query = "SELECT * FROM meeting_attendance WHERE UserID=@";
+
+        }
+
+        public async Task<UserState> GetUserStateInfo(string upn)
+        {
+            string Query = "SELECT * FROM global_settings WHERE SettingKey='MinHours'";
+            UserState state = new UserState();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return state;
         }
     }
 }

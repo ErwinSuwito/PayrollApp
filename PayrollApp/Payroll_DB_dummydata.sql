@@ -50,20 +50,6 @@ CREATE TABLE shifts(
 	FOREIGN KEY (locationID) REFERENCES locations(locationID)
 );
 
-CREATE TABLE signInOut(
-	loginID int PRIMARY KEY IDENTITY(1,1),
-	UserID nvarchar(60),
-	inTime datetime,
-	outTime datetime,
-	startShift int,
-	endShift int,
-	approvedHours float(1),
-	claimableAmount float(1),
-	FOREIGN KEY (UserID) REFERENCES usr(UserID),
-	FOREIGN KEY (startShift) REFERENCES shifts(shiftID),
-	FOREIGN KEY (endShift) REFERENCES shifts(shiftID)
-);
-
 CREATE TABLE meetings(
 	meetingID int PRIMARY KEY IDENTITY(1,1),
 	meetingName nvarchar(20),
@@ -81,23 +67,29 @@ CREATE TABLE meeting_group(
 	FOREIGN KEY (usrGroupID) REFERENCES usr_group(groupID)
 );
 
-CREATE TABLE meeting_attendance(
-	Attendance_ID int PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Activity(
+	ActivityID int PRIMARY KEY IDENTITY(1,1),
 	UserID nvarchar(60),
+	inTime datetime,
+	outTime datetime,
+	startShift int,
+	endShift int,
 	meetingID int,
-	loginID int,
+	approvedHours float(1),
+	claimableAmount float(1),
 	FOREIGN KEY (UserID) REFERENCES usr(UserID),
-	FOREIGN KEY (meetingID) REFERENCES meetings(meetingID),
-	FOREIGN KEY (loginID) REFERENCES signInOut(loginID)
+	FOREIGN KEY (startShift) REFERENCES shifts(shiftID),
+	FOREIGN KEY (endShift) REFERENCES shifts(shiftID),
+	FOREIGN KEY (meetingID) REFERENCES meetings(meetingID)
 );
 
-CREATE TABLE loginActivity(
-	LoginID int PRIMARY KEY IDENTITY(1,1),
-	UserID nvarchar(60),
-	LoginTime DATETIME,
-	LocationID int,
-	FOREIGN KEY (UserID) REFERENCES usr(UserID),
-	FOREIGN KEY (LocationID) REFERENCES locations(locationID)
+CREATE TABLE claims(
+	ClaimID int PRIMARY KEY IDENTITY(1,1),
+	ActivityID int,
+	ApprovedHours float (1),
+	ClaimableAmount float(1),
+	GeneratedDate date,
+	FOREIGN KEY (loginID) REFERENCES Activity(ActivityID)
 );
 
 CREATE TABLE global_settings(

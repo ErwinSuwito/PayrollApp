@@ -16,7 +16,14 @@ namespace PayrollCore
         }
 
 
-        public async Task<LoginInfoReturn> GenerateUserState
+        public async Task<UserState> GenerateUserState(User user)
+        {
+            UserState state = new UserState();
+
+
+
+            return state;
+        }
 
         public async Task<SignInOut> GenerateSignInInfo(User user, DateTime startTime, Shift startShift, Shift endShift)
         {
@@ -39,8 +46,8 @@ namespace PayrollCore
             }
 
             // Adds info to signInInfo
-            signInInfo.startShiftId = startShift.shiftID;
-            signInInfo.endShiftId = endShift.shiftID;
+            signInInfo.StartShift = startShift;
+            signInInfo.EndShift = endShift;
             signInInfo.inTime = signInTime;
 
             return signInInfo;
