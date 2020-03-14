@@ -1379,10 +1379,35 @@ namespace PayrollCore
                             activity.inTime = dr.GetDateTime(3);
                             activity.outTime = dr.GetDateTime(4);
 
+                            // Checks if start shift is not empty and set their values
                             if (dr.GetInt32(5) != 0)
                             {
                                 var startShift = new Shift();
-                                startShift.dr
+                                startShift.shiftID = dr.GetInt32(14);
+                                startShift.shiftName = dr.GetString(15);
+                                startShift.startTime = dr.GetTimeSpan(16);
+                                startShift.endTime = dr.GetTimeSpan(17);
+                                activity.StartShift = startShift;
+                            }
+
+                            // Checks if end shift is not empty and set their values
+                            if (dr.GetInt32(6) != 0)
+                            {
+                                var endShift = new Shift();
+                                endShift.shiftID = dr.GetInt32(21);
+                                endShift.shiftName = dr.GetString(22);
+                                endShift.startTime = dr.GetTimeSpan(23);
+                                endShift.endTime = dr.GetTimeSpan(24);
+                                activity.StartShift = endShift;
+                            }
+
+                            // Checks if meeting is not empty and set their values
+                            if (dr.GetInt32(7) != 0)
+                            {
+                                var meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(8);
+                                meeting.meetingName = dr.GetString(9);
+                                activity.meeting = meeting;
                             }
 
                             return activity;
