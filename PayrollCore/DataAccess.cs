@@ -1356,10 +1356,10 @@ namespace PayrollCore
             return IsSuccess;
         }
 
-        public async Task<UserState> GetLatestActivityByUserId(string upn, )
+        public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT * FROM Activity WHERE SettingKey='MinHours'";
-            UserState state = new UserState();
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN meetings ON meetings.meetingID=Activity.meetingID LEFT JOIN shifts s1 ON s1.shiftID=Activity.startShift LEFT JOIN shifts s2 ON s2.shiftID=Activity.endShift WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            Activity activity;
 
             try
             {
@@ -1374,7 +1374,18 @@ namespace PayrollCore
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
                         {
-                            
+                            activity = new Activity();
+                            activity.userID = upn;
+                            activity.inTime = dr.GetDateTime(3);
+                            activity.outTime = dr.GetDateTime(4);
+
+                            if (dr.GetInt32(5) != 0)
+                            {
+                                var startShift = new Shift();
+                                startShift.
+                            }
+
+                            return activity;
                         }
                     }
                 }
@@ -1384,7 +1395,7 @@ namespace PayrollCore
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
             }
 
-            return state;
+            return null;
         }
     }
 }

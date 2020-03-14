@@ -16,6 +16,7 @@ namespace PayrollCore.Entities
         public int meetingDay { get; set; }
         public bool isDisabled { get; set; }
         public bool newMeeting { get; set; }
+        public Rate rate { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyEventChanged(string propertyName)

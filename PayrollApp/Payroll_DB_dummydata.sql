@@ -56,7 +56,9 @@ CREATE TABLE meetings(
 	locationID int,
 	meetingDay int NOT NULL,
 	disableMeeting BIT DEFAULT 0,
-	FOREIGN KEY (locationID) REFERENCES locations(locationID)
+	rateID int,
+	FOREIGN KEY (locationID) REFERENCES locations(locationID),
+	FOREIGN KEY (rateID) REFERENCES rate(rateID)
 );
 
 CREATE TABLE meeting_group(
@@ -76,8 +78,6 @@ CREATE TABLE Activity(
 	startShift int,
 	endShift int,
 	meetingID int,
-	approvedHours float(1),
-	claimableAmount float(1),
 	FOREIGN KEY (UserID) REFERENCES usr(UserID),
 	FOREIGN KEY (LocationID) REFERENCES locations(locationID),
 	FOREIGN KEY (startShift) REFERENCES shifts(shiftID),
@@ -133,8 +133,8 @@ INSERT INTO locations(locationName, enableGM, isDisabled) VALUES('new-sys', 1, 1
 INSERT INTO locations(locationName, enableGM) VALUES('APU', 1);
 INSERT INTO locations(locationName, enableGM) VALUES('APIIT', 0);
 
-INSERT INTO meetings(locationID, meetingName, meetingDay)  VALUES(2, 'GM', 2);
-INSERT INTO meetings(locationID, meetingName, meetingDay)  VALUES(2, 'BMM', 1);
+INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'GM', 2, 1);
+INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1;
 
 INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 1);
 INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 2);
