@@ -1383,10 +1383,10 @@ namespace PayrollCore
                             if (dr.GetInt32(5) != 0)
                             {
                                 var startShift = new Shift();
-                                startShift.shiftID = dr.GetInt32(14);
-                                startShift.shiftName = dr.GetString(15);
-                                startShift.startTime = dr.GetTimeSpan(16);
-                                startShift.endTime = dr.GetTimeSpan(17);
+                                startShift.shiftID = dr.GetInt32(15);
+                                startShift.shiftName = dr.GetString(16);
+                                startShift.startTime = dr.GetTimeSpan(17);
+                                startShift.endTime = dr.GetTimeSpan(18);
                                 activity.StartShift = startShift;
                             }
 
@@ -1394,10 +1394,10 @@ namespace PayrollCore
                             if (dr.GetInt32(6) != 0)
                             {
                                 var endShift = new Shift();
-                                endShift.shiftID = dr.GetInt32(21);
-                                endShift.shiftName = dr.GetString(22);
-                                endShift.startTime = dr.GetTimeSpan(23);
-                                endShift.endTime = dr.GetTimeSpan(24);
+                                endShift.shiftID = dr.GetInt32(22);
+                                endShift.shiftName = dr.GetString(23);
+                                endShift.startTime = dr.GetTimeSpan(24);
+                                endShift.endTime = dr.GetTimeSpan(25);
                                 activity.StartShift = endShift;
                             }
 
@@ -1405,8 +1405,8 @@ namespace PayrollCore
                             if (dr.GetInt32(7) != 0)
                             {
                                 var meeting = new Meeting();
-                                meeting.meetingID = dr.GetInt32(8);
-                                meeting.meetingName = dr.GetString(9);
+                                meeting.meetingID = dr.GetInt32(9);
+                                meeting.meetingName = dr.GetString(10);
                                 activity.meeting = meeting;
                             }
 

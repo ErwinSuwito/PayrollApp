@@ -40,6 +40,7 @@ namespace PayrollApp.Views.UserProfile
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+            string greeting;
 
             if (SettingsHelper.Instance.appLocation.enableGM == false)
             {
@@ -51,8 +52,44 @@ namespace PayrollApp.Views.UserProfile
                 adminSettingsButton.Visibility = Visibility.Visible;
             }
 
-            if (userState.signInInfo != null)
+            if (userState.LatestActivity != null)
             {
+                if (userState.LatestActivity.outTime != null)
+                {
+                    greeting = "You are already signed in for";
+                    // User is still logged in
+                    if (userState.LatestActivity.StartShift != null && userState.LatestActivity.EndShift != null)
+                    {
+                        // User is on duty.
+                        if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
+                        {
+                            greeting += userState.LatestActivity.StartShift.shiftName;
+                        }
+                        else
+                        {
+                            greeting += userState.LatestActivity.StartShift.shiftName + " and " + userState.LatestActivity.EndShift.shiftName;
+                        }
+
+                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
+                        {
+                            greeting += " today.";
+                        }
+                        else
+                        {
+                            greeting += " on " + userState.LatestActivity.inTime.ToShortDateString();
+                        }
+                    }
+                    else
+                    {
+                        // user is not on duty, but is logged in (for special task or meeting)
+
+                    }
+                }
+                else
+                {
+
+                }
+
                 if (userState.signInInfo.inTime.Date == DateTime.Today)
                 {
                     greetingTextBlock.Text = "You are already signed in for " + userState.signInInfo.StartShift.shiftName + " today.";

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Graph.Providers;
+using PayrollCore;
 using PayrollCore.Entities;
 using System;
 using System.Collections.Generic;
@@ -92,13 +93,25 @@ namespace PayrollApp.Views.NewUserOnboarding
                     if (user.isDisabled == false)
                     {
                         // Copies user to loggedInUser
+                        SettingsHelper.Instance.userState = new UserState();
                         SettingsHelper.Instance.userState.user = user;
+                        SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
                 }
                 else
                 {
                     // User not registered in system yet, proceed to set up user account.
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Your account is disabled.",
+                        Content = "If you believe that your account has been disabled by mistake, contact TA Supervisor, Chiefs, or TA HR Functional Unit to enable your account.",
+                        PrimaryButtonText = "Ok"
+                    };
+
+                    await contentDialog.ShowAsync();
+
+                    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                 }
             }
             else

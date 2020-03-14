@@ -16,6 +16,7 @@ namespace PayrollCore.Entities
         public Shift StartShift { get; set; }
         public Shift EndShift { get; set; }
         public Meeting meeting { get; set; }
+        public bool IsSpecialTask { get; set; }
         public bool RequireNotification { get; set; }
 
         /// <summary>
