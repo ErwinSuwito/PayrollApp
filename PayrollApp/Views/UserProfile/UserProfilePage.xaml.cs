@@ -142,13 +142,13 @@ namespace PayrollApp.Views.UserProfile
 
             int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
 
-            if (minHours == 0 || minHours < userState.ClaimableHours)
+            if (minHours == 0 || minHours < userState.ApprovedHours)
             {
-                totalHoursTextBlock.Text = "You have completed " + userState.ClaimableHours.ToString() + " hours.";
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours.";
             }
             else
             { 
-                totalHoursTextBlock.Text = "You have completed " + userState.ClaimableHours.ToString() + " out of minimum " + minHours.ToString() + " hours.";
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " out of minimum " + minHours.ToString() + " hours.";
             }
         }
     }

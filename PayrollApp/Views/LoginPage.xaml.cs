@@ -171,28 +171,6 @@ namespace PayrollApp.Views
             this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
-        private async void DoLogin(string upn)
-        {
-            PayrollCore.LoginInfoReturn loginInfo;
-
-            if (isLogginIn != true)
-            {
-                isLogginIn = true;
-
-                bool ADEnabled = await IsUserEnabledAD(upn);
-                if (ADEnabled == true)
-                {
-                    //loginInfo = await SettingsHelper.Instance.op.StartLogin(upn, ADEnabled);
-                }
-                else
-                {
-                    
-                }
-
-                isLogginIn = false;
-            }
-        }
-
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.isProcessingLoopInProgress = false;
@@ -208,61 +186,6 @@ namespace PayrollApp.Views
 
             await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: true);
             this.StartProcessingLoop();
-        }
-
-        private async Task<bool> IsUserEnabledAD(string upn)
-        {
-            var provider = ProviderManager.Instance.GlobalProvider;
-
-            if (provider != null && provider.State == ProviderState.SignedIn)
-            {
-                try
-                {
-                    var user = await provider.Graph.Users[upn].Request().GetAsync();
-                    if (user != null)
-                    {
-                        if (user.AccountEnabled == true)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                }
-                catch (Microsoft.Graph.ServiceException graphEx)
-                {
-                    if (graphEx.Message.Contains("Request_ResourceNotFound"))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Graph Service Exception: " + graphEx.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Check user AD Exception: " + ex.Message);
-                }
-            }
-
-            return false;
-        }
-
-        private async Task<bool> ShowAccountDisabledMessage()
-        {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Your account is disabled.",
-                Content = "If you believe that your account has been disabled by mistake, contact TA Supervisor, Chiefs, or TA HR Functional Unit to enable your account.",
-                PrimaryButtonText = "Ok"
-            };
-
-            await contentDialog.ShowAsync();
-
-            return true;
         }
     }
 }

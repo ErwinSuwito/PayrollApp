@@ -1297,7 +1297,6 @@ namespace PayrollCore
         {
             string MinHours = "";
             string Query = "SELECT SettingValue FROM global_settings WHERE SettingKey='MinHours'";
-            ObservableCollection<Rate> rates = new ObservableCollection<Rate>();
 
             try
             {
@@ -1421,6 +1420,38 @@ namespace PayrollCore
             }
 
             return null;
+        }
+
+        public async Task<float> GetApprovedHours(string upn)
+        {
+            string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM claims JOIN Activity ON Activity.ActivityID=claims.ActivityID WHERE Activity.UserID=@UserID AND GeneratedDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
+            float approvedHours = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", upn));
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            approvedHours = dr.GetFloat(0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return approvedHours;
         }
     }
 }

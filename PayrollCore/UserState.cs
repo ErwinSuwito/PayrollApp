@@ -11,6 +11,6 @@ namespace PayrollCore
     {
         public User user { get; set; }
         public Activity LatestActivity { get; set; }
-        public float ClaimableHours { get; set; }
+        public float ApprovedHours { get; set; }
     }
 }
