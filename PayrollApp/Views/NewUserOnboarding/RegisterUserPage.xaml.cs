@@ -80,16 +80,19 @@ namespace PayrollApp.Views.NewUserOnboarding
                 if (user != null)
                 {
                     pageTitle.Text = user.fullName;
-                    progText.Text = "Logging you in...";
+                    progText.Text = "Syncing account data...";
+
                     // User is already registered. Proceed to check if it is from AD and sync their Allow Login status if does not contains TP.
                     if (user.fromAD == true && !user.userID.Contains("TP"))
                     {
                         bool IsEnabledInAd = await IsUserEnabledAD(upn);
                         user.isDisabled = !IsEnabledInAd;
 
+                        Debug.WriteLine(user.isDisabled.ToString());
                         await SettingsHelper.Instance.da.UpdateUserInfo(user);
                     }
 
+                    progText.Text = "Logging you in...";
                     if (user.isDisabled == false)
                     {
                         // Copies user to loggedInUser
@@ -99,20 +102,23 @@ namespace PayrollApp.Views.NewUserOnboarding
                         SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
+                    else
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Your account is disabled.",
+                            Content = "If you believe that your account has been disabled by mistake, contact TA Supervisor, Chiefs, or TA HR Functional Unit to enable your account.",
+                            PrimaryButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+
+                        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                    }
                 }
                 else
                 {
                     // User not registered in system yet, proceed to set up user account.
-                    ContentDialog contentDialog = new ContentDialog
-                    {
-                        Title = "Your account is disabled.",
-                        Content = "If you believe that your account has been disabled by mistake, contact TA Supervisor, Chiefs, or TA HR Functional Unit to enable your account.",
-                        PrimaryButtonText = "Ok"
-                    };
-
-                    await contentDialog.ShowAsync();
-
-                    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                 }
             }
             else

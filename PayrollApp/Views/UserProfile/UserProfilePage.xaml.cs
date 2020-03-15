@@ -76,7 +76,7 @@ namespace PayrollApp.Views.UserProfile
             string greeting;
 
             // Starts modifying UI
-            if (SettingsHelper.Instance.appLocation.enableGM == false)
+            if (SettingsHelper.Instance.appLocation.enableGM == true)
             {
                 meetingButton.Visibility = Visibility.Visible;
             }
@@ -150,6 +150,8 @@ namespace PayrollApp.Views.UserProfile
             { 
                 totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " out of minimum " + minHours.ToString() + " hours.";
             }
+
+
         }
     }
 }
