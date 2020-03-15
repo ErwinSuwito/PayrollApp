@@ -40,70 +40,9 @@ namespace PayrollApp.Views.UserProfile
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
-            string greeting;
 
-            if (SettingsHelper.Instance.appLocation.enableGM == false)
-            {
-                meetingButton.Visibility = Visibility.Visible;
-            }
-
-            if (userState.user.userGroup.ShowAdminSettings == true)
-            {
-                adminSettingsButton.Visibility = Visibility.Visible;
-            }
-
-            if (userState.LatestActivity != null)
-            {
-                if (userState.LatestActivity.outTime != null)
-                {
-                    greeting = "You are already signed in for";
-                    // User is still logged in
-                    if (userState.LatestActivity.StartShift != null && userState.LatestActivity.EndShift != null)
-                    {
-                        // User is on duty.
-                        if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
-                        {
-                            greeting += userState.LatestActivity.StartShift.shiftName;
-                        }
-                        else
-                        {
-                            greeting += userState.LatestActivity.StartShift.shiftName + " and " + userState.LatestActivity.EndShift.shiftName;
-                        }
-
-                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
-                        {
-                            greeting += " today.";
-                        }
-                        else
-                        {
-                            greeting += " on " + userState.LatestActivity.inTime.ToShortDateString();
-                        }
-                    }
-                    else
-                    {
-                        // user is not on duty, but is logged in (for special task or meeting)
-
-                    }
-                }
-                else
-                {
-
-                }
-
-                if (userState.signInInfo.inTime.Date == DateTime.Today)
-                {
-                    greetingTextBlock.Text = "You are already signed in for " + userState.signInInfo.StartShift.shiftName + " today.";
-                }
-                else
-                {
-                    greetingTextBlock.Text = "You are still signed in for " + userState.signInInfo.StartShift.shiftName + " on " + userState.signInInfo.inTime.ToShortDateString();
-                }
-            }
-
-            if (userState.meetingAttendance != null)
-            {
-                greetingTextBlock.Text = "Your attendance for the meeting has been recorded.";
-            }
+            // Make changes to the UI according to settings and user state
+            ModifyUI();
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -130,6 +69,87 @@ namespace PayrollApp.Views.UserProfile
         private void improveRecButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ModifyUI()
+        {
+            string greeting;
+
+            // Starts modifying UI
+            if (SettingsHelper.Instance.appLocation.enableGM == false)
+            {
+                meetingButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.user.userGroup.ShowAdminSettings == true)
+            {
+                adminSettingsButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.LatestActivity != null)
+            {
+                if (userState.LatestActivity.outTime != null)
+                {
+                    greeting = "You are already signed in for";
+                    // User is still logged in
+                    if (userState.LatestActivity.StartShift != null || userState.LatestActivity.IsSpecialTask == true)
+                    {
+                        // User is on duty.
+                        if (userState.LatestActivity.IsSpecialTask == true)
+                        {
+                            greeting += " the special task";
+                        }
+                        else if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
+                        {
+                            greeting += userState.LatestActivity.StartShift.shiftName;
+                        }
+                        else
+                        {
+                            greeting += userState.LatestActivity.StartShift.shiftName + " and " + userState.LatestActivity.EndShift.shiftName;
+                        }
+
+                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
+                        {
+                            greeting += " today.";
+                        }
+                        else
+                        {
+                            greeting += " on " + userState.LatestActivity.inTime.ToShortDateString();
+                        }
+                    }
+                    else
+                    {
+                        greeting = "Your attendance for the meeting";
+
+                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
+                        {
+                            greeting += " today has been recorded.";
+                        }
+                        else
+                        {
+                            greeting = "Please sign out from the meeting on " + userState.LatestActivity.inTime.ToShortDateString();
+                        }
+                    }
+                }
+                else
+                {
+                    greeting = "You are not signed in.";
+                    signButton.Content = "Sign in";
+                }
+
+                greetingTextBlock.Text = greeting;
+            }
+
+            int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
+
+            if (minHours == 0 || minHours < userState.ClaimableHours)
+            {
+                totalHoursTextBlock.Text = "You have completed " + userState.ClaimableHours.ToString() + " hours.";
+            }
+            else
+            { 
+                totalHoursTextBlock.Text = "You have completed " + userState.ClaimableHours.ToString() + " out of minimum " + minHours.ToString() + " hours.";
+            }
         }
     }
 }
