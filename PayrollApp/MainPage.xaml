@@ -32,5 +32,9 @@
             <!-- Future content here -->
         </StackPanel>
 
+        <ScrollViewer x:Name="DevModeView" Visibility="Collapsed" Background="{ThemeResource SystemControlAcrylicElementBrush}" Height="320" Margin="0,0,32,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <ctl:DevControl x:Name="devControl" Margin="20,24,12,24" />
+        </ScrollViewer>
+
     </Grid>
 </Page>

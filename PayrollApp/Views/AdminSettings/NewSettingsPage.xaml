@@ -218,10 +218,7 @@
                                 <TextBlock Text="About" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="Payroll" Style="{ThemeResource SubheaderTextBlockStyle}" />
                                 <TextBlock Text="Preview 1.0" Margin="0,4,0,0"/>
-                                <TextBlock Text="Dev features enabled" Style="{ThemeResource BaseTextBlockStyle}" />
                             </StackPanel>
-
-                            <ctl:DevControl x:Name="devControl" Margin="0,16,0,0" HorizontalAlignment="Left" />
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>

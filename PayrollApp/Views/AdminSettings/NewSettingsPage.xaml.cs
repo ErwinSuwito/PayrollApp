@@ -36,13 +36,6 @@ namespace PayrollApp.Views.AdminSettings
             this.InitializeComponent();
             this.DataContext = SettingsHelper.Instance;
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Disabled;
-
-            devControl.OnNavigateParentReady += DevControl_OnNavigateParentReady;
-        }
-
-        private void DevControl_OnNavigateParentReady(object source, EventArgs e)
-        {
-            this.Frame.Navigate(typeof(FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
