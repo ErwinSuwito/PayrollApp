@@ -143,6 +143,7 @@ namespace PayrollApp.Views.UserProfile
             else
             {
                 greetingTextBlock.Text = "You are not signed in.";
+                signButton.Content = "Sign in";
             }
 
             int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
