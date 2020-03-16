@@ -1455,5 +1455,40 @@ namespace PayrollCore
 
             return approvedHours;
         }
+
+        public async Task<bool> AddNewActivity(Activity activity)
+        {
+            string Query = "INSERT INTO Activity(UserID, LocationID, inTime, outTime, startShift, endShift, meetingID, SpecialTask" 
+                + ") VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @MeetingID, @SpecialTask)";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
+                        cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
+                        cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
+                        cmd.Parameters.Add(new SqlParameter("@SpecialTask", activity.IsSpecialTask));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return false;
+            }
+        }
     }
 }

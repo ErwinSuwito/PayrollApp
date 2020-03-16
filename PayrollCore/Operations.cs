@@ -25,7 +25,7 @@ namespace PayrollCore
             return state;
         }
 
-        public async Task<Activity> GenerateSignInInfo(User user, DateTime startTime, Shift startShift, Shift endShift)
+        public async Task<Activity> GenerateSignInInfo(User user, Shift startShift, Shift endShift, Location location)
         {
             DateTime signInTime = DateTime.Now;
 
@@ -46,6 +46,8 @@ namespace PayrollCore
             }
 
             // Adds info to signInInfo
+            signInInfo.userID = user.userID;
+            signInInfo.location = location;
             signInInfo.StartShift = startShift;
             signInInfo.EndShift = endShift;
             signInInfo.inTime = signInTime;
@@ -53,7 +55,7 @@ namespace PayrollCore
             return signInInfo;
         }
         
-        public async Task<Activity> GenerateSignOutInfo(User user, Activity signInInfo)
+        public async Task<Activity> GenerateSignOutInfo(Activity signInInfo)
         {
             DateTime signInTime = signInInfo.inTime;
             DateTime signOutTime = DateTime.Now;

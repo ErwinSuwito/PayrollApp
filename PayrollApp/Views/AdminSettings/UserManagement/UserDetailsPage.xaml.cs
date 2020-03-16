@@ -144,7 +144,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             var contentDialog = new ContentDialog();
             contentDialog.Title = "Disable user?";
             contentDialog.Content = "Are you sure to disable this account? The user won't be able to login to the system. This won't disable student account in AD, and account enabled status won't be synced.";
-            contentDialog.PrimaryButtonText = "Delete";
+            contentDialog.PrimaryButtonText = "Disable";
             contentDialog.SecondaryButtonText = "Cancel";
 
             var bst = new Windows.UI.Xaml.Style(typeof(Button));

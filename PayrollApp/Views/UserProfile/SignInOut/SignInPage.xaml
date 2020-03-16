@@ -61,8 +61,7 @@
                           SelectionMode="Multiple" IsItemClickEnabled="True"
                           Width="{Binding ElementName=actualContent, Path=ActualWidth}"
                           MaxHeight="372" IsMultiSelectCheckBoxEnabled="False"
-                          SelectionChanged="shiftSelectionView_SelectionChanged"
-                          ItemClick="shiftSelectionView_ItemClick">
+                          SelectionChanged="shiftSelectionView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:Shift">
                             <TextBlock Text="{Binding shiftName}" />

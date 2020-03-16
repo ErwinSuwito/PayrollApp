@@ -53,7 +53,14 @@ namespace PayrollApp.Views.UserProfile
 
         private void signButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (userState.LatestActivity.outTime == null && userState.LatestActivity.IsSpecialTask == false && userState.LatestActivity.meeting == null)
+            {
+                this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
