@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -94,7 +95,12 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                     roleText.Text = "User";
                 }
 
-                if (user.fromAD)
+                if (user.fromAD == true && user.userID.Contains("mail.apu.edu.my"))
+                {
+                    sourceText.Text = "Active Directory";
+                    disableAccBtn.Visibility = Visibility.Visible;
+                }
+                else if (user.fromAD)
                 {
                     sourceText.Text = "Active Directory";
                     disableAccBtn.Visibility = Visibility.Collapsed;
@@ -135,23 +141,39 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
         private async void disableAccBtn_Click(object sender, RoutedEventArgs e)
         {
-            loadGrid.Visibility = Visibility.Visible;
-            progText.Text = "Making changes...";
-            user.isDisabled = true;
-            await SettingsHelper.Instance.da.UpdateUserInfo(user);
+            var contentDialog = new ContentDialog();
+            contentDialog.Title = "Disable user?";
+            contentDialog.Content = "Are you sure to disable this account? The user won't be able to login to the system. This won't disable student account in AD, and account enabled status won't be synced.";
+            contentDialog.PrimaryButtonText = "Delete";
+            contentDialog.SecondaryButtonText = "Cancel";
 
-            progText.Text = "Just a moment...";
-            var newUser = await SettingsHelper.Instance.da.GetUserFromDbById(user.userID);
+            var bst = new Windows.UI.Xaml.Style(typeof(Button));
+            bst.Setters.Add(new Setter(Button.BackgroundProperty, Colors.DarkRed));
+            bst.Setters.Add(new Setter(Button.ForegroundProperty, Colors.White));
+            contentDialog.PrimaryButtonStyle = bst;
 
-            while (newUser == null)
+            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
             {
+                loadGrid.Visibility = Visibility.Visible;
+                progText.Text = "Making changes...";
+                user.isDisabled = true;
+                await SettingsHelper.Instance.da.UpdateUserInfo(user);
 
+                progText.Text = "Just a moment...";
+                var newUser = await SettingsHelper.Instance.da.GetUserFromDbById(user.userID);
+
+                while (newUser == null)
+                {
+
+                }
+
+                user = newUser;
+
+                LoadUserInfo();
+                loadGrid.Visibility = Visibility.Collapsed;
             }
-
-            user = newUser;
-
-            LoadUserInfo();
-            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void changeSettingsBtn_Click(object sender, RoutedEventArgs e)
