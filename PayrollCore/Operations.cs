@@ -47,7 +47,7 @@ namespace PayrollCore
 
             // Adds info to signInInfo
             signInInfo.userID = user.userID;
-            signInInfo.location = location;
+            signInInfo.locationID = location.locationID;
             signInInfo.StartShift = startShift;
             signInInfo.EndShift = endShift;
             signInInfo.inTime = signInTime;

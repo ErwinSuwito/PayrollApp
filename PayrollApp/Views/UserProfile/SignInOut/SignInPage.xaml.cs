@@ -89,7 +89,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                     {
                         string emailContent;
                         emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late. Below are the details of the shift.";
-                        emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + newActivity.location.locationName + "\n Shift start: ";
+                        emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
                         emailContent += newActivity.StartShift.startTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
                         emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 

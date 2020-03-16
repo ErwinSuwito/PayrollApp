@@ -1381,7 +1381,7 @@ namespace PayrollCore
                             activity.outTime = dr.GetDateTime(4);
 
                             // Checks if start shift is not empty and set their values
-                            if (dr.GetInt32(5) != 0)
+                            if (!dr.IsDBNull(5))
                             {
                                 var startShift = new Shift();
                                 startShift.shiftID = dr.GetInt32(15);
@@ -1392,22 +1392,23 @@ namespace PayrollCore
                             }
 
                             // Checks if end shift is not empty and set their values
-                            if (dr.GetInt32(6) != 0)
+                            if (!dr.IsDBNull(6))
                             {
                                 var endShift = new Shift();
                                 endShift.shiftID = dr.GetInt32(22);
                                 endShift.shiftName = dr.GetString(23);
                                 endShift.startTime = dr.GetTimeSpan(24);
                                 endShift.endTime = dr.GetTimeSpan(25);
-                                activity.StartShift = endShift;
+                                activity.EndShift = endShift;
                             }
 
                             // Checks if meeting is not empty and set their values
-                            if (dr.GetInt32(7) != 0)
+                            if (!dr.IsDBNull(7))
                             {
                                 var meeting = new Meeting();
                                 meeting.meetingID = dr.GetInt32(9);
                                 meeting.meetingName = dr.GetString(10);
+                                meeting.meetingDay = dr.GetInt32(12);
                                 activity.meeting = meeting;
                             }
 

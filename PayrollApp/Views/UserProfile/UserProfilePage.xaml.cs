@@ -51,15 +51,15 @@ namespace PayrollApp.Views.UserProfile
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
-        private void signButton_Click(object sender, RoutedEventArgs e)
+        private async void signButton_Click(object sender, RoutedEventArgs e)
         {
-            if (userState.LatestActivity.outTime == null && userState.LatestActivity.IsSpecialTask == false && userState.LatestActivity.meeting == null)
+            if (SettingsHelper.Instance.userState.LatestActivity.outTime == null && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
             {
-                this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
-                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
         }
 
@@ -98,14 +98,14 @@ namespace PayrollApp.Views.UserProfile
             {
                 if (userState.LatestActivity.outTime != null)
                 {
-                    greeting = "You are already signed in for";
+                    greeting = "You are already signed in for ";
                     // User is still logged in
                     if (userState.LatestActivity.StartShift != null || userState.LatestActivity.IsSpecialTask == true)
                     {
                         // User is on duty.
                         if (userState.LatestActivity.IsSpecialTask == true)
                         {
-                            greeting += " the special task";
+                            greeting += "the special task";
                         }
                         else if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
                         {

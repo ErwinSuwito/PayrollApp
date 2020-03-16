@@ -11,7 +11,7 @@ namespace PayrollCore.Entities
     {
         public int ActivityID { get; set; }
         public string userID { get; set; }
-        public Location location { get; set; }
+        public int locationID { get; set; }
         public DateTime inTime { get; set; }
         public DateTime outTime { get; set; }
         public Shift StartShift { get; set; }

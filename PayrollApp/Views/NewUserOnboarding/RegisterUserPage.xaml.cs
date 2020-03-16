@@ -100,6 +100,12 @@ namespace PayrollApp.Views.NewUserOnboarding
                         SettingsHelper.Instance.userState.user = user;
                         SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
                         SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
+                        
+                        while (SettingsHelper.Instance.userState.LatestActivity == null)
+                        {
+
+                        }
+
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
                     else
