@@ -96,7 +96,7 @@ namespace PayrollApp.Views.UserProfile
 
             if (userState.LatestActivity != null)
             {
-                if (userState.LatestActivity.outTime != null)
+                if (userState.LatestActivity.outTime == null)
                 {
                     greeting = "You are already signed in for ";
                     // User is still logged in

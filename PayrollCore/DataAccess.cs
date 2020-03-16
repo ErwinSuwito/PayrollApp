@@ -1378,7 +1378,12 @@ namespace PayrollCore
                             activity = new Activity();
                             activity.userID = upn;
                             activity.inTime = dr.GetDateTime(3);
-                            activity.outTime = dr.GetDateTime(4);
+                            
+                            // Checks if out time is null and set their values if not empty
+                            if (!dr.IsDBNull(4))
+                            {
+                                activity.outTime = dr.GetDateTime(4);
+                            }
 
                             // Checks if start shift is not empty and set their values
                             if (!dr.IsDBNull(5))
