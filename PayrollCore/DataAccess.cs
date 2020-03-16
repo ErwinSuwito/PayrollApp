@@ -1369,6 +1369,8 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", upn));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
 
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
@@ -1422,10 +1424,10 @@ namespace PayrollCore
             return null;
         }
 
-        public async Task<float> GetApprovedHours(string upn)
+        public async Task<double> GetApprovedHours(string upn)
         {
             string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM claims JOIN Activity ON Activity.ActivityID=claims.ActivityID WHERE Activity.UserID=@UserID AND GeneratedDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
-            float approvedHours = 0;
+            double approvedHours = 0;
 
             try
             {
@@ -1441,7 +1443,7 @@ namespace PayrollCore
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
                         {
-                            approvedHours = dr.GetFloat(0);
+                            approvedHours = dr.GetDouble(0);
                         }
                     }
                 }

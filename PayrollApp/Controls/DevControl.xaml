@@ -27,6 +27,13 @@
         </StackPanel>
 
         <StackPanel Margin="0,16,0,0">
+            <TextBlock Text="Admin Settings page" Style="{ThemeResource TitleTextBlockStyle}" />
+            <TextBlock Text="Open admin settings." TextWrapping="Wrap"/>
+            <Button x:Name="adminSettingsBtn" Content="Face Identification Setup" Margin="0,8,0,0"  
+                    Click="adminSettingsBtn_Click"/>
+        </StackPanel>
+
+        <StackPanel Margin="0,16,0,0">
             <TextBlock Text="Face Identification Setup" Style="{ThemeResource TitleTextBlockStyle}" />
             <TextBlock Text="View, edit or delete all registered facial data." 
                                            TextWrapping="Wrap"/>

@@ -98,8 +98,8 @@ namespace PayrollApp.Views.NewUserOnboarding
                         // Copies user to loggedInUser
                         SettingsHelper.Instance.userState = new UserState();
                         SettingsHelper.Instance.userState.user = user;
-                        SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
                         SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
+                        SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
                     else

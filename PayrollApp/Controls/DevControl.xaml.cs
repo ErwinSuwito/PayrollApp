@@ -87,5 +87,10 @@ namespace PayrollApp.Controls
         {
             OnNavigateParentReady(this, null);
         }
+
+        private void adminSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

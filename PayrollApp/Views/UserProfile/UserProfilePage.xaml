@@ -48,9 +48,9 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock x:Name="fullNameTextBlock" Text="Erwin Suwitoandojo" 
+                <TextBlock x:Name="fullNameTextBlock" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                <TextBlock x:Name="greetingTextBlock" Text="Your meeting attendnace has been recorded." 
+                <TextBlock x:Name="greetingTextBlock" 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 

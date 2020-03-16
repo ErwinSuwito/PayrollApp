@@ -63,7 +63,6 @@ namespace PayrollApp
 
             //Background.MediaPlayer.Play();
 
-            provider.StateChanged += Provider_StateChanged;
             devControl.OnNavigateParentReady += DevControl_OnNavigateParentReady;
         }
 

@@ -73,6 +73,7 @@ namespace PayrollApp.Views.UserProfile
 
         private void ModifyUI()
         {
+            fullNameTextBlock.Text = userState.user.fullName;
             string greeting;
 
             // Starts modifying UI
@@ -139,6 +140,10 @@ namespace PayrollApp.Views.UserProfile
 
                 greetingTextBlock.Text = greeting;
             }
+            else
+            {
+                greetingTextBlock.Text = "You are not signed in.";
+            }
 
             int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
 
@@ -148,7 +153,7 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             { 
-                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " out of minimum " + minHours.ToString() + " hours.";
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours out of the minimum " + minHours.ToString() + " hours.";
             }
 
 
