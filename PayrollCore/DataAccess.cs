@@ -1324,6 +1324,41 @@ namespace PayrollCore
             return MinHours;
         }
 
+        public async Task<string> GetGlobalSetting(string SettingKey)
+        {
+            string SettingValue = "";
+            string Query = "SELECT SettingValue FROM global_settings WHERE SettingKey=@SettingKey";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@SettingKey", SettingKey));
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            if (!dr.IsDBNull(0))
+                            {
+                                SettingValue = dr.GetString(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return SettingValue;
+        }
+
         public async Task<bool> UpdateGlobalSetting(string SettingKey, string SettingValue)
         {
             bool IsSuccess = false;

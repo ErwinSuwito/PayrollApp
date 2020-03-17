@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Graph.Providers;
+﻿using Microsoft.AppCenter.Analytics;
+using Microsoft.Toolkit.Graph.Providers;
 using PayrollCore;
 using PayrollCore.Entities;
 using System;
@@ -206,7 +207,6 @@ namespace PayrollApp.Views.NewUserOnboarding
                         user.userID = upn;
                         user.fullName = adUser.DisplayName;
                         user.userGroup = new UserGroup();
-                        
                     }
                     else
                     {

@@ -140,7 +140,7 @@
                                 <TextBlock Text="Set the default user group for new accounts. These settings are synced across locations. Tap or click on the Save button to save." 
                                            TextWrapping="Wrap"/>
                                 <ComboBox x:Name="defaultTraineeGroup" Header="Default user group for account starts with TP" 
-                                          Margin="0,8,0,0">
+                                          Margin="0,8,0,0" MinWidth="280">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="entity:UserGroup">
                                             <TextBlock Text="{Binding groupName}" />
@@ -148,7 +148,7 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <ComboBox x:Name="defaultOtherGroup" Header="Default user group for all other accounts" 
-                                          Margin="0,8,0,0">
+                                          Margin="0,8,0,0" MinWidth="280">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="entity:UserGroup">
                                             <TextBlock Text="{Binding groupName}" />

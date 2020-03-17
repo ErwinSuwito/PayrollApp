@@ -42,6 +42,8 @@ namespace PayrollApp.Views.AdminSettings
         DispatcherTimer loadTimer = new DispatcherTimer();
         int locationIndex = 0;
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        string defaultStudentGroup;
+        string defaultOthersGroup;
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -116,16 +118,33 @@ namespace PayrollApp.Views.AdminSettings
 
         private async void LoadTimer_Tick(object sender, object e)
         {
+            loadTimer.Stop();
+
+            // Loads the app location settings and get the appropriate index for locationSelector
             ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.da.GetLocations(false);
             locationSelector.ItemsSource = getLocation;
-            loadTimer.Stop();
+
+            refreshLocationIndex();
+            locationSelector.SelectedIndex = locationIndex;
 
             // Gets the latest setting for minimum hours.
             minHoursBox.Text = await SettingsHelper.Instance.da.GetMinHours();
             SettingsHelper.Instance.MinHours = minHoursBox.Text;
 
-            refreshLocationIndex();
-            locationSelector.SelectedIndex = locationIndex;
+            // Gets all user groups and the default user group for student and all other accounts
+            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
+            defaultStudentGroup = await SettingsHelper.Instance.da.GetGlobalSetting("DefaultTraineeGroup");
+            defaultOthersGroup = await SettingsHelper.Instance.da.GetGlobalSetting("DefaultGroup");
+            defaultTraineeGroup.ItemsSource = userGroups;
+            defaultOtherGroup.ItemsSource = userGroups;
+
+            int index = refreshStudentIndex();
+            //Debug.WriteLine("Student index: " + index.ToString());
+            defaultTraineeGroup.SelectedIndex = index;
+
+            index = refreshOthersIndex();
+            //Debug.WriteLine("Others index: " + index.ToString());
+            defaultOtherGroup.SelectedIndex = index;
 
             loadGrid.Visibility = Visibility.Collapsed;
         }
@@ -185,6 +204,46 @@ namespace PayrollApp.Views.AdminSettings
 
             App.Current.Exit();
         }
+
+        private int refreshStudentIndex()
+        {
+            int i = 0;
+
+            foreach (UserGroup group in defaultTraineeGroup.Items)
+            {
+                Debug.WriteLine(group.groupID.ToString());
+                if (defaultStudentGroup != group.groupID.ToString())
+                {
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return i;
+        }
+
+        private int refreshOthersIndex()
+        {
+            int i = 0;
+
+            foreach (UserGroup group in defaultOtherGroup.Items)
+            {
+                if (defaultOthersGroup != group.groupID.ToString())
+                {
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return i;
+        }
+
 
         private void refreshLocationIndex()
         {
