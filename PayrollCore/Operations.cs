@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using PayrollCore.Entities;
@@ -31,12 +32,14 @@ namespace PayrollCore
 
             Activity signInInfo = new Activity();
 
-            TimeSpan.TryParse(DateTime.Now.ToString(), out TimeSpan currentTime);
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
             if (startShift.startTime >= currentTime)
             {
                 signInInfo.RequireNotification = false;
-                DateTime.TryParse(DateTime.Today.ToString() + startShift.startTime, out signInTime);
+                string s = DateTime.Today.ToShortDateString() + " " + startShift.startTime.ToString();
+                Debug.WriteLine(s);
+                DateTime.TryParse(s, out signInTime);
             }
             else if (startShift.startTime < currentTime)
             {

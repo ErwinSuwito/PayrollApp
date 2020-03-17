@@ -1464,8 +1464,20 @@ namespace PayrollCore
 
         public async Task<bool> AddNewActivity(Activity activity)
         {
-            string Query = "INSERT INTO Activity(UserID, LocationID, inTime, outTime, startShift, endShift, meetingID, SpecialTask" 
-                + ") VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @MeetingID, @SpecialTask)";
+            string Query;
+
+            if (activity.meeting != null)
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, meetingID) VALUES(@UserID, @LocationID, @InTime, @MeetingID)";
+            }
+            else if (activity.IsSpecialTask == true)
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, SpecialTask) VALUES(@UserID, @LocationID, @InTime, 'true')";
+            }
+            else
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, startShift, endShift) VALUES(@UserID, @LocationID, @InTime, @StartShift, @EndShift)";
+            }
 
             try
             {
@@ -1479,10 +1491,20 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
                         cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
                         cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
-                        cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
-                        cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
-                        cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
-                        cmd.Parameters.Add(new SqlParameter("@SpecialTask", activity.IsSpecialTask));
+
+                        if (activity.meeting != null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
+                        }
+                        else if (activity.IsSpecialTask == true)
+                        {
+                            
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
+                        }
 
                         await cmd.ExecuteNonQueryAsync();
 
