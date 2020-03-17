@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Graph;
 using Microsoft.Toolkit.Graph.Providers;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,6 +34,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
+        DispatcherTimer loadTimer = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -41,6 +43,19 @@ namespace PayrollApp.Views.UserProfile.SignInOut
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+            ObservableCollection<PayrollCore.Entities.Shift> shifts = await SettingsHelper.Instance.da.GetShiftsFromLocation(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+            shiftSelectionView.ItemsSource = shifts;
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -57,6 +72,8 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
         private async void signInButton_Click(object sender, RoutedEventArgs e)
         {
+            loadGrid.Visibility = Visibility.Visible;
+
             bool IsSelectionValid = CheckUserSelection();
 
             if (IsSelectionValid == true)
@@ -141,6 +158,17 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                         //    break;
                     }
                 }
+                else
+                {
+                    ContentDialog warningDialog = new ContentDialog
+                    {
+                        Title = "Unable to sign in!",
+                        Content = "There's a problem preventing us to sign you in. Please try again later.",
+                        PrimaryButtonText = "Ok"
+                    };
+
+                    await warningDialog.ShowAsync();
+                }
             }
             else
             {
@@ -153,6 +181,9 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
                 await warningDialog.ShowAsync();
             }
+
+            loadGrid.Visibility = Visibility.Collapsed;
+
         }
 
         private bool CheckUserSelection()

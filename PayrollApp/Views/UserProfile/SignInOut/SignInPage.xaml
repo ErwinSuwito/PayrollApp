@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
     xmlns:entity="using:PayrollCore.Entities"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -68,21 +69,29 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
-                <Button x:Name="signInButton" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Height="40" Width="112" Margin="-8,24,36,0" Opacity="1" 
-                        Background="Transparent" Click="signInButton_Click">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Sign In" FontSize="16" 
-                                           Margin="0,0,0,0"/>
-                            <FontIcon Glyph="&#xE72A;" 
-                                          FontSize="18"
-                                          Margin="12,0,0,0"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
             </StackPanel>
         </StackPanel>
+
+        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
+                    DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton x:Name="signInButton" Label="Sign in" Icon="Accept"
+                          Click="signInButton_Click"
+                          Style="{ThemeResource AppBarButtonRevealStyle}" />
+        </CommandBar>
+
+        <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
+              Background="#B7000000" Visibility="Visible">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressRing IsActive="True" />
+                <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Page>
