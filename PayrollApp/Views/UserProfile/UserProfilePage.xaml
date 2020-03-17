@@ -55,40 +55,25 @@
             </StackPanel>
 
             <StackPanel x:Name="actualContent" Margin="0,12,0,0">
-                <Button x:Name="signButton" Style="{StaticResource DefaultButtonStyle}" 
+                <Button x:Name="signButton" Content="Sign out" Style="{StaticResource DefaultButtonStyle}" 
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" 
-                        CornerRadius="2" FontSize="18" Click="signButton_Click">
-                    <Button.Content>
-                        <TextBlock Text="Sign out" Margin="6,0,0,0"/>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="specialTaskButton" Style="{StaticResource DefaultButtonStyle}"
-                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18">
-                    <Button.Content>
-                        <TextBlock Text="Special Task" Margin="6,0,0,0"/>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="meetingButton" Style="{StaticResource DefaultButtonStyle}" Visibility="Collapsed"
-                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18">
-                    <Button.Content>
-                        <TextBlock Text="Meeting Attendance" Margin="6,0,0,0"/>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="improveRecButton" Style="{StaticResource DefaultButtonStyle}"
+                        CornerRadius="2" FontSize="18" Click="signButton_Click" />
+
+                <Button x:Name="specialTaskButton" Content="Special Task" Style="{StaticResource DefaultButtonStyle}" 
+                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" />
+                
+                <Button x:Name="meetingButton" Content="Meeting Attendance" Style="{StaticResource DefaultButtonStyle}" Visibility="Collapsed"
+                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" />
+
+                <Button x:Name="improveRecButton" Content="Improve Recognition" Style="{StaticResource DefaultButtonStyle}"
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" 
-                        Margin="0,12,0,0" FontSize="18" Click="improveRecButton_Click">
-                    <Button.Content>
-                        <TextBlock Text="Improve Recognition" Margin="6,0,0,0"/>
-                    </Button.Content>
-                </Button>
-                <Button x:Name="adminSettingsButton" Style="{StaticResource DefaultButtonStyle}"
+                        Margin="0,12,0,0" FontSize="18" Click="improveRecButton_Click" />
+
+                <Button x:Name="adminSettingsButton" Content="Admin Settings" Style="{StaticResource DefaultButtonStyle}"
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" 
                         Margin="0,12,0,0" FontSize="18" Click="adminSettingsButton_Click"
-                        Visibility="Collapsed">
-                    <Button.Content>
-                        <TextBlock Text="Admin Settings" Margin="6,0,0,0"/>
-                    </Button.Content>
-                </Button>
+                        Visibility="Collapsed" />
+
             </StackPanel>
         </StackPanel>
 
