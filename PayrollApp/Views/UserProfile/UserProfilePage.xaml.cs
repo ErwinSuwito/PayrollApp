@@ -53,13 +53,20 @@ namespace PayrollApp.Views.UserProfile
 
         private async void signButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SettingsHelper.Instance.userState.LatestActivity.outTime == null && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+            if (SettingsHelper.Instance.userState.LatestActivity == null)
             {
-                this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
-                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == null && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+                {
+                    this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
             }
         }
 

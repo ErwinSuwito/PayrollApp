@@ -142,11 +142,42 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
                         var saveToItems = false;
 
-                        var provider = ProviderManager.Instance.GlobalProvider;
-                        
-                        if (provider != null && provider.State == ProviderState.SignedIn)
+                        try
                         {
-                            await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
+                            var provider = ProviderManager.Instance.GlobalProvider;
+
+                            if (provider != null && provider.State == ProviderState.SignedIn)
+                            {
+                                await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
+                            }
+                        }
+                        catch (Microsoft.Graph.ServiceException graphEx)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Unable to send late sign in notification",
+                                Content = "Please send the Sign In Late email to HR. Tap on the More info button to see what failed.",
+                                PrimaryButtonText = "Ok",
+                                SecondaryButtonText = "More info"
+                            };
+
+                            ContentDialogResult result = await contentDialog.ShowAsync();
+
+                            if (result == ContentDialogResult.Secondary)
+                            {
+                                ContentDialog contentDialog2 = new ContentDialog
+                                {
+                                    Title = "Graph API error",
+                                    Content = graphEx.Error,
+                                    PrimaryButtonText = "Close"
+                                };
+
+                                await contentDialog2.ShowAsync();
+                            }
+                        }
+                        finally
+                        {
+                            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
 
                         //case 2:
