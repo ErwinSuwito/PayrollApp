@@ -59,7 +59,7 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
-                if (SettingsHelper.Instance.userState.LatestActivity.outTime == null && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
                 {
                     this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
@@ -91,6 +91,7 @@ namespace PayrollApp.Views.UserProfile
             string greeting;
 
             // Starts modifying UI
+            // Modifies UI based on settings
             if (SettingsHelper.Instance.appLocation.enableGM == true)
             {
                 meetingButton.Visibility = Visibility.Visible;
@@ -101,9 +102,12 @@ namespace PayrollApp.Views.UserProfile
                 adminSettingsButton.Visibility = Visibility.Visible;
             }
 
+            // Starts modify UI based on user activity
             if (userState.LatestActivity != null)
             {
-                if (userState.LatestActivity.outTime == null)
+                // User has signed in before in this location
+
+                if (userState.LatestActivity.outTime == DateTime.MinValue)
                 {
                     greeting = "You are already signed in for ";
                     // User is still logged in
@@ -170,8 +174,6 @@ namespace PayrollApp.Views.UserProfile
             { 
                 totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours out of the minimum " + minHours.ToString() + " hours.";
             }
-
-
         }
     }
 }
