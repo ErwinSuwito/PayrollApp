@@ -82,6 +82,7 @@ CREATE TABLE Activity(
 	ApprovedHours float,
 	ClaimableAmount float,
 	ApplicableRate int,
+	ClaimDate date,
 	FOREIGN KEY (UserID) REFERENCES Users(UserID),
 	FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
 	FOREIGN KEY (StartShift) REFERENCES Shifts(ShiftID),

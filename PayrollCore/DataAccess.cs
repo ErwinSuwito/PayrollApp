@@ -54,7 +54,7 @@ namespace PayrollCore
         /// </summary>
         public async Task<ObservableCollection<Location>> GetLocations(bool showDisabled)
         {
-            const string GetLocationsQuery = "SELECT * FROM locations";
+            const string GetLocationsQuery = "SELECT * FROM Location";
 
             var items = new ObservableCollection<Location>();
             try
@@ -108,7 +108,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<Meeting>> GetMeetings(Location appLocation)
         {
-            const string GetLocationsQuery = "SELECT * FROM meetings WHERE locationID=@LocationID";
+            const string GetLocationsQuery = "SELECT * FROM Meeting WHERE LocationID=@LocationID";
 
             var items = new ObservableCollection<Meeting>();
             try
@@ -130,6 +130,15 @@ namespace PayrollCore
                                 item.locationID = dr.GetInt32(2);
                                 item.meetingDay = dr.GetInt32(3);
                                 item.isDisabled = dr.GetBoolean(4);
+
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(6);
+                                rate.rateDesc = dr.GetString(7);
+                                rate.rate = dr.GetFloat(8);
+                                rate.isDisabled = dr.GetBoolean(9);
+
+                                item.rate = rate;
+
                                 items.Add(item);
                             }
                         }
@@ -154,7 +163,7 @@ namespace PayrollCore
         /// <returns></returns>
         public Location GetLocationById(string selectedLocation)
         {
-            string GetLocationSettingsQuery = "SELECT * FROM locations WHERE locationID=@LocationID";
+            string GetLocationSettingsQuery = "SELECT * FROM Location WHERE locationID=@LocationID";
             try
             {
                 Location appLocation;
@@ -196,7 +205,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> SaveLocationAsync(Location location)
         {
-            string Query = "UPDATE locations SET locationName=@LocationName, enableGM=@EnableGM, isDisabled=@IsDisabled WHERE locationID=@LocationID";
+            string Query = "UPDATE Location SET LocationName=@LocationName, EnabledGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
 
             try
             {
@@ -233,7 +242,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddLocationAsync(Location location)
         {
-            string Query = "INSERT INTO locations(locationName, enableGM) VALUES(@LocationName, @EnableGM)";
+            string Query = "INSERT INTO locations(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false')";
 
             try
             {
@@ -245,7 +254,6 @@ namespace PayrollCore
                         cmd.CommandText = Query;
                         cmd.Parameters.Add(new SqlParameter("@LocationName", location.locationName));
                         cmd.Parameters.Add(new SqlParameter("@EnableGM", location.enableGM));
-                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", location.isDisabled));
 
                         await cmd.ExecuteNonQueryAsync();
 
@@ -277,7 +285,7 @@ namespace PayrollCore
                 {
                     conn.Open();
 
-                    Query = "UPDATE meetings SET meetingName=@MeetingName, meetingDay=@MeetingDay, disableMeeting=@DisableMeeting WHERE meetingID=@MeetingID";
+                    Query = "UPDATE Meeting SET MeetingName=@MeetingName, MeetingDay=@MeetingDay, IsDisabled=@DisableMeeting, RateID=@RateID WHERE MeetingID=@MeetingID";
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
@@ -288,6 +296,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", meeting.locationID));
                         cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
                         cmd.Parameters.Add(new SqlParameter("@DisableMeeting", meeting.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
 
                         await cmd.ExecuteNonQueryAsync();
                     }
@@ -305,7 +314,7 @@ namespace PayrollCore
 
         public async Task<int> SaveMeetingAndReturnId(Meeting meeting)
         {
-            string Query = "INSERT INTO meetings(meetingName, locationID, meetingDay, disableMeeting) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting) select SCOPE_IDENTITY()";
+            string Query = "INSERT INTO meetings(MeetingName, LocationID, MeetingDay, IsDisabled, RateID) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID) select SCOPE_IDENTITY()";
             
             try
             {
@@ -321,6 +330,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", meeting.locationID));
                         cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
                         cmd.Parameters.Add(new SqlParameter("@DisableMeeting", meeting.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
 
                         var savedMeeting = await cmd.ExecuteScalarAsync();
 
@@ -345,7 +355,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<User>> GetUsersList()
         {
-            const string GetLocationsQuery = "SELECT * FROM usr JOIN usr_group ON usr_group.groupID = usr.groupID";
+            const string GetLocationsQuery = "SELECT * FROM Users JOIN user_group ON user_group.GroupID = Users.GroupID";
 
             var items = new ObservableCollection<User>();
             try
@@ -399,7 +409,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Location> GetLocationByName(string locationName)
         {
-            string GetLocationSettingsQuery = "SELECT * FROM locations WHERE locationName=@LocationName";
+            string GetLocationSettingsQuery = "SELECT * FROM Location WHERE LocationName=@LocationName";
             try
             {
                 Location appLocation;
@@ -440,7 +450,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<User> GetUserFromDbById(string username)
         {
-            string GetUserQuery = "SELECT * FROM usr JOIN usr_group ON usr_group.groupID = usr.groupID JOIN rate ON rate.rateID = usr_group.RateID WHERE UserID=@UserId";
+            string GetUserQuery = "SELECT * FROM Users JOIN user_group ON user_group.GroupID=Users.GroupID JOIN Rate ON Rate.RateID=user_group.RateID WHERE UserID=@UserId";
 
             try
             {
@@ -507,7 +517,7 @@ namespace PayrollCore
                 {
                     conn.Open();
 
-                    Query = "UPDATE usr SET fullName=@FullName, fromAD=@FromAD, isDisabled=@IsDisabled, groupID=@GroupID WHERE UserID=@UserID";
+                    Query = "UPDATE Users SET FullName=@FullName, FromAD=@FromAD, IsDisabled=@IsDisabled, GroupID=@GroupID WHERE UserID=@UserID";
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
@@ -548,7 +558,7 @@ namespace PayrollCore
                 {
                     conn.Open();
 
-                    Query = "INSERT INTO usr VALUES(@UserID, @FullName,  @FromAD, @IsDisabled, @GroupID);";
+                    Query = "INSERT INTO Users VALUES(@UserID, @FullName,  @FromAD, @IsDisabled, @GroupID);";
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
@@ -582,7 +592,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<Shift>> GetShiftsFromLocation(string locationID, bool showDisabled)
         {
-            string Query = "SELECT * FROM shifts JOIN rate ON rate.rateID=shifts.rateID WHERE locationID=@LocationID";
+            string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE LocationID=@LocationID";
             ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
             
             try
@@ -701,7 +711,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<UserGroup> GetUserGroupById(int groupId)
         {
-            string Query = "SELECT * FROM usr_group JOIN rate ON rate.rateID=usr_group.rateID WHERE groupID=@GroupID";
+            string Query = "SELECT * FROM user_group JOIN Rate ON Rate.RateID=user_group.RateID WHERE GroupID=@GroupID";
             UserGroup userGroup = new UserGroup();
 
             try
@@ -752,7 +762,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewUserGroup(UserGroup userGroup)
         {
-            string Query = "INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES(@GroupName, @RateID, @ShowAdminSettings, @EnableFaceRec)";
+            string Query = "INSERT INTO user_group(GroupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES(@GroupName, @RateID, @ShowAdminSettings, @EnableFaceRec)";
 
             try
             {
@@ -788,7 +798,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateUserGroupInfo(UserGroup userGroup)
         {
-            string Query = "UPDATE usr_group SET groupName=GroupName, RateID=@RateID, ShowAdminSettings=@ShowAdminSettings, EnableFaceRec=@EnableFaceRec WHERE groupID=@GroupID";
+            string Query = "UPDATE user_group SET GroupName=@GroupName, RateID=@RateID, ShowAdminSettings=@ShowAdminSettings, EnableFaceRec=@EnableFaceRec WHERE GroupID=@GroupID";
 
             try
             {
@@ -825,7 +835,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> DeleteUserGroup(UserGroup userGroup)
         {
-            string Query = "DELETE FROM usr_group WHERE groupID=@GroupID";
+            string Query = "DELETE FROM user_group WHERE GroupID=@GroupID";
 
             try
             {
@@ -860,7 +870,7 @@ namespace PayrollCore
         {
             List<MeetingUserGroup> meetingUserGroups = new List<MeetingUserGroup>();
 
-            string Query = "SELECT * FROM meeting_group WHERE meetingID=@MeetingID";
+            string Query = "SELECT * FROM Meeting_Group WHERE MeetingID=@MeetingID";
 
             try
             {
@@ -906,7 +916,7 @@ namespace PayrollCore
         {
             List<MeetingUserGroup> meetingUserGroups = new List<MeetingUserGroup>();
 
-            string Query = "SELECT * FROM meeting_group WHERE usrGroup=@UserGroup";
+            string Query = "SELECT * FROM Meeting_Group WHERE UserGroupID=@UserGroup";
 
             try
             {
@@ -945,7 +955,7 @@ namespace PayrollCore
 
         public async Task<bool> DeleteMeetingUserGroup(int meetingID)
         {
-            string Query = "DELETE FROM meeting_group WHERE meetingID=@MeetingID";
+            string Query = "DELETE FROM Meeting_Group WHERE MeetingID=@MeetingID";
 
             try
             {
@@ -976,7 +986,7 @@ namespace PayrollCore
 
         public async Task<bool> AddMeetingUserGroup(UserGroup userGroup, Meeting meeting)
         {
-            string Query = "INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(@MeetingID, @UserGroupID)";
+            string Query = "INSERT INTO Meeting_Group(MeetingID, UserGroupID) VALUES(@MeetingID, @UserGroupID)";
 
             try
             {
@@ -1005,7 +1015,7 @@ namespace PayrollCore
 
         public async Task<bool> DeleteMeetingAsync(int meetingID)
         {
-            string Query = "DELETE FROM meetings WHERE meetingID=@MeetingID";
+            string Query = "DELETE FROM Meeting WHERE MeetingID=@MeetingID";
 
             try
             {
@@ -1038,7 +1048,7 @@ namespace PayrollCore
         {
             int num = 0;
 
-            string Query = "SELECT meetingID FROM meeting_attendance WHERE meetingID=@MeetingID";
+            string Query = "SELECT MeetingID FROM Activity WHERE MeetingID=@MeetingID";
 
             try
             {
@@ -1072,7 +1082,7 @@ namespace PayrollCore
 
         public async Task<ObservableCollection<Rate>> GetAllRates(bool includeDisabled)
         {
-            string Query = "SELECT * FROM rate";
+            string Query = "SELECT * FROM Rate";
             ObservableCollection<Rate> rates = new ObservableCollection<Rate>();
 
             try
@@ -1117,7 +1127,7 @@ namespace PayrollCore
 
         public async Task<bool> AddNewRate(Rate rate)
         {
-            string Query = "INSERT INTO rate(rateDesc, rate) VALUES(@RateDesc, @Rate)";
+            string Query = "INSERT INTO Rate(RateDesc, Rate) VALUES(@RateDesc, @Rate)";
 
             try
             {
@@ -1146,7 +1156,7 @@ namespace PayrollCore
 
         public async Task<bool> UpdateRateInfo(Rate rate)
         {
-            string Query = "UPDATE rate SET rateDesc=@RateDesc, rate=@Rate, isDisabled=@IsDisabled WHERE rateID=@RateID";
+            string Query = "UPDATE Rate SET RateDesc=@RateDesc, Rate=@Rate, IsDisabled=@IsDisabled WHERE RateID=@RateID";
 
             try
             {
@@ -1179,7 +1189,7 @@ namespace PayrollCore
         public async Task<Shift> GetShiftById (int shiftID)
         {
             Shift shift = new Shift();
-            string Query = "SELECT * FROM shifts JOIN rate ON rate.rateID=shifts.rateID WHERE shiftID=@ShiftID";
+            string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE ShiftID=@ShiftID";
 
             try
             {
@@ -1224,7 +1234,7 @@ namespace PayrollCore
         public async Task<bool> AddNewShift(Shift shift)
         {
             bool IsSuccess = false;
-            string Query = "INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID)";
+            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID)";
 
             try
             {
@@ -1260,7 +1270,7 @@ namespace PayrollCore
         public async Task<bool> UpdateShiftInfo(Shift shift)
         {
             bool IsSuccess = false;
-            string Query = "UPDATE shifts SET shiftName=@ShiftName, startTime=@StartTime, endTime=@EndTime, locationID=@LocationID, rateID=@RateID, isDisabled=@IsDisabled WHERE shiftID=@ShiftID";
+            string Query = "UPDATE Shifts SET ShiftName=@ShiftName, StartTime=@StartTime, EndTime=@EndTime, LocationID=@LocationID, RateID=@RateID, IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
 
             try
             {
@@ -1297,7 +1307,7 @@ namespace PayrollCore
         public async Task<string> GetMinHours()
         {
             string MinHours = "";
-            string Query = "SELECT SettingValue FROM global_settings WHERE SettingKey='MinHours'";
+            string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey='MinHours'";
 
             try
             {
@@ -1328,7 +1338,7 @@ namespace PayrollCore
         public async Task<string> GetGlobalSetting(string SettingKey)
         {
             string SettingValue = "";
-            string Query = "SELECT SettingValue FROM global_settings WHERE SettingKey=@SettingKey";
+            string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey=@SettingKey";
 
             try
             {
@@ -1363,7 +1373,7 @@ namespace PayrollCore
         public async Task<bool> UpdateGlobalSetting(string SettingKey, string SettingValue)
         {
             bool IsSuccess = false;
-            string Query = "UPDATE global_settings SET SettingValue=@SettingValue WHERE SettingKey=@SettingKey";
+            string Query = "UPDATE Global_Settings SET SettingValue=@SettingValue WHERE SettingKey=@SettingKey";
 
             try
             {
@@ -1393,7 +1403,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN meetings ON meetings.meetingID=Activity.meetingID LEFT JOIN shifts s1 ON s1.shiftID=Activity.startShift LEFT JOIN shifts s2 ON s2.shiftID=Activity.endShift WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
             Activity activity;
 
             try
@@ -1414,6 +1424,7 @@ namespace PayrollCore
                             activity = new Activity();
                             activity.userID = upn;
                             activity.inTime = dr.GetDateTime(3);
+                            activity.IsSpecialTask = dr.GetBoolean(8);
                             
                             // Checks if out time is null and set their values if not empty
                             if (!dr.IsDBNull(4))
@@ -1425,10 +1436,10 @@ namespace PayrollCore
                             if (!dr.IsDBNull(5))
                             {
                                 var startShift = new Shift();
-                                startShift.shiftID = dr.GetInt32(15);
-                                startShift.shiftName = dr.GetString(16);
-                                startShift.startTime = dr.GetTimeSpan(17);
-                                startShift.endTime = dr.GetTimeSpan(18);
+                                startShift.shiftID = dr.GetInt32(19);
+                                startShift.shiftName = dr.GetString(20);
+                                startShift.startTime = dr.GetTimeSpan(21);
+                                startShift.endTime = dr.GetTimeSpan(22);
                                 activity.StartShift = startShift;
                             }
 
@@ -1436,10 +1447,10 @@ namespace PayrollCore
                             if (!dr.IsDBNull(6))
                             {
                                 var endShift = new Shift();
-                                endShift.shiftID = dr.GetInt32(22);
-                                endShift.shiftName = dr.GetString(23);
-                                endShift.startTime = dr.GetTimeSpan(24);
-                                endShift.endTime = dr.GetTimeSpan(25);
+                                endShift.shiftID = dr.GetInt32(26);
+                                endShift.shiftName = dr.GetString(27);
+                                endShift.startTime = dr.GetTimeSpan(28);
+                                endShift.endTime = dr.GetTimeSpan(29);
                                 activity.EndShift = endShift;
                             }
 
@@ -1447,10 +1458,19 @@ namespace PayrollCore
                             if (!dr.IsDBNull(7))
                             {
                                 var meeting = new Meeting();
-                                meeting.meetingID = dr.GetInt32(9);
-                                meeting.meetingName = dr.GetString(10);
-                                meeting.meetingDay = dr.GetInt32(12);
+                                meeting.meetingID = dr.GetInt32(13);
+                                meeting.meetingName = dr.GetString(14);
+                                meeting.meetingDay = dr.GetInt32(16);
                                 activity.meeting = meeting;
+                            }
+
+                            // Checks if approved hours is not empty and set their values
+                            if (!dr.IsDBNull(9))
+                            {
+                                activity.ApprovedHours = dr.GetFloat(9);
+                                activity.ClaimableAmount = dr.GetFloat(10);
+                                activity.ApplicableRate = dr.GetInt32(11);
+                                activity.ClaimDate = dr.GetDateTime(12);
                             }
 
                             return activity;
@@ -1468,7 +1488,7 @@ namespace PayrollCore
 
         public async Task<double> GetApprovedHours(string upn)
         {
-            string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM claims JOIN Activity ON Activity.ActivityID=claims.ActivityID WHERE Activity.UserID=@UserID AND GeneratedDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
+            string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM Activity WHERE UserID=@UserID AND ClaimDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
             double approvedHours = 0;
 
             try

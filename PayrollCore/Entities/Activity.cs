@@ -18,6 +18,10 @@ namespace PayrollCore.Entities
         public Shift EndShift { get; set; }
         public Meeting meeting { get; set; }
         public bool IsSpecialTask { get; set; }
+        public float ApprovedHours { get; set; }
+        public float ClaimableAmount { get; set; }
+        public int ApplicableRate { get; set; }
+        public DateTime ClaimDate { get; set; }
         public bool RequireNotification { get; set; }
 
         /// <summary>
