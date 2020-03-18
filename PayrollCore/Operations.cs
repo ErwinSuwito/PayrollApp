@@ -58,25 +58,45 @@ namespace PayrollCore
             return signInInfo;
         }
         
-        public async Task<Activity> GenerateSignOutInfo(Activity signInInfo)
+        public async Task<UserState> GenerateSignOutInfo(UserState userState)
         {
-            DateTime signInTime = signInInfo.inTime;
+            DateTime signInTime = userState.LatestActivity.inTime;
             DateTime signOutTime = DateTime.Now;
 
             if (signInTime.DayOfYear < signOutTime.DayOfYear)
             {
-                signInInfo.RequireNotification = true;
-                signInInfo.NotificationReason = 2;
+                userState.LatestActivity.RequireNotification = true;
+                userState.LatestActivity.NotificationReason = 2;
+                string s = userState.LatestActivity.inTime.ToShortDateString() + " " + userState.LatestActivity.EndShift.startTime.ToString();
+                DateTime.TryParse(s, out signOutTime);
             }
             else
             {
-                signInInfo.RequireNotification = false;
+                userState.LatestActivity.RequireNotification = false;
             }
 
-            return signInInfo;
+            userState.LatestActivity.outTime = signOutTime;
+
+            TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+
+            if (userState.user.userGroup.DefaultRate.rate > userState.LatestActivity.StartShift.DefaultRate.rate)
+            {
+                // Use user's default rate
+                userState.LatestActivity.ApplicableRate = userState.user.userGroup.DefaultRate;
+            }
+            else
+            {
+                // Use shift's default rate
+                userState.LatestActivity.ApplicableRate = userState.LatestActivity.StartShift.DefaultRate;
+            }
+
+            userState.LatestActivity.ClaimableAmount = CalcPay(activityOffset.TotalHours, userState.LatestActivity.ApplicableRate.rate);
+            userState.LatestActivity.ApprovedHours = activityOffset.TotalHours;
+
+            return userState;
         }
 
-        public float CalcPay(float hours, float rate)
+        public double CalcPay(double hours, float rate)
         {
             return hours * rate;
         }
