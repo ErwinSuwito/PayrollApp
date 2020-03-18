@@ -96,9 +96,9 @@ namespace PayrollCore
             return userState;
         }
 
-        public double CalcPay(double hours, double rate)
+        public float CalcPay(double hours, float rate)
         {
-            return hours * rate;
+            return (float)hours * rate;
         }
 
     }
