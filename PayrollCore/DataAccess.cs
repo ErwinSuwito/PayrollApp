@@ -1402,7 +1402,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate ON Rate.RateID=Activity.ApplicableRate WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
             Activity activity;
 
             try
@@ -1468,8 +1468,15 @@ namespace PayrollCore
                             {
                                 activity.ApprovedHours = dr.GetFloat(9);
                                 activity.ClaimableAmount = dr.GetFloat(10);
-                                activity.ApplicableRate = dr.GetInt32(11);
                                 activity.ClaimDate = dr.GetDateTime(12);
+                            }
+
+                            if (!dr.IsDBNull(11))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(34);
+                                rate.rateDesc = dr.GetString(35);
+                                rate.rate = dr.GetDouble(36);
                             }
 
                             return activity;

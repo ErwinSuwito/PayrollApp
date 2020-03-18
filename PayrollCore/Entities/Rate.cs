@@ -11,7 +11,7 @@ namespace PayrollCore.Entities
     {
         public int rateID { get; set; }
         public string rateDesc { get; set; }
-        public float rate { get; set; }
+        public double rate { get; set; }
         public bool isDisabled { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
