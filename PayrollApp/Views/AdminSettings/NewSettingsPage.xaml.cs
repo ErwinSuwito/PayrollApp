@@ -42,8 +42,6 @@ namespace PayrollApp.Views.AdminSettings
         DispatcherTimer loadTimer = new DispatcherTimer();
         int locationIndex = 0;
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-        string defaultStudentGroup;
-        string defaultOthersGroup;
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -128,13 +126,10 @@ namespace PayrollApp.Views.AdminSettings
             locationSelector.SelectedIndex = locationIndex;
 
             // Gets the latest setting for minimum hours.
-            minHoursBox.Text = await SettingsHelper.Instance.da.GetMinHours();
-            SettingsHelper.Instance.MinHours = minHoursBox.Text;
+            minHoursBox.Text = SettingsHelper.Instance.MinHours;
 
             // Gets all user groups and the default user group for student and all other accounts
             ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
-            defaultStudentGroup = await SettingsHelper.Instance.da.GetGlobalSetting("DefaultTraineeGroup");
-            defaultOthersGroup = await SettingsHelper.Instance.da.GetGlobalSetting("DefaultGroup");
             defaultTraineeGroup.ItemsSource = userGroups;
             defaultOtherGroup.ItemsSource = userGroups;
 
@@ -212,7 +207,7 @@ namespace PayrollApp.Views.AdminSettings
             foreach (UserGroup group in defaultTraineeGroup.Items)
             {
                 Debug.WriteLine(group.groupID.ToString());
-                if (defaultStudentGroup != group.groupID.ToString())
+                if (SettingsHelper.Instance.defaultStudentGroup.groupID != group.groupID)
                 {
                     i++;
                 }
@@ -231,7 +226,7 @@ namespace PayrollApp.Views.AdminSettings
 
             foreach (UserGroup group in defaultOtherGroup.Items)
             {
-                if (defaultOthersGroup != group.groupID.ToString())
+                if (SettingsHelper.Instance.defaultOtherGroup.groupID != group.groupID)
                 {
                     i++;
                 }

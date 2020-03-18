@@ -56,6 +56,8 @@ namespace PayrollApp
         public DataAccess da;
         public Operations op;
         public string MinHours;
+        public UserGroup defaultStudentGroup;
+        public UserGroup defaultOtherGroup;
 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
@@ -113,13 +115,20 @@ namespace PayrollApp
                     {
                         string selectedLocation = localSettings.Values["selectedLocation"].ToString();
 
-                        int defaultTraineeGroup;
-                        int defaultGroup;
-
                         appLocation = da.GetLocationById(selectedLocation);
                         if (appLocation != null && appLocation.isDisabled != true)
                         {
                             MinHours = await da.GetMinHours();
+                            
+                            // Gets the default user group for students or trainee
+                            string groupIdString = await da.GetGlobalSetting("DefaultTraineeGroup");
+                            int.TryParse(groupIdString, out int groupID);
+                            defaultStudentGroup = await da.GetUserGroupById(groupID);
+
+                            // Gets the default user gorup for all other users
+                            groupIdString = await da.GetGlobalSetting("DefaultGroup");
+                            int.TryParse(groupIdString, out groupID);
+                            defaultOtherGroup = await da.GetUserGroupById(groupID);
 
                             if (appLocation.enableGM == true)
                             {

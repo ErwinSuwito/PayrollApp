@@ -126,6 +126,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                 else
                 {
                     // User not registered in system yet, proceed to set up user account.
+                    progText.Text = "Setting up your account...";
                 }
             }
             else
@@ -206,7 +207,10 @@ namespace PayrollApp.Views.NewUserOnboarding
                     {
                         user.userID = upn;
                         user.fullName = adUser.DisplayName;
-                        user.userGroup = new UserGroup();
+                        if (user.userID.Contains("mail.apu.edu.my"))
+                        {
+                            user.userGroup = await SettingsHelper.Instance.da.GetUserGroupById(SettingsHelper.Instance)
+                        }
                     }
                     else
                     {
