@@ -127,6 +127,26 @@ namespace PayrollApp.Views.NewUserOnboarding
                 {
                     // User not registered in system yet, proceed to set up user account.
                     progText.Text = "Setting up your account...";
+                    User newUser = await GetUserFromAD(upn);
+                    bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);
+
+                    if (IsSuccess)
+                    {
+                        loadTimer.Start();
+                    }
+                    else
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Unable to register your account.",
+                            Content = "There's a problem in creating your account. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you login.",
+                            PrimaryButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+
+                        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                    }
                 }
             }
             else
@@ -195,7 +215,7 @@ namespace PayrollApp.Views.NewUserOnboarding
             return true;
         }
 
-        private async Task<bool> GetUserFromAD(string upn)
+        private async Task<User> GetUserFromAD(string upn)
         {
             User user = new User();
             if (provider != null && provider.State == ProviderState.SignedIn)
@@ -207,15 +227,23 @@ namespace PayrollApp.Views.NewUserOnboarding
                     {
                         user.userID = upn;
                         user.fullName = adUser.DisplayName;
+                        user.fromAD = true;
+                        user.isDisabled = false;
                         if (user.userID.Contains("mail.apu.edu.my"))
                         {
-                            user.userGroup = await SettingsHelper.Instance.da.GetUserGroupById(SettingsHelper.Instance)
+                            user.userGroup = SettingsHelper.Instance.defaultStudentGroup;
                         }
+                        else
+                        {
+                            user.userGroup = SettingsHelper.Instance.defaultOtherGroup;
+                        }
+
+                        return user;
                     }
                     else
                     {
                         AccNotEnabledOrNotFound = true;
-                        return false;
+                        return null;
                     }
                 }
                 catch (Microsoft.Graph.ServiceException graphEx)
@@ -223,7 +251,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                     if (graphEx.Message.Contains("Request_ResourceNotFound"))
                     {
                         AccNotEnabledOrNotFound = true;
-                        return false;
+                        return null;
                     }
                     else
                     {
@@ -234,10 +262,9 @@ namespace PayrollApp.Views.NewUserOnboarding
                 {
                     Debug.WriteLine("Check user AD Exception: " + ex.Message);
                 }
-
             }
 
-            return false;
+            return null;
         }
     }
 }
