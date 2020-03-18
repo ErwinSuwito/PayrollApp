@@ -133,7 +133,7 @@ namespace PayrollCore
                                 var rate = new Rate();
                                 rate.rateID = dr.GetInt32(6);
                                 rate.rateDesc = dr.GetString(7);
-                                rate.rate = dr.GetFloat(8);
+                                rate.rate = dr.GetDouble(8);
                                 rate.isDisabled = dr.GetBoolean(9);
 
                                 item.rate = rate;
@@ -482,7 +482,7 @@ namespace PayrollCore
 
                                 rate.rateID = dr.GetInt32(10);
                                 rate.rateDesc = dr.GetString(11);
-                                rate.rate = dr.GetFloat(12);
+                                rate.rate = dr.GetDouble(12);
 
                                 user_group.DefaultRate = rate;
                                 user.userGroup = user_group;
@@ -633,7 +633,7 @@ namespace PayrollCore
                                 Rate rate = new Rate();
                                 rate.rateID = dr.GetInt32(7);
                                 rate.rateDesc = dr.GetString(8);
-                                rate.rate = dr.GetFloat(9);
+                                rate.rate = dr.GetDouble(9);
 
                                 shift.DefaultRate = rate;
 
@@ -684,7 +684,7 @@ namespace PayrollCore
                             var rate = new Rate();
                             rate.rateID = dr.GetInt32(5);
                             rate.rateDesc = dr.GetString(6);
-                            rate.rate = dr.GetFloat(7);
+                            rate.rate = dr.GetDouble(7);
                             rate.isDisabled = dr.GetBoolean(8);
 
                             userGroup.DefaultRate = rate;
@@ -735,7 +735,7 @@ namespace PayrollCore
                                 var rate = new Rate();
                                 rate.rateID = dr.GetInt32(5);
                                 rate.rateDesc = dr.GetString(6);
-                                rate.rate = dr.GetFloat(7);
+                                rate.rate = dr.GetDouble(7);
                                 rate.isDisabled = dr.GetBoolean(8);
 
                                 userGroup.DefaultRate = rate;
@@ -1106,7 +1106,7 @@ namespace PayrollCore
                                 var rate = new Rate();
                                 rate.rateID = dr.GetInt32(0);
                                 rate.rateDesc = dr.GetString(1);
-                                rate.rate = dr.GetFloat(2);
+                                rate.rate = dr.GetDouble(2);
                                 rate.isDisabled = dr.GetBoolean(3);
 
                                 rates.Add(rate);
@@ -1214,7 +1214,7 @@ namespace PayrollCore
                             Rate rate = new Rate();
                             rate.rateID = dr.GetInt32(7);
                             rate.rateDesc = dr.GetString(8);
-                            rate.rate = dr.GetFloat(9);
+                            rate.rate = dr.GetDouble(9);
 
                             shift.DefaultRate = rate;
                         }
@@ -1466,8 +1466,8 @@ namespace PayrollCore
                             // Checks if approved hours is not empty and set their values
                             if (!dr.IsDBNull(9))
                             {
-                                activity.ApprovedHours = dr.GetFloat(9);
-                                activity.ClaimableAmount = dr.GetFloat(10);
+                                activity.ApprovedHours = dr.GetDouble(9);
+                                activity.ClaimableAmount = dr.GetDouble(10);
                                 activity.ClaimDate = dr.GetDateTime(12);
                             }
 

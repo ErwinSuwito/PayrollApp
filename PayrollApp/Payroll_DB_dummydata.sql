@@ -9,7 +9,7 @@ USE payroll;
 CREATE TABLE Rate(
 	RateID int PRIMARY KEY IDENTITY(1,1),
 	RateDesc nvarchar(100),
-	Rate FLOAT(1) NOT NULL,
+	Rate double(1) NOT NULL,
 	IsDisabled BIT DEFAULT (0)
 );
 
@@ -79,8 +79,8 @@ CREATE TABLE Activity(
 	EndShift int,
 	MeetingID int,
 	SpecialTask BIT DEFAULT 0,
-	ApprovedHours float,
-	ClaimableAmount float,
+	ApprovedHours double,
+	ClaimableAmount double,
 	ApplicableRate int,
 	ClaimDate date,
 	FOREIGN KEY (UserID) REFERENCES Users(UserID),
