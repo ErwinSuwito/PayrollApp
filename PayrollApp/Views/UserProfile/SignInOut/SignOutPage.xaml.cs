@@ -56,25 +56,28 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (SettingsHelper.Instance.userState != null)
             {
-                SettingsHelper.Instance.userState = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState);
-                Activity newActivity = SettingsHelper.Instance.userState.LatestActivity;
+                UserState newUserState = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState);
+                Activity newActivity = newUserState.LatestActivity;
 
-                if (newActivity.RequireNotification == true)
+                bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
+                if (IsSuccess)
                 {
-                    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
-                    emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift ends: ";
-                    emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.outTime;
-                    emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
-
-                    var message = new Message
+                    if (newActivity.RequireNotification == true)
                     {
-                        Subject = "[Payroll] Sign Out Late " + newActivity.EndShift.shiftName + DateTime.Today.ToShortDateString(),
-                        Body = new ItemBody
+                        emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
+                        emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift ends: ";
+                        emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.outTime;
+                        emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
+
+                        var message = new Message
                         {
-                            ContentType = BodyType.Text,
-                            Content = emailContent
-                        },
-                        ToRecipients = new List<Recipient>()
+                            Subject = "[Payroll] Sign Out Late " + newActivity.EndShift.shiftName + DateTime.Today.ToShortDateString(),
+                            Body = new ItemBody
+                            {
+                                ContentType = BodyType.Text,
+                                Content = emailContent
+                            },
+                            ToRecipients = new List<Recipient>()
                             {
                                 new Recipient
                                 {
@@ -84,7 +87,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                                     }
                                 }
                             },
-                        CcRecipients = new List<Recipient>()
+                            CcRecipients = new List<Recipient>()
                             {
                                 new Recipient
                                 {
@@ -94,50 +97,62 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                                     }
                                 }
                             }
-                    };
-
-                    var saveToItems = false;
-
-                    try
-                    {
-                        var provider = ProviderManager.Instance.GlobalProvider;
-
-                        if (provider != null && provider.State == ProviderState.SignedIn)
-                        {
-                            await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
-                        }
-                    }
-                    catch (Microsoft.Graph.ServiceException graphEx)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Signed out with errors",
-                            Content = "Please send the Sign Out Late email to HR. Tap on the More info button to see what failed.",
-                            PrimaryButtonText = "Ok",
-                            SecondaryButtonText = "More info"
                         };
 
-                        ContentDialogResult result = await contentDialog.ShowAsync();
+                        var saveToItems = false;
 
-                        if (result == ContentDialogResult.Secondary)
+                        try
                         {
-                            ContentDialog contentDialog2 = new ContentDialog
+                            var provider = ProviderManager.Instance.GlobalProvider;
+
+                            if (provider != null && provider.State == ProviderState.SignedIn)
                             {
-                                Title = "Graph API error",
-                                Content = graphEx.Error,
-                                PrimaryButtonText = "Close"
+                                await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
+                            }
+                        }
+                        catch (Microsoft.Graph.ServiceException graphEx)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Signed out with errors",
+                                Content = "Please send the Sign Out Late email to HR. Tap on the More info button to see what failed.",
+                                PrimaryButtonText = "Ok",
+                                SecondaryButtonText = "More info"
                             };
 
-                            await contentDialog2.ShowAsync();
+                            ContentDialogResult result = await contentDialog.ShowAsync();
+
+                            if (result == ContentDialogResult.Secondary)
+                            {
+                                ContentDialog contentDialog2 = new ContentDialog
+                                {
+                                    Title = "Graph API error",
+                                    Content = graphEx.Error,
+                                    PrimaryButtonText = "Close"
+                                };
+
+                                await contentDialog2.ShowAsync();
+                            }
+                        }
+                        finally
+                        {
+                            PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
+                            await SettingsHelper.Instance.UpdateUserState(user);
+                            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
                     }
-                    finally
-                    {
-                        PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
-                        await SettingsHelper.Instance.UpdateUserState(user);
-                        this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                    }
                 }
+                else
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Unable to sign out",
+                        Content = "There's a problem signing you out. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to sign you out.",
+                        PrimaryButtonText = "Ok",
+                        SecondaryButtonText = "More info"
+                    };
+                }
+
             }
             else
             {

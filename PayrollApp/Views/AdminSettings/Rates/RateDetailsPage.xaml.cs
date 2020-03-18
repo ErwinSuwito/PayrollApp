@@ -148,7 +148,7 @@ namespace PayrollApp.Views.AdminSettings.Rates
             bool IsSuccess = false;
 
             rate.rateDesc = rateDescBox.Text;
-            double.TryParse(rateAmountBox.Text, out double newRate);
+            float.TryParse(rateAmountBox.Text, out float newRate);
             rate.rate = newRate;
 
             if (IsNewRate == false)
