@@ -425,5 +425,22 @@ namespace PayrollApp
                 };
             }
         }
+
+        public async Task<bool> UpdateUserState(User user)
+        {
+            userState = new UserState();
+            userState.user = user;
+            userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, appLocation.locationID);
+            Instance.userState.ApprovedHours = await da.GetApprovedHours(user.userID);
+
+            if (userState.LatestActivity != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

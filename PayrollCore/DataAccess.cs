@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using PayrollCore.Entities;
 
-
 namespace PayrollCore
 {
     public class DataAccess
@@ -1477,6 +1476,11 @@ namespace PayrollCore
                         }
                     }
                 }
+
+                // Initializes activity when theres no result and set NoActivity to true.
+                activity = new Activity();
+                activity.NoActivity = true;
+                return activity;
             }
             catch (Exception ex)
             {

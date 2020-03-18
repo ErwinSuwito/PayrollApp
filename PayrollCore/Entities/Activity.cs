@@ -23,6 +23,7 @@ namespace PayrollCore.Entities
         public int ApplicableRate { get; set; }
         public DateTime ClaimDate { get; set; }
         public bool RequireNotification { get; set; }
+        public bool NoActivity { get; set; }
 
         /// <summary>
         /// The reason to send a notification

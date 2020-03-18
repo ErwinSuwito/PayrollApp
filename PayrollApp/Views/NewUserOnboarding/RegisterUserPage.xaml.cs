@@ -97,13 +97,24 @@ namespace PayrollApp.Views.NewUserOnboarding
                     progText.Text = "Logging you in...";
                     if (user.isDisabled == false)
                     {
-                        // Copies user to loggedInUser
-                        SettingsHelper.Instance.userState = new UserState();
-                        SettingsHelper.Instance.userState.user = user;
-                        SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
-                        SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
+                        bool IsSuccess = await SettingsHelper.Instance.UpdateUserState(user);
 
-                        this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                        if (IsSuccess)
+                        {
+                            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                        }
+                        else
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Unable to login",
+                                Content = "There's a problem that prevents us to log you in. Please try again later. If the problem persists, contact Chiefs or HR Functional Unit to help you sign in.",
+                                PrimaryButtonText = "Ok"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+
                     }
                     else
                     {
