@@ -1577,5 +1577,37 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        public async Task<bool> UpdateActivityInfo(Activity activity)
+        {
+            string Query = "UPDATE Activity SET OutTime=@OutTime, ApprovedHours=@ApprovedHours, ClaimableAmount=@ClaimableAmount, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+
+                        cmd.Parameters.Add(new SqlParameter("@OutTime", activity.outTime));
+                        cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimableAmount", activity.ClaimableAmount));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return false;
+            }
+        }
+
     }
 }
