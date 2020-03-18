@@ -726,7 +726,8 @@ namespace PayrollCore
                                 var rate = new Rate();
                                 rate.rateID = dr.GetInt32(5);
                                 rate.rateDesc = dr.GetString(6);
-                                rate.isDisabled = dr.GetBoolean(7);
+                                rate.rate = dr.GetFloat(7);
+                                rate.isDisabled = dr.GetBoolean(8);
 
                                 userGroup.DefaultRate = rate;
 
@@ -1484,7 +1485,10 @@ namespace PayrollCore
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
                         {
-                            approvedHours = dr.GetDouble(0);
+                            if (!dr.IsDBNull(0))
+                            {
+                                approvedHours = dr.GetDouble(0);
+                            }
                         }
                     }
                 }

@@ -37,6 +37,7 @@ namespace PayrollApp.Views.NewUserOnboarding
         IProvider provider = ProviderManager.Instance.GlobalProvider;
         string upn;
         bool AccNotEnabledOrNotFound = false;
+        bool NewAccount = false;
 
         public RegisterUserPage()
         {
@@ -99,13 +100,8 @@ namespace PayrollApp.Views.NewUserOnboarding
                         // Copies user to loggedInUser
                         SettingsHelper.Instance.userState = new UserState();
                         SettingsHelper.Instance.userState.user = user;
-                        SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
                         SettingsHelper.Instance.userState.LatestActivity = await SettingsHelper.Instance.da.GetLatestActivityByUserId(upn, SettingsHelper.Instance.appLocation.locationID);
-                        
-                        while (SettingsHelper.Instance.userState.LatestActivity == null)
-                        {
-
-                        }
+                        SettingsHelper.Instance.userState.ApprovedHours = await SettingsHelper.Instance.da.GetApprovedHours(upn);
 
                         this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
@@ -126,6 +122,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                 else
                 {
                     // User not registered in system yet, proceed to set up user account.
+                    NewAccount = true;
                     progText.Text = "Setting up your account...";
                     User newUser = await GetUserFromAD(upn);
                     bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);

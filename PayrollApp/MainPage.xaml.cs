@@ -26,7 +26,6 @@ namespace PayrollApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        IProvider provider = ProviderManager.Instance.GlobalProvider;
         public MainPage()
         {
             this.InitializeComponent();
@@ -64,27 +63,17 @@ namespace PayrollApp
             //Background.MediaPlayer.Play();
 
             devControl.OnNavigateParentReady += DevControl_OnNavigateParentReady;
+
+            if (Debugger.IsAttached)
+            {
+                DevModeView.Visibility = Visibility.Visible;
+            }
+
         }
 
         private void DevControl_OnNavigateParentReady(object source, EventArgs e)
         {
             rootFrame.Navigate(typeof(Views.AdminSettings.FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-        }
-
-        private async void Provider_StateChanged(object sender, StateChangedEventArgs e)
-        {
-            if (provider != null && provider.State == ProviderState.SignedIn)
-            {
-                var user = await provider.Graph.Me.Request().GetAsync();
-                if (user.UserPrincipalName == "TADev@cloudmails.apu.edu.my")
-                {
-                    DevModeView.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    DevModeView.Visibility = Visibility.Collapsed;
-                }
-            }
         }
     }
 }
