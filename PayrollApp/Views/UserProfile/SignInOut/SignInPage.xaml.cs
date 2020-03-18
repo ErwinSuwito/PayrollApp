@@ -177,6 +177,8 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                         }
                         finally
                         {
+                            PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
+                            await SettingsHelper.Instance.UpdateUserState(user);
                             this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
 
