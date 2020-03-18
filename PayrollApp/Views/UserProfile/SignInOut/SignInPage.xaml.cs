@@ -202,6 +202,14 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                         await SettingsHelper.Instance.UpdateUserState(user);
                         this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
+
+                    //case 2:
+                    //    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
+                    //    emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + newActivity.location.locationName + "\n Shift ends: ";
+                    //    emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.outTime;
+                    //    emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
+
+                    //    break;
                 }
             }
             else
