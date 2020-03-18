@@ -156,7 +156,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                             ContentDialog contentDialog = new ContentDialog
                             {
                                 Title = "Unable to send late sign in notification",
-                                Content = "Please send the Sign In Late email to HR. Tap on the More info button to see what failed.",
+                                Content = "Please send the Sign In Late email to HR. You are signed in. There is no need to re-sign in. Tap on the More info button to see what failed.",
                                 PrimaryButtonText = "Ok",
                                 SecondaryButtonText = "More info"
                             };

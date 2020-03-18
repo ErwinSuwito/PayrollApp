@@ -6,96 +6,91 @@ CREATE DATABASE payroll;
 
 USE payroll;
 
-CREATE TABLE rate(
-	rateID int PRIMARY KEY IDENTITY(1,1),
-	rateDesc nvarchar(100),
-	rate FLOAT(1) NOT NULL,
-	isDisabled BIT DEFAULT (0)
+CREATE TABLE Rate(
+	RateID int PRIMARY KEY IDENTITY(1,1),
+	RateDesc nvarchar(100),
+	Rate FLOAT(1) NOT NULL,
+	IsDisabled BIT DEFAULT (0)
 );
 
-CREATE TABLE usr_group(
-	groupID int PRIMARY KEY IDENTITY(1,1),
-	groupName nvarchar(60) NOT NULL,
+CREATE TABLE user_group(
+	GroupID int PRIMARY KEY IDENTITY(1,1),
+	GroupName nvarchar(60) NOT NULL,
 	RateID int NOT NULL,
 	ShowAdminSettings BIT DEFAULT 0,
 	EnableFaceRec BIT DEFAULT 0
 	FOREIGN KEY (RateID) REFERENCES rate(rateID)
 );
 
-CREATE TABLE usr(
+CREATE TABLE Users(
 	UserID nvarchar(60) PRIMARY KEY,
-	fullName nvarchar(100),
-	fromAD BIT DEFAULT 0,
-	isDisabled BIT DEFAULT 0,
-	groupID int,
-	FOREIGN KEY (groupID) REFERENCES usr_group(groupID)
+	FullName nvarchar(100),
+	FromAD BIT DEFAULT 0,
+	IsDisabled BIT DEFAULT 0,
+	GroupID int,
+	FOREIGN KEY (GroupID) REFERENCES user_group(GroupID)
 );
 
-CREATE TABLE locations(	
-	locationID int PRIMARY KEY IDENTITY(1,1),
-	locationName nvarchar(36) UNIQUE,
-	enableGM BIT DEFAULT 0,
-	isDisabled BIT DEFAULT 0,
+CREATE TABLE Location(	
+	LocationID int PRIMARY KEY IDENTITY(1,1),
+	LocationName nvarchar(36) UNIQUE,
+	EnableGM BIT DEFAULT 0,
+	IsDisabled BIT DEFAULT 0,
 );
 
-CREATE TABLE shifts(
-	shiftID int PRIMARY KEY IDENTITY(1,1),
-	shiftName nvarchar(20),
-	startTime time(1) NOT NULL,
-	endTime time(1) NOT NULL,
-	locationID int,
-	rateID int,
-	isDisabled BIT DEFAULT 0,
-	FOREIGN KEY (rateID) REFERENCES rate(rateID),
-	FOREIGN KEY (locationID) REFERENCES locations(locationID)
+CREATE TABLE Shifts(
+	ShiftID int PRIMARY KEY IDENTITY(1,1),
+	ShiftName nvarchar(20),
+	StartTime time(1) NOT NULL,
+	EndTime time(1) NOT NULL,
+	LocationID int,
+	RateID int,
+	IsDisabled BIT DEFAULT 0,
+	FOREIGN KEY (RateID) REFERENCES Rate(RateID),
+	FOREIGN KEY (LocationID) REFERENCES Location(LocationID)
 );
 
-CREATE TABLE meetings(
-	meetingID int PRIMARY KEY IDENTITY(1,1),
-	meetingName nvarchar(20),
-	locationID int,
-	meetingDay int NOT NULL,
-	disableMeeting BIT DEFAULT 0,
-	rateID int,
-	FOREIGN KEY (locationID) REFERENCES locations(locationID),
-	FOREIGN KEY (rateID) REFERENCES rate(rateID)
+CREATE TABLE Meeting(
+	MeetingID int PRIMARY KEY IDENTITY(1,1),
+	MeetingName nvarchar(20),
+	LocationID int,
+	MeetingDay int NOT NULL,
+	IsDisabled BIT DEFAULT 0,
+	RateID int,
+	FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
+	FOREIGN KEY (RateID) REFERENCES Rate(rateID)
 );
 
-CREATE TABLE meeting_group(
+CREATE TABLE Meeting_Group(
 	meeting_group_id int PRIMARY KEY IDENTITY(1,1),
-	meetingID int,
-	usrGroupID int,
-	FOREIGN KEY (meetingID) REFERENCES meetings(meetingID),
-	FOREIGN KEY (usrGroupID) REFERENCES usr_group(groupID)
+	MeetingID int,
+	UserGroupID int,
+	FOREIGN KEY (meetingID) REFERENCES Meeting(MeetingID),
+	FOREIGN KEY (UserGroupID) REFERENCES user_group(GroupID)
 );
 
 CREATE TABLE Activity(
 	ActivityID int PRIMARY KEY IDENTITY(1,1),
 	UserID nvarchar(60),
 	LocationID int,
-	inTime DATETIME,
-	outTime DATETIME,
-	startShift int,
-	endShift int,
-	meetingID int,
+	InTime DATETIME,
+	OutTime DATETIME,
+	StartShift int,
+	EndShift int,
+	MeetingID int,
 	SpecialTask BIT DEFAULT 0,
-	FOREIGN KEY (UserID) REFERENCES usr(UserID),
-	FOREIGN KEY (LocationID) REFERENCES locations(locationID),
-	FOREIGN KEY (startShift) REFERENCES shifts(shiftID),
-	FOREIGN KEY (endShift) REFERENCES shifts(shiftID),
-	FOREIGN KEY (meetingID) REFERENCES meetings(meetingID)
+	ApprovedHours float,
+	ClaimableAmount float,
+	ApplicableRate int,
+	FOREIGN KEY (UserID) REFERENCES Users(UserID),
+	FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
+	FOREIGN KEY (StartShift) REFERENCES Shifts(ShiftID),
+	FOREIGN KEY (endShift) REFERENCES Shifts(ShiftID),
+	FOREIGN KEY (MeetingID) REFERENCES Meeting(MeetingID),
+	FOREIGN KEY (ApplicableRate) REFERENCES Rate(RateID)
 );
 
-CREATE TABLE claims(
-	ClaimID int PRIMARY KEY IDENTITY(1,1),
-	ActivityID int,
-	ApprovedHours float (1),
-	ClaimableAmount float(1),
-	GeneratedDate date,
-	FOREIGN KEY (ActivityID) REFERENCES Activity(ActivityID)
-);
-
-CREATE TABLE global_settings(
+CREATE TABLE Global_Settings(
 	SettingKey nvarchar(60) PRIMARY KEY,
 	SettingValue nvarchar(255)
 );
@@ -111,42 +106,42 @@ INSERT INTO rate(rateDesc, rate) VALUES('Sunday Special Task', 10);
 INSERT INTO rate(rateDesc, rate) VALUES('Chiefs Normal Duty or Special Task', 8);
 INSERT INTO rate(rateDesc, rate) VALUES('Zero', 0);
 
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Trainee', 4, 0, 0);
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Technical Assistant', 1, 0, 1);
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member', 1, 0, 1);
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member, HR Member', 1, 1, 1);
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Chief', 1, 1, 1);
-INSERT INTO usr_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Intern/Part Time', 1, 1, 1);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Trainee', 4, 0, 0);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Technical Assistant', 1, 0, 1);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member', 1, 0, 1);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Board Member, HR Member', 1, 1, 1);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Chief', 1, 1, 1);
+INSERT INTO user_group(groupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES('Intern/Part Time', 1, 1, 1);
 
-INSERT INTO usr VALUES('ushan@cloudmails.apu.edu.my', 'Ahmed Ushan Mohamed', 1, 0, 2);
-INSERT INTO usr VALUES('aisha@cloudmails.apu.edu.my', 'Aisha Kurmangali', 1, 0, 4);
-INSERT INTO usr VALUES('alfredo@cloudmails.apu.edu.my', 'Alfredo', 1, 0, 4);
-INSERT INTO usr VALUES('yi.hong@cloudmails.apu.edu.my', 'Chai Yi Hong', 1, 0, 2);
-INSERT INTO usr VALUES('hui.wen@cloudmails.apu.edu.my', 'Chen Hui Wen', 1, 0, 3);
-INSERT INTO usr VALUES('sin.yuen@cloudmails.apu.edu.my', 'Chen Sin Yuen', 1, 0, 3);
-INSERT INTO usr VALUES('wei.lun@cloudmails.apu.edu.my', 'Cheng Wei Lun', 1, 0, 3);
-INSERT INTO usr VALUES('xue.qian@cloudmails.apu.edu.my', 'Chia Xue Qian', 1, 0, 2);
-INSERT INTO usr VALUES('erwin.suwito@cloudmails.apu.edu.my', 'Erwin Suwitoandojo', 1, 0, 3);
-INSERT INTO usr VALUES('TP045000@mail.apu.edu.my', 'ERWIN SUWITOANDOJO', 1, 0, 1);
-INSERT INTO usr VALUES('wai.tuck@cloudmails.apu.edu.my', 'Foong Wai Tuck', 1, 0, 2);
-INSERT INTO usr VALUES('ka.wang', 'Ho Ka Wang',  0, 0, 6);
+INSERT INTO Users VALUES('ushan@cloudmails.apu.edu.my', 'Ahmed Ushan Mohamed', 1, 0, 2);
+INSERT INTO Users VALUES('aisha@cloudmails.apu.edu.my', 'Aisha Kurmangali', 1, 0, 4);
+INSERT INTO Users VALUES('alfredo@cloudmails.apu.edu.my', 'Alfredo', 1, 0, 4);
+INSERT INTO Users VALUES('yi.hong@cloudmails.apu.edu.my', 'Chai Yi Hong', 1, 0, 2);
+INSERT INTO Users VALUES('hui.wen@cloudmails.apu.edu.my', 'Chen Hui Wen', 1, 0, 3);
+INSERT INTO Users VALUES('sin.yuen@cloudmails.apu.edu.my', 'Chen Sin Yuen', 1, 0, 3);
+INSERT INTO Users VALUES('wei.lun@cloudmails.apu.edu.my', 'Cheng Wei Lun', 1, 0, 3);
+INSERT INTO Users VALUES('xue.qian@cloudmails.apu.edu.my', 'Chia Xue Qian', 1, 0, 2);
+INSERT INTO Users VALUES('erwin.suwito@cloudmails.apu.edu.my', 'Erwin Suwitoandojo', 1, 0, 3);
+INSERT INTO Users VALUES('TP045000@mail.apu.edu.my', 'ERWIN SUWITOANDOJO', 1, 0, 1);
+INSERT INTO Users VALUES('wai.tuck@cloudmails.apu.edu.my', 'Foong Wai Tuck', 1, 0, 2);
+INSERT INTO Users VALUES('ka.wang', 'Ho Ka Wang',  0, 0, 6);
 
-INSERT INTO locations(locationName, enableGM, isDisabled) VALUES('new-sys', 1, 1);
-INSERT INTO locations(locationName, enableGM) VALUES('APU', 1);
-INSERT INTO locations(locationName, enableGM) VALUES('APIIT', 0);
+INSERT INTO Location(locationName, enableGM, isDisabled) VALUES('new-sys', 1, 1);
+INSERT INTO Location(locationName, enableGM) VALUES('APU', 1);
+INSERT INTO Location(locationName, enableGM) VALUES('APIIT', 0);
 
-INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'GM', 2, 1);
-INSERT INTO meetings(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1);
+INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'GM', 2, 1);
+INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1);
 
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 1);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 2);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 3);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 4);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(1, 5);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 1);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 2);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 3);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 4);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 5);
 
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(2, 3);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(2, 4);
-INSERT INTO meeting_group(meetingID, usrGroupID) VALUES(2, 5);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 3);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 4);
+INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 5);
 
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S1', '08:15', '10:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S2', '10:30', '12:30', '2', '1');
