@@ -28,6 +28,9 @@ namespace PayrollApp.Views
         public DebugModePage()
         {
             this.InitializeComponent();
+
+            ApplicationView.PreferredLaunchViewSize = new Size(540, 740);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 
         private async void ResetBtn_Click(object sender, RoutedEventArgs e)

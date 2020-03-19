@@ -15,7 +15,7 @@
     
     <Grid>
         <Interactivity:Interaction.Behaviors>
-            <providers:InteractiveProviderBehavior ClientId="bd43d842-e017-4457-bd68-bba4343b8e30" Scopes="User.Read,User.ReadBasic.All,User.Read.All,Mail.Send" />
+            <providers:InteractiveProviderBehavior ClientId="bd43d842-e017-4457-bd68-bba4343b8e30" Scopes="User.Read,User.ReadBasic.All,Mail.Send" />
         </Interactivity:Interaction.Behaviors>
         
         <Grid x:Name="BackgroundGrid" Grid.RowSpan="2">
@@ -32,7 +32,7 @@
             <!-- Future content here -->
         </StackPanel>
 
-        <Button x:Name="DebugModeNotice" Visibility="Visible" Style="{ThemeResource AccentButtonStyle}"
+        <Button x:Name="DebugModeNotice" Visibility="Collapsed" Style="{ThemeResource AccentButtonStyle}"
                 Margin="0,0,32,32" Click="DebugModeNotice_Click" Padding="20,12,20,12"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="2">
             <Button.Content>

@@ -146,7 +146,17 @@ namespace PayrollApp.Views.AdminSettings
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            PageStackEntry previousPage = this.Frame.BackStack.Last();
+
+            Type previousPageType = previousPage.GetType();
+            if (previousPageType == typeof(UserProfile.UserProfilePage))
+            {
+                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(DebugModePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
         }
 
         private void manageLocationText_Click(object sender, RoutedEventArgs e)
