@@ -53,7 +53,7 @@ namespace PayrollApp.Views.UserProfile
 
         private async void signButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SettingsHelper.Instance.userState.LatestActivity == null)
+            if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
             {
                 this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
@@ -103,7 +103,7 @@ namespace PayrollApp.Views.UserProfile
             }
 
             // Starts modify UI based on user activity
-            if (userState.LatestActivity != null)
+            if (userState.LatestActivity != null && userState.LatestActivity.NoActivity == false)
             {
                 // User has signed in before in this location
 
