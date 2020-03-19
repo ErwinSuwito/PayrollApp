@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Graph;
 using Microsoft.Toolkit.Graph.Providers;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -52,12 +53,12 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
         private async void LoadTimer_Tick(object sender, object e)
         {
+            loadTimer.Stop();
             string emailContent;
 
             if (SettingsHelper.Instance.userState != null)
             {
-                UserState newUserState = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState);
-                Activity newActivity = newUserState.LatestActivity;
+                Activity newActivity = GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
                 if (IsSuccess)
@@ -78,25 +79,25 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                                 Content = emailContent
                             },
                             ToRecipients = new List<Recipient>()
-                            {
-                                new Recipient
                                 {
-                                    EmailAddress = new EmailAddress
+                                    new Recipient
                                     {
-                                        Address = "erwin.suwito@cloudmails.apu.edu.my"
+                                        EmailAddress = new EmailAddress
+                                        {
+                                            Address = "erwin.suwito@cloudmails.apu.edu.my"
+                                        }
                                     }
-                                }
-                            },
+                                },
                             CcRecipients = new List<Recipient>()
-                            {
-                                new Recipient
                                 {
-                                    EmailAddress = new EmailAddress
+                                    new Recipient
                                     {
-                                        Address = SettingsHelper.Instance.userState.user.userID
+                                        EmailAddress = new EmailAddress
+                                        {
+                                            Address = SettingsHelper.Instance.userState.user.userID
+                                        }
                                     }
                                 }
-                            }
                         };
 
                         var saveToItems = false;
@@ -170,5 +171,49 @@ namespace PayrollApp.Views.UserProfile.SignInOut
         {
             this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
+
+        public Activity GenerateSignOutInfo(Activity activity, PayrollCore.Entities.User user)
+        {
+            DateTime signInTime = activity.inTime;
+            DateTime signOutTime = DateTime.Now;
+
+            if (signInTime.DayOfYear < signOutTime.DayOfYear)
+            {
+                activity.RequireNotification = true;
+                activity.NotificationReason = 2;
+                string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
+                DateTime.TryParse(s, out signOutTime);
+            }
+            else
+            {
+                activity.RequireNotification = false;
+            }
+
+            activity.outTime = signOutTime;
+
+            TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+
+            if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
+            {
+                // Use user's default rate
+                activity.ApplicableRate = user.userGroup.DefaultRate;
+            }
+            else
+            {
+                // Use shift's default rate
+                activity.ApplicableRate = activity.StartShift.DefaultRate;
+            }
+
+            activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
+            activity.ApprovedHours = activityOffset.TotalHours;
+
+            return activity;
+        }
+
+        public float CalcPay(double hours, float rate)
+        {
+            return (float)hours * rate;
+        }
     }
 }
+

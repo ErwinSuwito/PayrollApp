@@ -58,42 +58,42 @@ namespace PayrollCore
             return signInInfo;
         }
         
-        public async Task<UserState> GenerateSignOutInfo(UserState userState)
+        public async Task<Activity> GenerateSignOutInfo(Activity activity, User user)
         {
-            DateTime signInTime = userState.LatestActivity.inTime;
+            DateTime signInTime = activity.inTime;
             DateTime signOutTime = DateTime.Now;
 
             if (signInTime.DayOfYear < signOutTime.DayOfYear)
             {
-                userState.LatestActivity.RequireNotification = true;
-                userState.LatestActivity.NotificationReason = 2;
-                string s = userState.LatestActivity.inTime.ToShortDateString() + " " + userState.LatestActivity.EndShift.startTime.ToString();
+                activity.RequireNotification = true;
+                activity.NotificationReason = 2;
+                string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
                 DateTime.TryParse(s, out signOutTime);
             }
             else
             {
-                userState.LatestActivity.RequireNotification = false;
+                activity.RequireNotification = false;
             }
 
-            userState.LatestActivity.outTime = signOutTime;
+            activity.outTime = signOutTime;
 
             TimeSpan activityOffset = signOutTime.Subtract(signInTime);
 
-            if (userState.user.userGroup.DefaultRate.rate > userState.LatestActivity.StartShift.DefaultRate.rate)
+            if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
             {
                 // Use user's default rate
-                userState.LatestActivity.ApplicableRate = userState.user.userGroup.DefaultRate;
+                activity.ApplicableRate = user.userGroup.DefaultRate;
             }
             else
             {
                 // Use shift's default rate
-                userState.LatestActivity.ApplicableRate = userState.LatestActivity.StartShift.DefaultRate;
+                activity.ApplicableRate = activity.StartShift.DefaultRate;
             }
 
-            userState.LatestActivity.ClaimableAmount = CalcPay(activityOffset.TotalHours, userState.LatestActivity.ApplicableRate.rate);
-            userState.LatestActivity.ApprovedHours = activityOffset.TotalHours;
+            activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
+            activity.ApprovedHours = activityOffset.TotalHours;
 
-            return userState;
+            return activity;
         }
 
         public float CalcPay(double hours, float rate)
