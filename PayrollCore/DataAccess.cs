@@ -1402,7 +1402,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate ON Rate.RateID=Activity.ApplicableRate WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
             Activity activity;
 
             try
@@ -1421,7 +1421,8 @@ namespace PayrollCore
                         while (dr.Read())
                         {
                             activity = new Activity();
-                            activity.userID = upn;
+                            activity.ActivityID = dr.GetInt32(0);
+                            activity.userID = dr.GetString(1);
                             activity.inTime = dr.GetDateTime(3);
                             activity.IsSpecialTask = dr.GetBoolean(8);
                             
@@ -1467,16 +1468,38 @@ namespace PayrollCore
                             if (!dr.IsDBNull(9))
                             {
                                 activity.ApprovedHours = dr.GetDouble(9);
-                                activity.ClaimableAmount = dr.GetFloat(10);
+                                activity.ClaimableAmount = (float)dr.GetDouble(10);
                                 activity.ClaimDate = dr.GetDateTime(12);
                             }
 
+                            // Checks if applicable rate is not empty and set their values
                             if (!dr.IsDBNull(11))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(34);
-                                rate.rateDesc = dr.GetString(35);
-                                rate.rate = dr.GetFloat(36);
+                                rate.rateID = dr.GetInt32(33);
+                                rate.rateDesc = dr.GetString(34);
+                                rate.rate = dr.GetFloat(35);
+                                activity.ApplicableRate = rate;
+                            }
+
+                            // Checks if the start shift rate is not empty and set their values
+                            if (!dr.IsDBNull(37))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(37);
+                                rate.rateDesc = dr.GetString(38);
+                                rate.rate = dr.GetFloat(39);
+                                activity.StartShift.DefaultRate = rate;
+                            }
+
+                            //Checks if the end shift rate is not empty and set their values
+                            if (!dr.IsDBNull(41))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(41);
+                                rate.rateDesc = dr.GetString(42);
+                                rate.rate = dr.GetFloat(43);
+                                activity.EndShift.DefaultRate = rate;
                             }
 
                             return activity;
@@ -1606,10 +1629,17 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
                         cmd.Parameters.Add(new SqlParameter("@ClaimableAmount", activity.ClaimableAmount));
                         cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
+                        cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@ActivityID", activity.ActivityID));
 
-                        await cmd.ExecuteNonQueryAsync();
-
-                        return true;
+                        if (await cmd.ExecuteNonQueryAsync() > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
             }

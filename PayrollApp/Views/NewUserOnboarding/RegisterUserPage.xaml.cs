@@ -113,6 +113,8 @@ namespace PayrollApp.Views.NewUserOnboarding
                             };
 
                             await contentDialog.ShowAsync();
+
+                            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
 
                     }

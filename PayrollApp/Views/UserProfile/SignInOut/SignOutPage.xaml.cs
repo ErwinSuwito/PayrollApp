@@ -58,7 +58,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
+                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
                 if (IsSuccess)
@@ -152,6 +152,9 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                         PrimaryButtonText = "Ok",
                         SecondaryButtonText = "More info"
                     };
+
+                    await contentDialog.ShowAsync();
+                    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                 }
 
             }
@@ -159,6 +162,12 @@ namespace PayrollApp.Views.UserProfile.SignInOut
             {
                 this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
+
+            await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
+
+            loadTimer.Stop();
+            pageContent.Visibility = Visibility.Visible;
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -206,6 +215,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
             activity.ApprovedHours = activityOffset.TotalHours;
+            activity.ClaimDate = DateTime.Today;
 
             return activity;
         }
