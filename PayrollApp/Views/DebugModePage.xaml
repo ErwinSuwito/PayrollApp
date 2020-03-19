@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="PayrollApp.Views.DebugModePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicElementBrush}">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Margin="16,20,0,0">
+                <TextBlock Text="Debug Mode" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                <StackPanel Margin="0,8,0,0">
+                    <TextBlock Text="Check account status" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBox x:Name="personEmailBox" Width="328" />
+                        <Button x:Name="checkPersonBtn" Content="Check" Margin="8,0,0,0"
+                        Click="checkPersonBtn_Click"/>
+                    </StackPanel>
+                    <TextBlock x:Name="personResultText" />
+                </StackPanel>
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="[NT] Reset app data" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                    <TextBlock Text="Reset app data without app restart." />
+                    <Button x:Name="ResetBtn" Content="Reset" Click="ResetBtn_Click"
+                    Margin="0,8,0,0"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Admin Settings page" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="Open admin settings." TextWrapping="Wrap"/>
+                    <Button x:Name="adminSettingsBtn" Content="Face Identification Setup" Margin="0,8,0,0"  
+                        Click="adminSettingsBtn_Click"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Face Identification Setup" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="View, edit or delete all registered facial data." 
+                                           TextWrapping="Wrap"/>
+                    <Button x:Name="faceIdSetupBtn" Content="Face Identification Setup" Margin="0,8,0,0"  
+                        Click="faceIdSetupBtn_Click"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Tags" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                    <StackPanel Orientation="Horizontal" Margin="8,8,0,0">
+                        <StackPanel>
+                            <TextBlock Text="[NT]" Margin="0,0,0,4"/>
+                            <TextBlock Text="No Tag" Margin="0,0,0,4"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Needs testing" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,4"/>
+                            <TextBlock Text="Temporary, for use with other features." Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,4"/>
+
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

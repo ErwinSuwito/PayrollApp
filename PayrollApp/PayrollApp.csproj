@@ -124,9 +124,6 @@
       <DependentUpon>CameraControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Converters.cs" />
-    <Compile Include="Controls\DevControl.xaml.cs">
-      <DependentUpon>DevControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\EmotionEmojiControl.xaml.cs">
       <DependentUpon>EmotionEmojiControl.xaml</DependentUpon>
     </Compile>
@@ -199,6 +196,9 @@
     </Compile>
     <Compile Include="Views\AdminSettings\UserManagement\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DebugModePage.xaml.cs">
+      <DependentUpon>DebugModePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FirstRunSetup\CardDbSetupPage.xaml.cs">
       <DependentUpon>CardDbSetupPage.xaml</DependentUpon>
@@ -275,10 +275,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\CameraControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\DevControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -373,6 +369,10 @@
     <Page Include="Views\AdminSettings\UserManagement\UserListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DebugModePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FirstRunSetup\CardDbSetupPage.xaml">
       <Generator>MSBuild:Compile</Generator>

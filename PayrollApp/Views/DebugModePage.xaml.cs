@@ -6,28 +6,29 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace PayrollApp.Controls
+namespace PayrollApp.Views
 {
-    public sealed partial class DevControl : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class DebugModePage : Page
     {
-        public DevControl()
+        public DebugModePage()
         {
             this.InitializeComponent();
         }
-
-        public delegate void NavigateFaceIDSetup(object source, EventArgs e);
-
-        public event NavigateFaceIDSetup OnNavigateParentReady;
 
         private async void ResetBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -79,18 +80,18 @@ namespace PayrollApp.Controls
                 {
                     personResultText.Text = ex.Message;
                 }
-                
+
             }
         }
 
         private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
         {
-            OnNavigateParentReady(this, null);
+            this.Frame.Navigate(typeof(AdminSettings.FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void adminSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(AdminSettings.NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }

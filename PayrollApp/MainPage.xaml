@@ -32,9 +32,19 @@
             <!-- Future content here -->
         </StackPanel>
 
-        <ScrollViewer x:Name="DevModeView" Visibility="Collapsed" Background="{ThemeResource SystemControlAcrylicElementBrush}" Height="320" Margin="0,0,32,0" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <ctl:DevControl x:Name="devControl" Margin="20,24,12,24" />
-        </ScrollViewer>
-
+        <Button x:Name="DebugModeNotice" Visibility="Visible" Style="{ThemeResource AccentButtonStyle}"
+                Margin="0,0,32,32" Click="DebugModeNotice_Click" Padding="20,12,20,12"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="2">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                    <FontIcon FontSize="26" Glyph="&#xEBE8;" />
+                    <StackPanel VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock Text="Debug mode" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="Click or tap to open debug tools" Style="{ThemeResource BaseTextBlockStyle}"
+                               FontSize="14"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button.Content>
+        </Button>
     </Grid>
 </Page>

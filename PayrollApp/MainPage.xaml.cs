@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Navigation;
 using System.Diagnostics;
 using Microsoft.Toolkit.Graph.Providers;
 using Windows.Media.Core;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -62,18 +65,28 @@ namespace PayrollApp
 
             //Background.MediaPlayer.Play();
 
-            devControl.OnNavigateParentReady += DevControl_OnNavigateParentReady;
-
             if (Debugger.IsAttached)
             {
-                DevModeView.Visibility = Visibility.Visible;
+                DebugModeNotice.Visibility = Visibility.Visible;
             }
 
         }
 
-        private void DevControl_OnNavigateParentReady(object source, EventArgs e)
+        private async void DebugModeNotice_Click(object sender, RoutedEventArgs e)
         {
-            rootFrame.Navigate(typeof(Views.AdminSettings.FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            CoreApplicationView newView = CoreApplication.CreateNewView();
+            int newViewId = 0;
+            await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame frame = new Frame();
+                frame.Navigate(typeof(Views.DebugModePage), null);
+                Window.Current.Content = frame;
+                // You have to activate the window in order to show it later.
+                Window.Current.Activate();
+
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
         }
     }
 }
