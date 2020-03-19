@@ -146,10 +146,9 @@ namespace PayrollApp.Views.AdminSettings
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            PageStackEntry previousPage = this.Frame.BackStack.Last();
+            var lastPage = Frame.BackStack.Last();
 
-            Type previousPageType = previousPage.GetType();
-            if (previousPageType == typeof(UserProfile.UserProfilePage))
+            if (lastPage != null && lastPage.SourcePageType.Equals(typeof(UserProfile.UserProfilePage)))
             {
                 this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
