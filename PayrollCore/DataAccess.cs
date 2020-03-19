@@ -659,7 +659,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<UserGroup>> GetAllUserGroups()
         {
-            string Query = "SELECT * FROM usr_group JOIN rate ON rate.rateID=usr_group.RateID";
+            string Query = "SELECT * FROM user_group JOIN Rate ON Rate.RateID=user_group.RateID";
             ObservableCollection<UserGroup> userGroups = new ObservableCollection<UserGroup>();
 
             try
