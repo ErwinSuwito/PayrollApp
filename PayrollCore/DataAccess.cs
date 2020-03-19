@@ -1632,14 +1632,9 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@ActivityID", activity.ActivityID));
 
-                        if (await cmd.ExecuteNonQueryAsync() > 0)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
                     }
                 }
             }

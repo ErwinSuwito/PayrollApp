@@ -90,6 +90,7 @@ namespace PayrollCore
                 activity.ApplicableRate = activity.StartShift.DefaultRate;
             }
 
+            activity.ClaimDate = DateTime.Today;
             activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
             activity.ApprovedHours = activityOffset.TotalHours;
 
