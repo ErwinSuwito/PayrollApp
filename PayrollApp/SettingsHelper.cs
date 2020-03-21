@@ -52,7 +52,6 @@ namespace PayrollApp
 
         public UserState userState;
         public Location appLocation;
-        public ObservableCollection<Meeting> meetings;
         public DataAccess da;
         public Operations op;
         public string MinHours;
@@ -129,11 +128,6 @@ namespace PayrollApp
                             groupIdString = await da.GetGlobalSetting("DefaultGroup");
                             int.TryParse(groupIdString, out groupID);
                             defaultOtherGroup = await da.GetUserGroupById(groupID);
-
-                            if (appLocation.enableGM == true)
-                            {
-                                meetings = await da.GetMeetings(appLocation);
-                            }
                         }
                     }
                 }
