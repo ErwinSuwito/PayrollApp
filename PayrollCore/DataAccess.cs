@@ -622,6 +622,7 @@ namespace PayrollCore
                                 shift.startTime = dr.GetTimeSpan(2);
                                 shift.endTime = dr.GetTimeSpan(3);
                                 shift.isDisabled = dr.GetBoolean(6);
+                                shift.WeekendOnly = dr.GetBoolean(7);
 
                                 if (shift.isDisabled)
                                 {
@@ -633,9 +634,9 @@ namespace PayrollCore
                                 }
 
                                 Rate rate = new Rate();
-                                rate.rateID = dr.GetInt32(7);
-                                rate.rateDesc = dr.GetString(8);
-                                rate.rate = dr.GetFloat(9);
+                                rate.rateID = dr.GetInt32(8);
+                                rate.rateDesc = dr.GetString(9);
+                                rate.rate = dr.GetFloat(10);
 
                                 shift.DefaultRate = rate;
 
@@ -1210,13 +1211,22 @@ namespace PayrollCore
                             shift.shiftName = dr.GetString(1);
                             shift.startTime = dr.GetTimeSpan(2);
                             shift.endTime = dr.GetTimeSpan(3);
-                            shift.locationID = dr.GetInt32(4);
                             shift.isDisabled = dr.GetBoolean(6);
+                            shift.WeekendOnly = dr.GetBoolean(7);
+
+                            if (shift.isDisabled)
+                            {
+                                shift.dg_isDisabled = "Disabled";
+                            }
+                            else
+                            {
+                                shift.dg_isDisabled = "Enabled";
+                            }
 
                             Rate rate = new Rate();
-                            rate.rateID = dr.GetInt32(7);
-                            rate.rateDesc = dr.GetString(8);
-                            rate.rate = dr.GetFloat(9);
+                            rate.rateID = dr.GetInt32(8);
+                            rate.rateDesc = dr.GetString(9);
+                            rate.rate = dr.GetFloat(10);
 
                             shift.DefaultRate = rate;
                         }
@@ -1255,13 +1265,22 @@ namespace PayrollCore
                             shift.shiftName = dr.GetString(1);
                             shift.startTime = dr.GetTimeSpan(2);
                             shift.endTime = dr.GetTimeSpan(3);
-                            shift.locationID = dr.GetInt32(4);
                             shift.isDisabled = dr.GetBoolean(6);
+                            shift.WeekendOnly = dr.GetBoolean(7);
+
+                            if (shift.isDisabled)
+                            {
+                                shift.dg_isDisabled = "Disabled";
+                            }
+                            else
+                            {
+                                shift.dg_isDisabled = "Enabled";
+                            }
 
                             Rate rate = new Rate();
-                            rate.rateID = dr.GetInt32(7);
-                            rate.rateDesc = dr.GetString(8);
-                            rate.rate = dr.GetFloat(9);
+                            rate.rateID = dr.GetInt32(8);
+                            rate.rateDesc = dr.GetString(9);
+                            rate.rate = dr.GetFloat(10);
 
                             shift.DefaultRate = rate;
                         }
@@ -1281,7 +1300,7 @@ namespace PayrollCore
         public async Task<bool> AddNewShift(Shift shift)
         {
             bool IsSuccess = false;
-            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID)";
+            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly, IsDisabled) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly, @IsDisabled)";
 
             try
             {
@@ -1297,6 +1316,8 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.isDisabled));
 
                         await cmd.ExecuteNonQueryAsync();
 
@@ -1317,7 +1338,7 @@ namespace PayrollCore
         public async Task<bool> UpdateShiftInfo(Shift shift)
         {
             bool IsSuccess = false;
-            string Query = "UPDATE Shifts SET ShiftName=@ShiftName, StartTime=@StartTime, EndTime=@EndTime, LocationID=@LocationID, RateID=@RateID, IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
+            string Query = "UPDATE Shifts SET ShiftName=@ShiftName, StartTime=@StartTime, EndTime=@EndTime, LocationID=@LocationID, RateID=@RateID, IsDisabled=@IsDisabled, WeekendOnly=@WeekendOnly WHERE ShiftID=@ShiftID";
 
             try
             {
@@ -1335,6 +1356,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
 
 
                         await cmd.ExecuteNonQueryAsync();
@@ -1488,6 +1510,7 @@ namespace PayrollCore
                                 startShift.shiftName = dr.GetString(20);
                                 startShift.startTime = dr.GetTimeSpan(21);
                                 startShift.endTime = dr.GetTimeSpan(22);
+                                startShift.WeekendOnly = dr.GetBoolean(26);
                                 activity.StartShift = startShift;
                             }
 
@@ -1495,10 +1518,11 @@ namespace PayrollCore
                             if (!dr.IsDBNull(6))
                             {
                                 var endShift = new Shift();
-                                endShift.shiftID = dr.GetInt32(26);
-                                endShift.shiftName = dr.GetString(27);
-                                endShift.startTime = dr.GetTimeSpan(28);
-                                endShift.endTime = dr.GetTimeSpan(29);
+                                endShift.shiftID = dr.GetInt32(27);
+                                endShift.shiftName = dr.GetString(28);
+                                endShift.startTime = dr.GetTimeSpan(29);
+                                endShift.endTime = dr.GetTimeSpan(30);
+                                endShift.WeekendOnly = dr.GetBoolean(34);
                                 activity.EndShift = endShift;
                             }
 
@@ -1524,29 +1548,29 @@ namespace PayrollCore
                             if (!dr.IsDBNull(11))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(33);
-                                rate.rateDesc = dr.GetString(34);
-                                rate.rate = dr.GetFloat(35);
+                                rate.rateID = dr.GetInt32(35);
+                                rate.rateDesc = dr.GetString(36);
+                                rate.rate = dr.GetFloat(37);
                                 activity.ApplicableRate = rate;
                             }
 
                             // Checks if the start shift rate is not empty and set their values
-                            if (!dr.IsDBNull(37))
+                            if (!dr.IsDBNull(39))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(37);
-                                rate.rateDesc = dr.GetString(38);
-                                rate.rate = dr.GetFloat(39);
+                                rate.rateID = dr.GetInt32(39);
+                                rate.rateDesc = dr.GetString(40);
+                                rate.rate = dr.GetFloat(41);
                                 activity.StartShift.DefaultRate = rate;
                             }
 
                             //Checks if the end shift rate is not empty and set their values
-                            if (!dr.IsDBNull(41))
+                            if (!dr.IsDBNull(43))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(41);
-                                rate.rateDesc = dr.GetString(42);
-                                rate.rate = dr.GetFloat(43);
+                                rate.rateID = dr.GetInt32(43);
+                                rate.rateDesc = dr.GetString(44);
+                                rate.rate = dr.GetFloat(45);
                                 activity.EndShift.DefaultRate = rate;
                             }
 
