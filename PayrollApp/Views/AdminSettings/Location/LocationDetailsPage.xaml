@@ -114,7 +114,6 @@
                                    VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"
                                    AreRowGroupHeadersFrozen="True" SelectionChanged="dataGrid_SelectionChanged"
                                    Margin="0,8,0,0">
-
                         </controls:DataGrid>
                     </StackPanel>
 

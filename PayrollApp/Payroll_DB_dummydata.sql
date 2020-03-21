@@ -145,6 +145,7 @@ INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 3);
 INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 4);
 INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(2, 5);
 
+INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID, isDisabled) VALUES('Special Task', '08:15', '10:30', '2', '1', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S1', '08:15', '10:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S2', '10:30', '12:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S3', '12:30', '14:30', '2', '1');
@@ -153,6 +154,7 @@ INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S5
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S6', '18:30', '21:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID, WeekendOnly) VALUES('Saturday', '09:00', '19:00', '2', '1', '1');
 
+INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID, isDisabled) VALUES('Special Task', '08:15', '10:30', '3', '1', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S1', '08:15', '10:30', '3', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S2', '10:30', '12:30', '3', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S3', '12:30', '14:30', '3', '1');
