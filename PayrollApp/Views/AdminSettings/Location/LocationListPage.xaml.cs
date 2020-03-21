@@ -97,7 +97,7 @@ namespace PayrollApp.Views.AdminSettings.Location
             // Shows loadGrid and creates a new location in the database with temporary name.
             loadGrid.Visibility = Visibility.Visible;
 
-            PayrollCore.Entities.Location location = await SettingsHelper.Instance.op.AddNewLocation();
+            PayrollCore.Entities.Location location = await SettingsHelper.Instance.op.PrepareNewLocation();
 
             if (location != null)
             {

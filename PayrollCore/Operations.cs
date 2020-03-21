@@ -16,7 +16,12 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
-        public async Task<Location> AddNewLocation()
+        /// <summary>
+        /// Creates a new location and returns the new location for further
+        /// customization (adding meetings, special task shift)
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Location> PrepareNewLocation()
         {
             Location location = new Location();
             location.isDisabled = false;

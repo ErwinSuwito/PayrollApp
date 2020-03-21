@@ -11,7 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     HorizontalAlignment="Left"
-    Height="740" Width="620"
+    Height="740" Width="540"
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
@@ -65,17 +65,40 @@
                           Margin="0,12,0,0">
                 <StackPanel x:Name="actualContent">
                     <StackPanel>
-                        <TextBlock Text="Basic" Style="{ThemeResource TitleTextBlockStyle}"/>
                         <TextBox x:Name="locationName" Header="Location name" Margin="0,8,0,0"
                                  TextChanged="locationName_TextChanged"/>
+
+                        <ComboBox x:Name="defaultRateBox" Header="Special Task rate" MinWidth="242" Margin="0,8,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="entity:Rate">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding rateDesc}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
+                                            <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="per hour" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
 
         </StackPanel>
 
+        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
+                    DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton x:Name="saveButton" Icon="Forward" Label="Next" 
+                          Click="saveButton_Click"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"
+                          FlowDirection="RightToLeft"/>
+        </CommandBar>
+
+
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
-              Background="#B7000000" Visibility="Collapsed">
+              Background="#B7000000" Visibility="Visible">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
@@ -87,13 +110,5 @@
                 <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
             </StackPanel>
         </Grid>
-
-        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
-                    DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="saveButton" Icon="Forward" Label="Next" 
-                          Click="saveButton_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}"
-                          FlowDirection="RightToLeft"/>
-        </CommandBar>
     </Grid>
 </Page>

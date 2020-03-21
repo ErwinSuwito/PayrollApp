@@ -56,7 +56,17 @@ namespace PayrollApp.Views.AdminSettings.Location
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            loadGrid.Visibility = Visibility.Visible;
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            ObservableCollection<Rate> rate = await SettingsHelper.Instance.da.GetAllRates(false);
+            defaultRateBox.ItemsSource = rate;
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
