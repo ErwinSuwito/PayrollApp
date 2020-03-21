@@ -914,11 +914,11 @@ namespace PayrollCore
         /// </summary>
         /// <param name="userGroup"></param>
         /// <returns></returns>
-        public async Task<List<MeetingUserGroup>> GetMeetingUserGroupByUserGroup(int userGroup)
+        public async Task<ObservableCollection<MeetingUserGroup>> GetMeetingUserGroupByUserGroup(int userGroup, int LocationID, bool ShowDisabled)
         {
-            List<MeetingUserGroup> meetingUserGroups = new List<MeetingUserGroup>();
+            ObservableCollection<MeetingUserGroup> meetingUserGroups = new ObservableCollection<MeetingUserGroup>();
 
-            string Query = "SELECT * FROM Meeting_Group WHERE UserGroupID=@UserGroup";
+            string Query = "SELECT * FROM Meeting_Group JOIN Meeting ON Meeting.MeetingID=Meeting_Group.MeetingID WHERE UserGroupID=@UserGroup AND LocationID=@LocationID AND IsDisabled=@IsDisabled";
 
             try
             {
@@ -930,6 +930,8 @@ namespace PayrollCore
                     {
                         cmd.CommandText = Query;
                         cmd.Parameters.Add(new SqlParameter("@UserGroup", userGroup));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", LocationID));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", ShowDisabled));
 
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
@@ -939,6 +941,7 @@ namespace PayrollCore
                             meetingUserGroup.meeting_group_id = dr.GetInt32(0);
                             meetingUserGroup.meetingID = dr.GetInt32(1);
                             meetingUserGroup.usrGroupId = dr.GetInt32(2);
+                            meetingUserGroup.meetingName = dr.GetString(4);
 
                             meetingUserGroups.Add(meetingUserGroup);
                         }

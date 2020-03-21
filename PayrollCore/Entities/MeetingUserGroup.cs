@@ -13,6 +13,7 @@ namespace PayrollCore.Entities
         public int meeting_group_id { get; set; }
         public int meetingID { get; set; }
         public int usrGroupId { get; set; }
+        public string meetingName { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

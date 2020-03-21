@@ -50,20 +50,19 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Sign in" 
+                <TextBlock Text="Select meeting" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                <TextBlock Text="Select the shifts you are doing and tap the sign in button." 
+                <TextBlock Text="Select the meeting you are attending and tap the sign in button." 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
             <StackPanel x:Name="actualContent" Margin="0,12,0,0">
-
                 <ListView x:Name="shiftSelectionView" HorizontalAlignment="Left" VerticalAlignment="Top"
-                          SelectionMode="Multiple" IsItemClickEnabled="True" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
-                          MaxHeight="372" IsMultiSelectCheckBoxEnabled="False" >
+                          SelectionMode="Single" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
+                          MaxHeight="372">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="entity:Shift">
-                            <TextBlock Text="{Binding shiftName}" />
+                        <DataTemplate x:DataType="entity:MeetingUserGroup">
+                            <TextBlock Text="{Binding meetingName}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
