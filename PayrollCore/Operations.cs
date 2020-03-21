@@ -40,6 +40,14 @@ namespace PayrollCore
             return state;
         }
 
+        /// <summary>
+        /// Generates Activity object for regular shift sign in
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="startShift"></param>
+        /// <param name="endShift"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public async Task<Activity> GenerateSignInInfo(User user, Shift startShift, Shift endShift, Location location)
         {
             DateTime signInTime = DateTime.Now;
@@ -68,6 +76,25 @@ namespace PayrollCore
             signInInfo.StartShift = startShift;
             signInInfo.EndShift = endShift;
             signInInfo.inTime = signInTime;
+
+            return signInInfo;
+        }
+
+        /// <summary>
+        /// Generate Activity object for special task
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public  Activity GenerateSpecialTask(User user, Location location)
+        {
+            Activity signInInfo = new Activity();
+
+            signInInfo.userID = user.userID;
+            signInInfo.locationID = location.locationID;
+            signInInfo.inTime = DateTime.Now;
+            signInInfo.RequireNotification = false;
+            signInInfo.IsSpecialTask = true;
 
             return signInInfo;
         }

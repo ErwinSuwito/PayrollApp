@@ -29,6 +29,7 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
+        DispatcherTimer loadTimer = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,9 +39,45 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            loadGrid.Visibility = Visibility.Visible;
-            // TO-DO: Add actual code to record special task using Task,
-            // then refresh user information and hide loadGrid once done.
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            var newActivity = SettingsHelper.Instance.op.GenerateSpecialTask(SettingsHelper.Instance.userState.user, SettingsHelper.Instance.appLocation);
+
+            if (newActivity != null)
+            {
+                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
+
+                if (IsSuccess == true)
+                {
+                    pageContent.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                }
+
+                await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
+            }
+            else
+            {
+                ContentDialog warningDialog = new ContentDialog
+                {
+                    Title = "Unable to sign in",
+                    Content = "There's a problem preventing us to sign you in for special task. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you sign in.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                await warningDialog.ShowAsync();
+
+                this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)

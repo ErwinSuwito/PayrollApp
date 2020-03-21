@@ -217,7 +217,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                 ContentDialog warningDialog = new ContentDialog
                 {
                     Title = "Unable to sign in!",
-                    Content = "There's a problem preventing us to sign you in. Please try again later.",
+                    Content = "There's a problem preventing us to sign you in. Please try again later. If the problem persits, please contact Chiefs or HR Functional Unit to help you sign in.",
                     PrimaryButtonText = "Ok"
                 };
 
@@ -225,7 +225,6 @@ namespace PayrollApp.Views.UserProfile.SignInOut
             }
 
             loadGrid.Visibility = Visibility.Collapsed;
-
         }
 
         private bool CheckUserSelection()
