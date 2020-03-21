@@ -63,6 +63,8 @@
 
             <StackPanel x:Name="actualContent">
                 <TextBox x:Name="shiftName" Header="Shift name" Margin="0,8,0,0" />
+                <ToggleSwitch x:Name="weekendOnlySwitch" Header="Shift day" OffContent="Shift will be shown on weekdays only" 
+                              OnContent="Shift will be shown on weekends only" Margin="0,8,0,0"/>
                 <TimePicker x:Name="startTime" Header="Start time" Margin="0,8,0,0"
                             ClockIdentifier="24HourClock" MinuteIncrement="15"/>
                 <TimePicker x:Name="endTime" Header="End time" Margin="0,8,0,0"

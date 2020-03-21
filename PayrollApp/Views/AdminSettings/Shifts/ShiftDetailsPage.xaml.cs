@@ -72,6 +72,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
                 shiftName.Text = shift.shiftName;
                 startTime.SelectedTime = shift.startTime;
                 endTime.SelectedTime = shift.endTime;
+                weekendOnlySwitch.IsOn = shift.WeekendOnly;
 
                 if (shift.isDisabled == true)
                 {
@@ -183,6 +184,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
             shift.shiftName = shiftName.Text;
             shift.startTime = startTime.SelectedTime.Value;
             shift.endTime = endTime.SelectedTime.Value;
+            shift.WeekendOnly = weekendOnlySwitch.IsOn;
             shift.DefaultRate = defaultRateBox.SelectedItem as Rate;
 
             if (IsNewShift == false)
