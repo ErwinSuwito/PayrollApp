@@ -62,6 +62,8 @@
             </StackPanel>
 
             <StackPanel x:Name="actualContent">
+                <TextBlock x:Name="stWarning" Text="You can only change the default rate for special tasks" 
+                           Foreground="Yellow" Visibility="Collapsed" />
                 <TextBox x:Name="shiftName" Header="Shift name" Margin="0,8,0,0" />
                 <ToggleSwitch x:Name="weekendOnlySwitch" Header="Shift day" OffContent="Shift will be shown on weekdays only" 
                               OnContent="Shift will be shown on weekends only" Margin="0,8,0,0"/>

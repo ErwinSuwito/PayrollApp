@@ -74,23 +74,26 @@ namespace PayrollApp.Views.AdminSettings.Shifts
                 endTime.SelectedTime = shift.endTime;
                 weekendOnlySwitch.IsOn = shift.WeekendOnly;
 
-                if (shift.isDisabled == true)
-                {
-                    enableButton.Visibility = Visibility.Visible;
-                    deleteButton.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    enableButton.Visibility = Visibility.Collapsed;
-                    deleteButton.Visibility = Visibility.Visible;
-                }
-
                 if (shift.shiftName == "Special Task")
                 {
+                    stWarning.Visibility = Visibility.Visible;
                     shiftName.IsEnabled = false;
                     startTime.IsEnabled = false;
                     endTime.IsEnabled = false;
                     weekendOnlySwitch.IsEnabled = false;
+                }
+                else
+                {
+                    if (shift.isDisabled == true)
+                    {
+                        enableButton.Visibility = Visibility.Visible;
+                        deleteButton.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        enableButton.Visibility = Visibility.Collapsed;
+                        deleteButton.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else
