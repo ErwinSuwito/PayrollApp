@@ -51,7 +51,7 @@
                          Header="Face API Key" PlaceholderText="Any of the 2 API Keys" Margin="0,8,0,0" 
                          PasswordRevealMode="Peek" Width="{Binding ElementName=pageContent, Path=ActualWidth}"/>
             <TextBox x:Name="workspaceBox" Header="Workspace Name" Margin="0,8,0,0"
-                     Text="{Binding WorkspaceKey, Mode=TwoWay}"  />
+                     Text="{Binding WorkspaceKey, Mode=TwoWay}" Visibility="Collapsed" />
             <Button x:Name="useDefaultFaceApi" VerticalAlignment="Bottom" Margin="0,12,0,0" 
                     Content="Use Default Endpoint and API Key" Click="useDefaultFaceApi_Click"/>
         </StackPanel>
