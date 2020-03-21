@@ -160,7 +160,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="selectedLocation"></param>
         /// <returns></returns>
-        public Location GetLocationById(string selectedLocation)
+        public async Task<Location> GetLocationById(string selectedLocation)
         {
             string GetLocationSettingsQuery = "SELECT * FROM Location WHERE locationID=@LocationID";
             try
@@ -174,7 +174,7 @@ namespace PayrollCore
                     {
                         cmd.CommandText = GetLocationSettingsQuery;
                         cmd.Parameters.Add(new SqlParameter("@LocationID", selectedLocation));
-                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
                             while (dr.Read())
                             {
@@ -239,9 +239,9 @@ namespace PayrollCore
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public async Task<bool> AddLocationAsync(Location location)
+        public async Task<int> AddLocationAsync(Location location)
         {
-            string Query = "INSERT INTO locations(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false')";
+            string Query = "INSERT INTO locations(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false') select SCOPE_IDENTITY()";
 
             try
             {
@@ -254,9 +254,11 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationName", location.locationName));
                         cmd.Parameters.Add(new SqlParameter("@EnableGM", location.enableGM));
 
-                        await cmd.ExecuteNonQueryAsync();
+                        var savedLocation = await cmd.ExecuteScalarAsync();
 
-                        return true;
+                        int.TryParse(savedLocation.ToString(), out int locationID);
+
+                        return locationID;
                     }
                 }
             }
@@ -265,7 +267,7 @@ namespace PayrollCore
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
             }
 
-            return false;
+            return -1;
         }
 
         /// <summary>
@@ -1589,11 +1591,7 @@ namespace PayrollCore
                         {
                             cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
                         }
-                        else if (activity.IsSpecialTask == true)
-                        {
-                            
-                        }
-                        else
+                        else if (activity.IsSpecialTask != true)
                         {
                             cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
                             cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));

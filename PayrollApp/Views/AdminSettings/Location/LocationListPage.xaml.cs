@@ -96,15 +96,10 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             // Shows loadGrid and creates a new location in the database with temporary name.
             loadGrid.Visibility = Visibility.Visible;
-            PayrollCore.Entities.Location location = new PayrollCore.Entities.Location();
-            location.isDisabled = false;
-            location.locationName = Guid.NewGuid().ToString();
-            location.enableGM = false;
-            bool IsSucess = await SettingsHelper.Instance.da.AddLocationAsync(location);
-            location = await SettingsHelper.Instance.da.GetLocationByName(location.locationName);
-            location.isNewLocation = true;
 
-            if (IsSucess)
+            PayrollCore.Entities.Location location = await SettingsHelper.Instance.op.AddNewLocation();
+
+            if (location != null)
             {
                 this.Frame.Navigate(typeof(LocationDetailsPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }

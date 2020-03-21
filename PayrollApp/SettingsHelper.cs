@@ -115,7 +115,7 @@ namespace PayrollApp
                     {
                         string selectedLocation = localSettings.Values["selectedLocation"].ToString();
 
-                        appLocation = da.GetLocationById(selectedLocation);
+                        appLocation = await da.GetLocationById(selectedLocation);
                         if (appLocation != null && appLocation.isDisabled != true)
                         {
                             MinHours = await da.GetMinHours();

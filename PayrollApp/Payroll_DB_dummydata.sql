@@ -46,6 +46,7 @@ CREATE TABLE Shifts(
 	LocationID int,
 	RateID int,
 	IsDisabled BIT DEFAULT 0,
+	WeekendOnly BIT DEFAULT 0,
 	FOREIGN KEY (RateID) REFERENCES Rate(RateID),
 	FOREIGN KEY (LocationID) REFERENCES Location(LocationID)
 );
@@ -150,7 +151,7 @@ INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S3
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S4', '14:30', '16:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S5', '16:30', '18:30', '2', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S6', '18:30', '21:30', '2', '1');
-INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('Saturday', '09:00', '19:00', '2', '1');
+INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID, WeekendOnly) VALUES('Saturday', '09:00', '19:00', '2', '1', '1');
 
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S1', '08:15', '10:30', '3', '1');
 INSERT INTO shifts(shiftName, startTime, endTime, locationID, rateID) VALUES('S2', '10:30', '12:30', '3', '1');

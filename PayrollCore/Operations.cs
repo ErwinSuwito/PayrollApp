@@ -16,6 +16,20 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
+        public async Task<Location> AddNewLocation()
+        {
+            Location location = new Location();
+            location.isDisabled = false;
+            location.locationName = Guid.NewGuid().ToString();
+            location.enableGM = false;
+
+            int LocationID = await da.AddLocationAsync(location);
+
+            location = await da.GetLocationById(LocationID.ToString());
+            location.isNewLocation = true;
+
+            return location;
+        }
 
         public async Task<UserState> GenerateUserState(User user)
         {

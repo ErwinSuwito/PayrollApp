@@ -107,6 +107,8 @@ namespace PayrollApp.Views.AdminSettings.Location
         async Task<bool> SaveLocationInfo()
         {
             bool IsSuccess = await SettingsHelper.Instance.da.SaveLocationAsync(location);
+
+            // TO-DO: Add code to add "Special Task" shift
             return IsSuccess;
         }
 

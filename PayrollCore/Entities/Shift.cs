@@ -18,6 +18,7 @@ namespace PayrollCore.Entities
         public bool selected { get; set; }
         public bool isDisabled { get; set; }
         public string dg_isDisabled { get; set; }
+        public bool WeekendOnly { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyEventChanged(string propertyName)
