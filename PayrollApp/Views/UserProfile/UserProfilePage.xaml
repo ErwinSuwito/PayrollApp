@@ -60,10 +60,12 @@
                         CornerRadius="2" FontSize="18" Click="signButton_Click" />
 
                 <Button x:Name="specialTaskButton" Content="Special Task" Style="{StaticResource DefaultButtonStyle}" 
-                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" />
+                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" 
+                        Click="specialTaskButton_Click"/>
                 
                 <Button x:Name="meetingButton" Content="Meeting Attendance" Style="{StaticResource DefaultButtonStyle}" Visibility="Collapsed"
-                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" />
+                        Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" Margin="0,12,0,0" FontSize="18" 
+                        Click="meetingButton_Click"/>
 
                 <Button x:Name="improveRecButton" Content="Improve Recognition" Style="{StaticResource DefaultButtonStyle}"
                         Width="{Binding ElementName=actualContent, Path=ActualWidth}" Height="48" 

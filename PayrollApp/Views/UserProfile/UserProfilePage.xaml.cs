@@ -175,5 +175,29 @@ namespace PayrollApp.Views.UserProfile
                 totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours out of the minimum " + minHours.ToString() + " hours.";
             }
         }
+
+        private void specialTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
+            {
+                this.Frame.Navigate(typeof(SpecialTask.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            else
+            {
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == true && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+                {
+                    this.Frame.Navigate(typeof(SpecialTask.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(SpecialTask.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+            }
+        }
+
+        private void meetingButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
