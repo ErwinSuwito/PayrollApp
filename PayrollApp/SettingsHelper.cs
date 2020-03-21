@@ -93,7 +93,7 @@ namespace PayrollApp
             instance = new SettingsHelper();
         }
 
-        public async void Initializev2()
+        public async Task<bool> Initializev2()
         {
             LoadRoamingSettings();
             Windows.Storage.ApplicationData.Current.DataChanged += RoamingDataChanged;
@@ -128,6 +128,8 @@ namespace PayrollApp
                             groupIdString = await da.GetGlobalSetting("DefaultGroup");
                             int.TryParse(groupIdString, out groupID);
                             defaultOtherGroup = await da.GetUserGroupById(groupID);
+
+                            return true;
                         }
                     }
                 }
@@ -138,9 +140,7 @@ namespace PayrollApp
                     localSettings.Values["CardConnString"] = null;
                 }
             }
-            else
-            {
-            }
+            return false;
         }
 
         private void RoamingDataChanged(ApplicationData sender, object args)

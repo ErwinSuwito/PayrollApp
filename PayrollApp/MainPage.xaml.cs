@@ -47,21 +47,7 @@ namespace PayrollApp
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (SettingsHelper.Instance.appLocation.isDisabled == false)
-                {
-                    rootFrame.Navigate(typeof(Views.LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-                }
-                else
-                {
-                    rootFrame.Navigate(typeof(Views.FirstRunSetup.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-                }
-            }
-            catch (NullReferenceException)
-            {
-                rootFrame.Navigate(typeof(Views.FirstRunSetup.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
+            rootFrame.Navigate(typeof(Views.AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 
             //Background.MediaPlayer.Play();
 

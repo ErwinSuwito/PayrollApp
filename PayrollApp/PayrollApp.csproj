@@ -197,6 +197,9 @@
     <Compile Include="Views\AdminSettings\UserManagement\UserListPage.xaml.cs">
       <DependentUpon>UserListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AppInitPage.xaml.cs">
+      <DependentUpon>AppInitPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DebugModePage.xaml.cs">
       <DependentUpon>DebugModePage.xaml</DependentUpon>
     </Compile>
@@ -367,6 +370,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AdminSettings\UserManagement\UserListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppInitPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

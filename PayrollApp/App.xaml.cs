@@ -48,7 +48,7 @@ namespace PayrollApp
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -90,7 +90,7 @@ namespace PayrollApp
                     CoreUtil.MinDetectableFaceCoveragePercentage = SettingsHelper.Instance.MinDetectableFaceCoveragePercentage;
                 };
 
-                SettingsHelper.Instance.Initializev2();
+                await SettingsHelper.Instance.Initializev2();
 
                 //Extend view to title bar
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
