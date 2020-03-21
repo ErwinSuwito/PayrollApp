@@ -129,12 +129,13 @@ namespace PayrollCore
                                 item.locationID = dr.GetInt32(2);
                                 item.meetingDay = dr.GetInt32(3);
                                 item.isDisabled = dr.GetBoolean(4);
+                                item.StartTime = dr.GetTimeSpan(5);
 
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(6);
-                                rate.rateDesc = dr.GetString(7);
-                                rate.rate = dr.GetFloat(8);
-                                rate.isDisabled = dr.GetBoolean(9);
+                                rate.rateID = dr.GetInt32(7);
+                                rate.rateDesc = dr.GetString(8);
+                                rate.rate = dr.GetFloat(9);
+                                rate.isDisabled = dr.GetBoolean(10);
 
                                 item.rate = rate;
 
@@ -286,7 +287,7 @@ namespace PayrollCore
                 {
                     conn.Open();
 
-                    Query = "UPDATE Meeting SET MeetingName=@MeetingName, MeetingDay=@MeetingDay, IsDisabled=@DisableMeeting, RateID=@RateID WHERE MeetingID=@MeetingID";
+                    Query = "UPDATE Meeting SET MeetingName=@MeetingName, MeetingDay=@MeetingDay, IsDisabled=@DisableMeeting, RateID=@RateID, StartTime=@StartTime WHERE MeetingID=@MeetingID";
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
@@ -298,6 +299,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
                         cmd.Parameters.Add(new SqlParameter("@DisableMeeting", meeting.isDisabled));
                         cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
 
                         await cmd.ExecuteNonQueryAsync();
                     }
@@ -315,7 +317,7 @@ namespace PayrollCore
 
         public async Task<int> SaveMeetingAndReturnId(Meeting meeting)
         {
-            string Query = "INSERT INTO meetings(MeetingName, LocationID, MeetingDay, IsDisabled, RateID) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID) select SCOPE_IDENTITY()";
+            string Query = "INSERT INTO meetings(MeetingName, LocationID, MeetingDay, IsDisabled, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID, @StartTime) select SCOPE_IDENTITY()";
             
             try
             {
@@ -332,6 +334,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
                         cmd.Parameters.Add(new SqlParameter("@DisableMeeting", meeting.isDisabled));
                         cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
 
                         var savedMeeting = await cmd.ExecuteScalarAsync();
 
@@ -920,8 +923,13 @@ namespace PayrollCore
         {
             ObservableCollection<MeetingUserGroup> meetingUserGroups = new ObservableCollection<MeetingUserGroup>();
 
-            string Query = "SELECT * FROM Meeting_Group JOIN Meeting ON Meeting.MeetingID=Meeting_Group.MeetingID WHERE UserGroupID=@UserGroup AND LocationID=@LocationID AND IsDisabled=@IsDisabled";
+            string Query = "SELECT * FROM Meeting_Group JOIN Meeting ON Meeting.MeetingID=Meeting_Group.MeetingID WHERE UserGroupID=@UserGroup AND LocationID=@LocationID";
 
+            if (ShowDisabled == false)
+            {
+                Query += "AND IsDisabled='0'";
+            }
+     
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -933,7 +941,6 @@ namespace PayrollCore
                         cmd.CommandText = Query;
                         cmd.Parameters.Add(new SqlParameter("@UserGroup", userGroup));
                         cmd.Parameters.Add(new SqlParameter("@LocationID", LocationID));
-                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", ShowDisabled));
 
                         SqlDataReader dr = await cmd.ExecuteReaderAsync();
                         while (dr.Read())
@@ -944,6 +951,7 @@ namespace PayrollCore
                             meetingUserGroup.meetingID = dr.GetInt32(1);
                             meetingUserGroup.usrGroupId = dr.GetInt32(2);
                             meetingUserGroup.meetingName = dr.GetString(4);
+                            meetingUserGroup.StartTime = dr.GetTimeSpan(9);
 
                             meetingUserGroups.Add(meetingUserGroup);
                         }
@@ -1511,11 +1519,11 @@ namespace PayrollCore
                             if (!dr.IsDBNull(5))
                             {
                                 var startShift = new Shift();
-                                startShift.shiftID = dr.GetInt32(19);
-                                startShift.shiftName = dr.GetString(20);
-                                startShift.startTime = dr.GetTimeSpan(21);
-                                startShift.endTime = dr.GetTimeSpan(22);
-                                startShift.WeekendOnly = dr.GetBoolean(26);
+                                startShift.shiftID = dr.GetInt32(20);
+                                startShift.shiftName = dr.GetString(21);
+                                startShift.startTime = dr.GetTimeSpan(22);
+                                startShift.endTime = dr.GetTimeSpan(23);
+                                startShift.WeekendOnly = dr.GetBoolean(27);
                                 activity.StartShift = startShift;
                             }
 
@@ -1523,11 +1531,11 @@ namespace PayrollCore
                             if (!dr.IsDBNull(6))
                             {
                                 var endShift = new Shift();
-                                endShift.shiftID = dr.GetInt32(27);
-                                endShift.shiftName = dr.GetString(28);
-                                endShift.startTime = dr.GetTimeSpan(29);
-                                endShift.endTime = dr.GetTimeSpan(30);
-                                endShift.WeekendOnly = dr.GetBoolean(34);
+                                endShift.shiftID = dr.GetInt32(28);
+                                endShift.shiftName = dr.GetString(29);
+                                endShift.startTime = dr.GetTimeSpan(30);
+                                endShift.endTime = dr.GetTimeSpan(31);
+                                endShift.WeekendOnly = dr.GetBoolean(35);
                                 activity.EndShift = endShift;
                             }
 
@@ -1538,6 +1546,7 @@ namespace PayrollCore
                                 meeting.meetingID = dr.GetInt32(13);
                                 meeting.meetingName = dr.GetString(14);
                                 meeting.meetingDay = dr.GetInt32(16);
+                                meeting.StartTime = dr.GetTimeSpan(19);
                                 activity.meeting = meeting;
                             }
 
@@ -1553,29 +1562,29 @@ namespace PayrollCore
                             if (!dr.IsDBNull(11))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(35);
-                                rate.rateDesc = dr.GetString(36);
-                                rate.rate = dr.GetFloat(37);
+                                rate.rateID = dr.GetInt32(36);
+                                rate.rateDesc = dr.GetString(37);
+                                rate.rate = dr.GetFloat(38);
                                 activity.ApplicableRate = rate;
                             }
 
                             // Checks if the start shift rate is not empty and set their values
-                            if (!dr.IsDBNull(39))
+                            if (!dr.IsDBNull(40))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(39);
-                                rate.rateDesc = dr.GetString(40);
-                                rate.rate = dr.GetFloat(41);
+                                rate.rateID = dr.GetInt32(40);
+                                rate.rateDesc = dr.GetString(41);
+                                rate.rate = dr.GetFloat(42);
                                 activity.StartShift.DefaultRate = rate;
                             }
 
                             //Checks if the end shift rate is not empty and set their values
-                            if (!dr.IsDBNull(43))
+                            if (!dr.IsDBNull(44))
                             {
                                 var rate = new Rate();
-                                rate.rateID = dr.GetInt32(43);
-                                rate.rateDesc = dr.GetString(44);
-                                rate.rate = dr.GetFloat(45);
+                                rate.rateID = dr.GetInt32(44);
+                                rate.rateDesc = dr.GetString(45);
+                                rate.rate = dr.GetFloat(46);
                                 activity.EndShift.DefaultRate = rate;
                             }
 
