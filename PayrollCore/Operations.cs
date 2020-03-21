@@ -98,6 +98,26 @@ namespace PayrollCore
 
             return signInInfo;
         }
+
+        public Activity CompleteSpecialTask(Activity activity)
+        {
+            DateTime signInTime = activity.inTime;
+            DateTime signOutTime = DateTime.Now;
+
+            if (signInTime.DayOfYear < signOutTime.DayOfYear)
+            {
+                activity.RequireNotification = false;
+                activity.NotificationReason = 2;
+            }
+            else
+            {
+                activity.RequireNotification = false;
+            }
+
+
+
+            return activity;
+        }
         
         public async Task<Activity> GenerateSignOutInfo(Activity activity, User user)
         {

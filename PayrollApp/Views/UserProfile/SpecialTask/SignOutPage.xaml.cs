@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PayrollCore.Entities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
+        DispatcherTimer loadTimer = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,10 +40,48 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            loadGrid.Visibility = Visibility.Visible;
-            // TO-DO: Add actual code to record attendance using Task,
-            // then refresh user information and hide loadGrid once done.
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
         }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+
+            if (SettingsHelper.Instance.userState != null)
+            {
+                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
+
+                bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
+                if (IsSuccess)
+                {
+                    pageContent.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Unable to sign out",
+                        Content = "There's a problem signing you out. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to sign you out.",
+                        PrimaryButtonText = "Ok",
+                        SecondaryButtonText = "More info"
+                    };
+
+                    await contentDialog.ShowAsync();
+                    this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                }
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+
+            await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
+
+            loadGrid.Visibility = Visibility.Collapsed;
+        }
+
 
         private void TimeUpdater_Tick(object sender, object e)
         {
