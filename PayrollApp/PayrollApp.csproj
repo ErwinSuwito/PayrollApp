@@ -239,6 +239,12 @@
     <Compile Include="Views\UserProfile\Meeting\AttendanceRecordedPage.xaml.cs">
       <DependentUpon>AttendanceRecordedPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserProfile\Meeting\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfile\Meeting\SignOutPage.xaml.cs">
+      <DependentUpon>SignOutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserProfile\SignInOut\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
@@ -426,6 +432,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UserProfile\Meeting\AttendanceRecordedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\Meeting\SignInPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserProfile\Meeting\SignOutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

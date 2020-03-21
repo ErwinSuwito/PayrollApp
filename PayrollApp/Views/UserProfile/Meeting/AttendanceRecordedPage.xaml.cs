@@ -37,10 +37,6 @@ namespace PayrollApp.Views.UserProfile.Meeting
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
-
-            loadGrid.Visibility = Visibility.Visible;
-            // TO-DO: Add actual code to record attendance using Task,
-            // then refresh user information and hide loadGrid once done.
         }
 
         private void TimeUpdater_Tick(object sender, object e)
