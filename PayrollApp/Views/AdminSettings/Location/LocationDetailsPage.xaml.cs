@@ -32,6 +32,7 @@ namespace PayrollApp.Views.AdminSettings.Location
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
         PayrollCore.Entities.Location location;
+        Shift specialTask;
 
         public LocationDetailsPage()
         {
@@ -90,9 +91,29 @@ namespace PayrollApp.Views.AdminSettings.Location
 
         private async void LoadTimer_Tick(object sender, object e)
         {
+            loadTimer.Stop();
+
+            ObservableCollection<Rate> getRates = await SettingsHelper.Instance.da.GetAllRates(false);
+            defaultRateBox.ItemsSource = getRates;
+
+            specialTask = await SettingsHelper.Instance.da.GetSpecialTaskShift(location.locationID);
+
             ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.da.GetMeetings(location);
             dataGrid.ItemsSource = getItem;
-            loadTimer.Stop();
+
+            if (location.isNewLocation == false)
+            {
+                for (int i = 0; i < getRates.Count; i++)
+                {
+                    var item = getRates.ElementAt(i) as Rate;
+                    if (item.rateID == specialTask.DefaultRate.rateID)
+                    {
+                        defaultRateBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
             loadGrid.Visibility = Visibility.Collapsed;
         }
 
@@ -202,6 +223,24 @@ namespace PayrollApp.Views.AdminSettings.Location
         async Task<bool> SaveLocationInfo()
         {
             bool IsSuccess = await SettingsHelper.Instance.da.SaveLocationAsync(location);
+
+            if (location.isNewLocation)
+            {
+                specialTask = new Shift();
+                specialTask.shiftName = "Special Task";
+                specialTask.startTime = DateTime.Now.TimeOfDay;
+                specialTask.endTime = specialTask.startTime;
+                specialTask.locationID = location.locationID;
+                specialTask.isDisabled = true;
+                specialTask.WeekendOnly = false;
+
+                IsSuccess = await SettingsHelper.Instance.da.AddNewShift(specialTask);
+            }
+            else
+            {
+                IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(specialTask);
+            }
+
             return IsSuccess;
         }
 

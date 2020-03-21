@@ -71,6 +71,20 @@
                         <ToggleSwitch x:Name="enableMeetingSwitch" Header="Enable Meetings" Margin="0,8,0,0"
                                       IsOn="False" OnContent="Yes" OffContent="No" 
                                       Toggled="enableMeetingSwitch_Toggled"/>
+                        <ComboBox x:Name="defaultRateBox" Header="Special Task rate" MinWidth="242" Margin="0,8,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="entity:Rate">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding rateDesc}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
+                                            <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="per hour" Margin="4,0,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel x:Name="meetingsPanel" Margin="0,16,0,0"
                                 Visibility="{Binding ElementName=enableMeetingSwitch, Converter={StaticResource BooleanToVisibility}, Path=IsOn}">
@@ -80,7 +94,7 @@
                         <animations:Implicit.HideAnimations>
                             <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
                         </animations:Implicit.HideAnimations>
-                        
+
                         <TextBlock Text="Meetings" Style="{ThemeResource TitleTextBlockStyle}"/>
                         <TextBlock Text="Below are available meetings in this location. To add a meeting, tap on the Add button. Tap on the item to edit their details or remove them." 
                            TextWrapping="Wrap" FontSize="16"/>
@@ -109,8 +123,31 @@
 
         </StackPanel>
 
+        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
+                    DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton x:Name="deleteButton" Label="Disable" 
+                          Click="deleteButton_Click" 
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xF140;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <AppBarButton x:Name="enableButton" Label="Enable" 
+                          Click="enableButton_Click"
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE0E7;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <AppBarButton x:Name="saveButton" Icon="Save" Label="Save" 
+                          Click="saveButton_Click"
+                          Style="{ThemeResource AppBarButtonRevealStyle}"/>
+        </CommandBar>
+
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
-              Background="#B7000000" Visibility="Collapsed">
+              Background="#B7000000" Visibility="Visible">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
@@ -123,27 +160,5 @@
             </StackPanel>
         </Grid>
 
-        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
-                    DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="deleteButton" Label="Disable" 
-                          Click="deleteButton_Click" 
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xF140;" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            
-            <AppBarButton x:Name="enableButton" Label="Enable" 
-                          Click="enableButton_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE0E7;" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            
-            <AppBarButton x:Name="saveButton" Icon="Save" Label="Save" 
-                          Click="saveButton_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}"/>
-        </CommandBar>
     </Grid>
 </Page>

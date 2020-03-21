@@ -1232,6 +1232,52 @@ namespace PayrollCore
             }
         }
 
+        public async Task<Shift> GetSpecialTaskShift(int locationID)
+        {
+            Shift shift = new Shift();
+            string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE ShiftName='Special Task' AND LocationID=@LocationID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            shift.shiftID = dr.GetInt32(0);
+                            shift.shiftName = dr.GetString(1);
+                            shift.startTime = dr.GetTimeSpan(2);
+                            shift.endTime = dr.GetTimeSpan(3);
+                            shift.locationID = dr.GetInt32(4);
+                            shift.isDisabled = dr.GetBoolean(6);
+
+                            Rate rate = new Rate();
+                            rate.rateID = dr.GetInt32(7);
+                            rate.rateDesc = dr.GetString(8);
+                            rate.rate = dr.GetFloat(9);
+
+                            shift.DefaultRate = rate;
+                        }
+                    }
+                }
+
+                return shift;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+
         public async Task<bool> AddNewShift(Shift shift)
         {
             bool IsSuccess = false;
