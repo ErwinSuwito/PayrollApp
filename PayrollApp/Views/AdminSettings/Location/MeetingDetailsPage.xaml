@@ -74,6 +74,21 @@
                     <x:String>Friday</x:String>
                 </ComboBox>
 
+                <ComboBox x:Name="defaultRateBox" Header="Default rate" MinWidth="242" Margin="0,8,0,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="entity:Rate">
+                            <StackPanel>
+                                <TextBlock Text="{Binding rateDesc}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <TextBlock Text="per hour" Margin="4,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
                 <TextBlock Text="Allow people from these groups to attend:" Margin="0,8,0,0" />
                 <ListView x:Name="userGroupSelector" SelectionMode="Multiple" Margin="0,8,0,0" Height="328">
                     <ListView.ItemTemplate>

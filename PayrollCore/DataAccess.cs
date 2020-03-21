@@ -107,7 +107,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<Meeting>> GetMeetings(Location appLocation)
         {
-            const string GetLocationsQuery = "SELECT * FROM Meeting WHERE LocationID=@LocationID";
+            const string GetLocationsQuery = "SELECT * FROM Meeting JOIN Rate ON Rate.RateID=Meeting.RateID WHERE LocationID=@LocationID";
 
             var items = new ObservableCollection<Meeting>();
             try

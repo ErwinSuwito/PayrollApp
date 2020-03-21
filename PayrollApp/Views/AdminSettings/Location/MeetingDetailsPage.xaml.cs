@@ -84,6 +84,22 @@ namespace PayrollApp.Views.AdminSettings.Location
             
             selectedUserGroup = await SettingsHelper.Instance.da.GetMeetingUserGroupByMeetingId(meeting.meetingID);
 
+            ObservableCollection<Rate> rate = await SettingsHelper.Instance.da.GetAllRates(false);
+            defaultRateBox.ItemsSource = rate;
+
+            if (!meeting.newMeeting)
+            {
+                for (int i = 0; i < rate.Count; i++)
+                {
+                    var item = rate.ElementAt(i) as Rate;
+                    if (item.rateID == meeting.rate.rateID)
+                    {
+                        defaultRateBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
             loadTimer2.Interval = new TimeSpan(0, 0, 0, 0, 60);
             loadTimer2.Tick += LoadTimer2_Tick;
             loadTimer2.Start();
@@ -218,6 +234,7 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             meeting.meetingDay = daySelector.SelectedIndex;
             meeting.meetingName = meetingNameBox.Text;
+            meeting.rate = defaultRateBox.SelectedItem as Rate;
 
             bool IsSuccess = await SettingsHelper.Instance.da.SaveMeetingSettings(meeting) && await SettingsHelper.Instance.da.DeleteMeetingUserGroup(meeting.meetingID);
 
