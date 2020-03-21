@@ -66,13 +66,18 @@
                 <TextBlock x:Name="adWarning" Text="Changing user profile for AD accounts is not supported. You can change them in Active Directory." 
                                TextWrapping="Wrap" Foreground="Yellow" Visibility="Collapsed"/>
                 <TextBox x:Name="meetingNameBox" Header="Meeting name" Margin="0,8,0,0" />
-                <ComboBox x:Name="daySelector" Header="Meeting day" Margin="0,8,0,0">
-                    <x:String>Monday</x:String>
-                    <x:String>Tuesday</x:String>
-                    <x:String>Wednesday</x:String>
-                    <x:String>Thursday</x:String>
-                    <x:String>Friday</x:String>
-                </ComboBox>
+
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox x:Name="daySelector" Header="Meeting day" Margin="0,8,0,0">
+                        <x:String>Monday</x:String>
+                        <x:String>Tuesday</x:String>
+                        <x:String>Wednesday</x:String>
+                        <x:String>Thursday</x:String>
+                        <x:String>Friday</x:String>
+                    </ComboBox>
+
+                    <TimePicker x:Name="startTimePicker" Header="Start Time" Margin="20,8,0,0" />
+                </StackPanel>
 
                 <ComboBox x:Name="defaultRateBox" Header="Default rate" MinWidth="242" Margin="0,8,0,0">
                     <ComboBox.ItemTemplate>

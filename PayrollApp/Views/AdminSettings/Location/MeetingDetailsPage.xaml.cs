@@ -69,6 +69,7 @@ namespace PayrollApp.Views.AdminSettings.Location
                 meetingNameBox.Text = meeting.meetingName;
                 daySelector.SelectedIndex = meeting.meetingDay;
                 disableMeetingBtn.Visibility = Visibility.Visible;
+                startTimePicker.Time = meeting.StartTime;
             }
             else
             {
@@ -234,6 +235,7 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             meeting.meetingDay = daySelector.SelectedIndex;
             meeting.meetingName = meetingNameBox.Text;
+            meeting.StartTime = startTimePicker.Time;
             meeting.rate = defaultRateBox.SelectedItem as Rate;
 
             bool IsSuccess = await SettingsHelper.Instance.da.SaveMeetingSettings(meeting) && await SettingsHelper.Instance.da.DeleteMeetingUserGroup(meeting.meetingID);
