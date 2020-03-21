@@ -90,7 +90,7 @@
                 </ComboBox>
 
                 <TextBlock Text="Allow people from these groups to attend:" Margin="0,8,0,0" />
-                <ListView x:Name="userGroupSelector" SelectionMode="Multiple" Margin="0,8,0,0" Height="328">
+                <ListView x:Name="userGroupSelector" SelectionMode="Multiple" Margin="0,8,0,0" Height="248">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:UserGroup">
                             <TextBlock Text="{Binding groupName}" />
