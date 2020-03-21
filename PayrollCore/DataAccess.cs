@@ -910,9 +910,11 @@ namespace PayrollCore
         }
 
         /// <summary>
-        /// Get contents of meeting_group table based on the passed userGroup
+        /// Get available meetings based on the user group and location
         /// </summary>
-        /// <param name="userGroup"></param>
+        /// <param name="userGroup">User group for the meeting</param>
+        /// <param name="LocationID">The location of the meeting</param>
+        /// <param name="ShowDisabled">If disabled meetings are to be returned</param>
         /// <returns></returns>
         public async Task<ObservableCollection<MeetingUserGroup>> GetMeetingUserGroupByUserGroup(int userGroup, int LocationID, bool ShowDisabled)
         {

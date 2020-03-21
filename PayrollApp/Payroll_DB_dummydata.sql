@@ -58,6 +58,7 @@ CREATE TABLE Meeting(
 	MeetingDay int NOT NULL,
 	IsDisabled BIT DEFAULT 0,
 	RateID int,
+	StartTime time,
 	FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
 	FOREIGN KEY (RateID) REFERENCES Rate(rateID)
 );
@@ -132,8 +133,8 @@ INSERT INTO Location(locationName, enableGM, isDisabled) VALUES('new-sys', 1, 1)
 INSERT INTO Location(locationName, enableGM) VALUES('APU', 1);
 INSERT INTO Location(locationName, enableGM) VALUES('APIIT', 0);
 
-INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'GM', 2, 1);
-INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID)  VALUES(2, 'BMM', 1, 1);
+INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID, StartTime)  VALUES(2, 'GM', 2, 1, '18:15:00');
+INSERT INTO Meeting(locationID, meetingName, meetingDay, rateID, StartTime)  VALUES(2, 'BMM', 1, 1, '18:30:00');
 
 INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 1);
 INSERT INTO meeting_group(meetingID, UserGroupID) VALUES(1, 2);

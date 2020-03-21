@@ -52,7 +52,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            ObservableCollection<PayrollCore.Entities.Shift> shifts = await SettingsHelper.Instance.da.GetShiftsFromLocation(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+            ObservableCollection<MeetingUserGroup> shifts = await SettingsHelper.Instance.da.GetMeetingUserGroupByUserGroup(SettingsHelper.Instance.userState.user.userGroup.groupID, SettingsHelper.Instance.appLocation.locationID, false);
             shiftSelectionView.ItemsSource = shifts;
 
             loadGrid.Visibility = Visibility.Collapsed;
@@ -126,9 +126,9 @@ namespace PayrollApp.Views.UserProfile.Meeting
                 if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
                 {
                     string emailContent;
-                    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late. Below are the details of the shift.";
-                    emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
-                    emailContent += newActivity.StartShift.startTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
+                    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late for a meeting. Below are the details of the meeting.";
+                    emailContent += "\n Shift: " + newActivity.meeting.meetingName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Meeting start: ";
+                    emailContent += newActivity.meeting.meeting + "\n Actual sign in: " + newActivity.inTime;
                     emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 
                     var message = new Message
