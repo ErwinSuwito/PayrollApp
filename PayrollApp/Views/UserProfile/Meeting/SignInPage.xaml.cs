@@ -128,7 +128,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
                     string emailContent;
                     emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late for a meeting. Below are the details of the meeting.";
                     emailContent += "\n Shift: " + newActivity.meeting.meetingName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Meeting start: ";
-                    emailContent += newActivity.meeting.meeting + "\n Actual sign in: " + newActivity.inTime;
+                    emailContent += newActivity.inTime.ToShortDateString() + " " + newActivity.meeting.StartTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
                     emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 
                     var message = new Message
@@ -202,14 +202,6 @@ namespace PayrollApp.Views.UserProfile.Meeting
                         await SettingsHelper.Instance.UpdateUserState(user);
                         this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
-
-                    //case 2:
-                    //    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
-                    //    emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + newActivity.location.locationName + "\n Shift ends: ";
-                    //    emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.outTime;
-                    //    emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
-
-                    //    break;
                 }
             }
             else
