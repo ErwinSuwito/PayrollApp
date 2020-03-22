@@ -104,7 +104,7 @@ namespace PayrollCore
             return signInInfo;
         }
 
-        public Activity CompleteSpecialTask(Activity activity)
+        public Activity CompleteSpecialTask(Activity activity, User user)
         {
             DateTime signInTime = activity.inTime;
             DateTime signOutTime = DateTime.Now;
@@ -118,6 +118,16 @@ namespace PayrollCore
             {
                 activity.RequireNotification = false;
             }
+
+            if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
+            {
+                activity.ApplicableRate = user.userGroup.DefaultRate;
+            }
+
+            TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+            activity.ApprovedHours = activityOffset.TotalHours;
+            activity.ClaimDate = DateTime.Today;
+            activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
 
             return activity;
         }
@@ -175,6 +185,7 @@ namespace PayrollCore
 
             if (activity.meeting != null)
             {
+                activity.userID = user.userID;
                 activity.inTime = DateTime.Now;
                 activity.NoActivity = false;
                 activity.locationID = activity.meeting.locationID;
@@ -191,6 +202,17 @@ namespace PayrollCore
             {
                 return null;
             }
+        }
+
+        public Activity CompleteMeetingAttendance(Activity activity, User user)
+        {
+            activity.outTime = DateTime.Now;
+            TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
+            activity.ApprovedHours = activityOffset.TotalHours;
+            activity.ClaimDate = DateTime.Today;
+            activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
+
+            return activity;
         }
 
         public float CalcPay(double hours, float rate)
