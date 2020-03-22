@@ -53,7 +53,7 @@ namespace PayrollCore
         /// <param name="endShift"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public async Task<Activity> GenerateSignInInfo(User user, Shift startShift, Shift endShift, Location location)
+        public async Task<Activity> GenerateSignInInfo(User user, Shift startShift, Shift endShift)
         {
             DateTime signInTime = DateTime.Now;
 
@@ -77,7 +77,7 @@ namespace PayrollCore
 
             // Adds info to signInInfo
             signInInfo.userID = user.userID;
-            signInInfo.locationID = location.locationID;
+            signInInfo.locationID = startShift.locationID;
             signInInfo.StartShift = startShift;
             signInInfo.EndShift = endShift;
             signInInfo.inTime = signInTime;
@@ -171,7 +171,26 @@ namespace PayrollCore
         {
             Activity activity = new Activity();
 
-            
+            activity.meeting = await da.GetMeetingById(MeetingID);
+
+            if (activity.meeting != null)
+            {
+                activity.inTime = DateTime.Now;
+                activity.NoActivity = false;
+                activity.locationID = activity.meeting.locationID;
+                
+                if (activity.meeting.StartTime > DateTime.Now.TimeOfDay)
+                {
+                    activity.RequireNotification = true;
+                    activity.NotificationReason = 1;
+                }
+
+                return activity;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public float CalcPay(double hours, float rate)

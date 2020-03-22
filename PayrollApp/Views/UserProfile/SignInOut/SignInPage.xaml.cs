@@ -117,7 +117,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                 lastItem = firstItem;
             }
 
-            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, firstItem, lastItem, SettingsHelper.Instance.appLocation);
+            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, firstItem, lastItem);
 
             bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
 
