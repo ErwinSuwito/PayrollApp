@@ -1727,5 +1727,51 @@ namespace PayrollCore
             }
         }
 
+        public async Task<Meeting> GetMeetingById(int MeetingID)
+        {
+            string Query = "SELECT * FROM Meeting JOIN Rate on Rate.RateID=Meeting.RateID WHERE MeetingID=@MeetingID";
+            try
+            {
+                Meeting meeting;
+
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", MeetingID));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(0);
+                                meeting.meetingName = dr.GetString(1);
+                                meeting.locationID = dr.GetInt32(2);
+                                meeting.meetingDay = dr.GetInt32(3);
+                                meeting.isDisabled = dr.GetBoolean(4);
+
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(5);
+                                rate.rateDesc = dr.GetString(8);
+                                rate.rate = dr.GetFloat(9);
+                                rate.isDisabled = dr.GetBoolean(10);
+                                
+                                return meeting;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+
     }
 }

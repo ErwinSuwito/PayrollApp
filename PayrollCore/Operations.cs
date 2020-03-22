@@ -119,8 +119,6 @@ namespace PayrollCore
                 activity.RequireNotification = false;
             }
 
-
-
             return activity;
         }
         
@@ -161,6 +159,19 @@ namespace PayrollCore
             activity.ApprovedHours = activityOffset.TotalHours;
 
             return activity;
+        }
+
+        /// <summary>
+        /// Generates an Activity object that stores meeting attendance data
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="MeetingID"></param>
+        /// <returns></returns>
+        public async Task<Activity> GenerateMeetingAttendance(User user, int MeetingID)
+        {
+            Activity activity = new Activity();
+
+            
         }
 
         public float CalcPay(double hours, float rate)

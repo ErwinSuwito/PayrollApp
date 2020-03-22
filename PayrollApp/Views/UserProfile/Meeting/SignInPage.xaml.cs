@@ -74,49 +74,6 @@ namespace PayrollApp.Views.UserProfile.Meeting
         {
             loadGrid.Visibility = Visibility.Visible;
 
-            PayrollCore.Entities.Shift firstItem = new PayrollCore.Entities.Shift();
-            PayrollCore.Entities.Shift lastItem = new PayrollCore.Entities.Shift();
-
-            if (shiftSelectionView.SelectedItems.Count > 1)
-            {
-                bool IsSelectionValid = CheckUserSelection();
-                int firstIndex;
-                int lastIndex;
-
-                if (IsSelectionValid == true)
-                {
-                    if (shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First()) < shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last()))
-                    {
-                        firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                        lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                    }
-                    else
-                    {
-                        firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                        lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                    }
-
-                    firstItem = (shiftSelectionView.Items[firstIndex] as PayrollCore.Entities.Shift);
-                    lastItem = (shiftSelectionView.Items[lastIndex] as PayrollCore.Entities.Shift);
-                }
-                else
-                {
-                    ContentDialog warningDialog = new ContentDialog
-                    {
-                        Title = "Shift selection not valid!",
-                        Content = "You can only sign in for continuous shifts. For example, if you have S1 to S2 and S4, you can only sign in for S1 and S2.",
-                        PrimaryButtonText = "Ok"
-                    };
-
-                    await warningDialog.ShowAsync();
-                }
-            }
-            else
-            {
-                firstItem = shiftSelectionView.SelectedItem as PayrollCore.Entities.Shift;
-                lastItem = firstItem;
-            }
-
             var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, firstItem, lastItem, SettingsHelper.Instance.appLocation);
 
             bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
