@@ -74,7 +74,8 @@ namespace PayrollApp.Views.UserProfile.Meeting
         {
             loadGrid.Visibility = Visibility.Visible;
 
-            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, firstItem, lastItem, SettingsHelper.Instance.appLocation);
+            var selectedItem = shiftSelectionView.SelectedItem as MeetingUserGroup;
+            var newActivity = await SettingsHelper.Instance.op.GenerateMeetingAttendance(SettingsHelper.Instance.userState.user, selectedItem.meetingID);
 
             bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
 
@@ -90,7 +91,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
                     var message = new Message
                     {
-                        Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + DateTime.Today.ToShortDateString(),
+                        Subject = "[Payroll] Meeting Late Attendance " + newActivity.meeting.meetingName + DateTime.Today.ToShortDateString(),
                         Body = new ItemBody
                         {
                             ContentType = BodyType.Text,
@@ -134,7 +135,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
                         ContentDialog contentDialog = new ContentDialog
                         {
                             Title = "Unable to send late sign in notification",
-                            Content = "Please send the Sign In Late email to HR. You are signed in. There is no need to re-sign in. Tap on the More info button to see what failed.",
+                            Content = "Please notify HR Functional Unit members that you have joined the meeting late. Tap on the More info button to see what failed.",
                             PrimaryButtonText = "Ok",
                             SecondaryButtonText = "More info"
                         };
@@ -157,7 +158,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
                     {
                         PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
                         await SettingsHelper.Instance.UpdateUserState(user);
-                        this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                        this.Frame.Navigate(typeof(AttendanceRecodedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
                 }
             }
@@ -165,88 +166,15 @@ namespace PayrollApp.Views.UserProfile.Meeting
             {
                 ContentDialog warningDialog = new ContentDialog
                 {
-                    Title = "Unable to sign in!",
-                    Content = "There's a problem preventing us to sign you in. Please try again later. If the problem persits, please contact Chiefs or HR Functional Unit to help you sign in.",
+                    Title = "Unable to record your attendance.",
+                    Content = "There is a problem recording your attendance for the meeting. Please try again later. If the problem persits, please contact Chiefs or HR Functional Unit to help you sign in.",
                     PrimaryButtonText = "Ok"
                 };
 
                 await warningDialog.ShowAsync();
+
+                this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
-
-            loadGrid.Visibility = Visibility.Collapsed;
-        }
-
-        private bool CheckUserSelection()
-        {
-            bool IsSelectionValid = false;
-            if (shiftSelectionView.SelectedItems.Count > 1)
-            {
-                int firstIndex;
-                int lastIndex;
-
-                if (shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First()) < shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last()))
-                {
-                    firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                    lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                }
-                else
-                {
-                    firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                    lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                }
-
-                PayrollCore.Entities.Shift firstItem = (shiftSelectionView.Items[firstIndex] as PayrollCore.Entities.Shift);
-
-                PayrollCore.Entities.Shift lastItem = (shiftSelectionView.Items[lastIndex] as PayrollCore.Entities.Shift);
-                int checkingItem = 0;
-
-                foreach (PayrollCore.Entities.Shift item in shiftSelectionView.Items)
-                {
-                    Debug.WriteLine("checkingItem: " + checkingItem);
-                    Debug.WriteLine("Start checking shift: " + item.shiftName);
-
-                    if (checkingItem <= lastIndex && checkingItem >= firstIndex)
-                    {
-                        Debug.WriteLine("Item is within firstIndex and lastIndex");
-
-                        if (checkingItem == firstIndex || checkingItem == lastIndex)
-                        {
-                            Debug.WriteLine("Item being checked matches firstIndex or lastIndex");
-                            if (item.shiftID == firstItem.shiftID || item.shiftID == lastItem.shiftID)
-                            {
-                                Debug.WriteLine("Item shiftID matches firstItem or lastItem shiftID");
-                            }
-                            else
-                            {
-                                Debug.WriteLine("shiftID does not match");
-                            }
-                        }
-                        else
-                        {
-                            Debug.WriteLine("Item being checked does not match firstIndex or lastIndex");
-
-                            if (item.selected == false)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Checking skipped.");
-                    }
-
-                    checkingItem++;
-                }
-
-                IsSelectionValid = true;
-            }
-            else
-            {
-                IsSelectionValid = true;
-            }
-
-            return IsSelectionValid;
         }
     }
 }
