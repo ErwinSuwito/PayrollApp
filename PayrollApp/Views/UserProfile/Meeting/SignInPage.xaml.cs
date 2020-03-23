@@ -79,7 +79,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
             bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
 
-            if (IsSuccess)
+            if (IsSuccess == true)
             {
                 if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
                 {
@@ -154,13 +154,11 @@ namespace PayrollApp.Views.UserProfile.Meeting
                             await contentDialog2.ShowAsync();
                         }
                     }
-                    finally
-                    {
-                        PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
-                        await SettingsHelper.Instance.UpdateUserState(user);
-                        this.Frame.Navigate(typeof(AttendanceRecodedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                    }
                 }
+
+                PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
+                await SettingsHelper.Instance.UpdateUserState(user);
+                this.Frame.Navigate(typeof(AttendanceRecodedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
             else
             {

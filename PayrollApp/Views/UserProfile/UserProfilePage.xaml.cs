@@ -197,7 +197,21 @@ namespace PayrollApp.Views.UserProfile
 
         private void meetingButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
+            {
+                this.Frame.Navigate(typeof(Meeting.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            else
+            {
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting != null)
+                {
+                    this.Frame.Navigate(typeof(Meeting.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(Meeting.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+            }
         }
     }
 }

@@ -927,7 +927,7 @@ namespace PayrollCore
 
             if (ShowDisabled == false)
             {
-                Query += "AND IsDisabled='0'";
+                Query += " AND IsDisabled='0'";
             }
      
             try
