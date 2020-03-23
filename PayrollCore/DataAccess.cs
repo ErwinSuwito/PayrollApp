@@ -626,6 +626,7 @@ namespace PayrollCore
                                 shift.endTime = dr.GetTimeSpan(3);
                                 shift.isDisabled = dr.GetBoolean(6);
                                 shift.WeekendOnly = dr.GetBoolean(7);
+                                shift.locationID = dr.GetInt32(4);
 
                                 if (shift.isDisabled)
                                 {

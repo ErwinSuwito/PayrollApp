@@ -117,14 +117,19 @@ namespace PayrollApp.Views.UserProfile
                         if (userState.LatestActivity.IsSpecialTask == true)
                         {
                             greeting += "the special task";
+                            signButton.Visibility = Visibility.Collapsed;
                         }
                         else if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
                         {
                             greeting += userState.LatestActivity.StartShift.shiftName;
+                            signButton.Content = "Sign out";
+                            specialTaskButton.Visibility = Visibility.Collapsed;
                         }
                         else
                         {
                             greeting += userState.LatestActivity.StartShift.shiftName + " and " + userState.LatestActivity.EndShift.shiftName;
+                            signButton.Content = "Sign out";
+                            specialTaskButton.Visibility = Visibility.Collapsed;
                         }
 
                         if (userState.LatestActivity.inTime.Date == DateTime.Today)
@@ -138,6 +143,7 @@ namespace PayrollApp.Views.UserProfile
                     }
                     else
                     {
+                        signButton.Content = "Sign in";
                         greeting = "Your attendance for the meeting";
 
                         if (userState.LatestActivity.inTime.Date == DateTime.Today)
