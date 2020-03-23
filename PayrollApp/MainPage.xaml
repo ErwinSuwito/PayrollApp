@@ -39,7 +39,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                     <FontIcon FontSize="26" Glyph="&#xEBE8;" />
                     <StackPanel VerticalAlignment="Center" Margin="20,0,0,0">
-                        <TextBlock Text="Debug mode" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="Debugger attached" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <TextBlock Text="Click or tap to open debug tools" Style="{ThemeResource BaseTextBlockStyle}"
                                FontSize="14"/>
                     </StackPanel>

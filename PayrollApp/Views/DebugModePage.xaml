@@ -31,7 +31,7 @@
                 <StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Admin Settings page" Style="{ThemeResource TitleTextBlockStyle}" />
                     <TextBlock Text="Open admin settings." TextWrapping="Wrap"/>
-                    <Button x:Name="adminSettingsBtn" Content="Face Identification Setup" Margin="0,8,0,0"  
+                    <Button x:Name="adminSettingsBtn" Content="Admin Settings" Margin="0,8,0,0"  
                         Click="adminSettingsBtn_Click"/>
                 </StackPanel>
 
@@ -43,7 +43,7 @@
                         Click="faceIdSetupBtn_Click"/>
                 </StackPanel>
 
-                <StackPanel Margin="0,16,0,0">
+                <!--<StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Tags" Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <StackPanel Orientation="Horizontal" Margin="8,8,0,0">
                         <StackPanel>
@@ -57,7 +57,7 @@
 
                         </StackPanel>
                     </StackPanel>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
         </ScrollViewer>
     </Grid>
