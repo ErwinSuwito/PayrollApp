@@ -119,6 +119,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                     };
 
                     await warningDialog.ShowAsync();
+                    return;
                 }
             }
             else
@@ -235,6 +236,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
             }
 
             loadGrid.Visibility = Visibility.Collapsed;
+            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private bool CheckUserSelection()
