@@ -659,6 +659,21 @@ namespace PayrollCore
             
         }
 
+        public async Task<ObservableCollection<Shift>> GetAvailableShifts(string locationID, bool weekendOnly)
+        {
+            ObservableCollection<Shift> shifts = await GetShiftsFromLocation(locationID, false);
+
+            for (int i = 0; i < shifts.Count; i++)
+            {
+                if (shifts.ElementAt(i).WeekendOnly != weekendOnly)
+                {
+                    shifts.RemoveAt(i);
+                }
+            }
+
+            return shifts;
+        }
+
         /// <summary>
         /// Get all user groups
         /// </summary>

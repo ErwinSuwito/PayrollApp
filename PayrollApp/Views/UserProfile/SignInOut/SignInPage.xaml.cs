@@ -52,7 +52,17 @@ namespace PayrollApp.Views.UserProfile.SignInOut
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            ObservableCollection<PayrollCore.Entities.Shift> shifts = await SettingsHelper.Instance.da.GetShiftsFromLocation(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+            ObservableCollection<PayrollCore.Entities.Shift> shifts;
+
+            if (DateTime.Today.DayOfWeek == System.DayOfWeek.Saturday || DateTime.Today.DayOfWeek == System.DayOfWeek.Sunday)
+            {
+                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), true);
+            }
+            else
+            {
+                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+            }
+
             shiftSelectionView.ItemsSource = shifts;
 
             loadGrid.Visibility = Visibility.Collapsed;
