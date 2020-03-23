@@ -221,6 +221,9 @@
     <Compile Include="Views\FirstRunSetup\SetupFinishedPage.xaml.cs">
       <DependentUpon>SetupFinishedPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstRunSetup\ReviewGlobalSettingsPage.xaml.cs">
+      <DependentUpon>ReviewGlobalSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstRunSetup\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
@@ -408,6 +411,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FirstRunSetup\SetupFinishedPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\ReviewGlobalSettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
