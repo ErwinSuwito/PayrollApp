@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PayrollCore.Entities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +47,11 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            var newActivity = SettingsHelper.Instance.op.GenerateSpecialTask(SettingsHelper.Instance.userState.user, SettingsHelper.Instance.appLocation);
+            loadTimer.Stop();
+
+            Shift specialTaskShift = await SettingsHelper.Instance.da.GetSpecialTaskShift(SettingsHelper.Instance.appLocation.locationID);
+            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, specialTaskShift, specialTaskShift);
+            newActivity.IsSpecialTask = true;
 
             if (newActivity != null)
             {

@@ -91,46 +91,50 @@ namespace PayrollCore
         /// <param name="user"></param>
         /// <param name="location"></param>
         /// <returns></returns>
-        public  Activity GenerateSpecialTask(User user, Location location)
-        {
-            Activity signInInfo = new Activity();
+        //public  Activity GenerateSpecialTask(User user, Location location)
+        //{
+        //    Activity signInInfo = new Activity();
 
-            signInInfo.userID = user.userID;
-            signInInfo.locationID = location.locationID;
-            signInInfo.inTime = DateTime.Now;
-            signInInfo.RequireNotification = false;
-            signInInfo.IsSpecialTask = true;
+        //    signInInfo.userID = user.userID;
+        //    signInInfo.locationID = location.locationID;
+        //    signInInfo.inTime = DateTime.Now;
+        //    signInInfo.RequireNotification = false;
+        //    signInInfo.IsSpecialTask = true;
 
-            return signInInfo;
-        }
+        //    return signInInfo;
+        //}
 
-        public Activity CompleteSpecialTask(Activity activity, User user)
-        {
-            DateTime signInTime = activity.inTime;
-            DateTime signOutTime = DateTime.Now;
+        //public Activity CompleteSpecialTask(Activity activity, User user)
+        //{
+        //    DateTime signInTime = activity.inTime;
+        //    DateTime signOutTime = DateTime.Now;
 
-            if (signInTime.DayOfYear < signOutTime.DayOfYear)
-            {
-                activity.RequireNotification = false;
-                activity.NotificationReason = 2;
-            }
-            else
-            {
-                activity.RequireNotification = false;
-            }
+        //    if (signInTime.DayOfYear < signOutTime.DayOfYear)
+        //    {
+        //        activity.RequireNotification = false;
+        //        activity.NotificationReason = 2;
+        //    }
+        //    else
+        //    {
+        //        activity.RequireNotification = false;
+        //    }
 
-            if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
-            {
-                activity.ApplicableRate = user.userGroup.DefaultRate;
-            }
+        //    if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
+        //    {
+        //        activity.ApplicableRate = user.userGroup.DefaultRate;
+        //    }
+        //    else
+        //    {
+        //        activity.ApplicableRate = 
+        //    }
 
-            TimeSpan activityOffset = signOutTime.Subtract(signInTime);
-            activity.ApprovedHours = activityOffset.TotalHours;
-            activity.ClaimDate = DateTime.Today;
-            activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
+        //    TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+        //    activity.ApprovedHours = activityOffset.TotalHours;
+        //    activity.ClaimDate = DateTime.Today;
+        //    activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
 
-            return activity;
-        }
+        //    return activity;
+        //}
         
         public async Task<Activity> GenerateSignOutInfo(Activity activity, User user)
         {

@@ -124,7 +124,7 @@ INSERT INTO Users VALUES('hui.wen@cloudmails.apu.edu.my', 'Chen Hui Wen', 1, 0, 
 INSERT INTO Users VALUES('sin.yuen@cloudmails.apu.edu.my', 'Chen Sin Yuen', 1, 0, 3);
 INSERT INTO Users VALUES('wei.lun@cloudmails.apu.edu.my', 'Cheng Wei Lun', 1, 0, 3);
 INSERT INTO Users VALUES('xue.qian@cloudmails.apu.edu.my', 'Chia Xue Qian', 1, 0, 2);
-INSERT INTO Users VALUES('erwin.suwito@cloudmails.apu.edu.my', 'Erwin Suwitoandojo', 1, 0, 3);
+INSERT INTO Users VALUES('erwin.suwito@taportalteams.onmicrosoft.com', 'Erwin Suwitoandojo', 1, 0, 4);
 INSERT INTO Users VALUES('TP045000@mail.apu.edu.my', 'ERWIN SUWITOANDOJO', 1, 0, 1);
 INSERT INTO Users VALUES('wai.tuck@cloudmails.apu.edu.my', 'Foong Wai Tuck', 1, 0, 2);
 INSERT INTO Users VALUES('ka.wang', 'Ho Ka Wang',  0, 0, 6);

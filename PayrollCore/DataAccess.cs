@@ -1296,6 +1296,7 @@ namespace PayrollCore
                             shift.endTime = dr.GetTimeSpan(3);
                             shift.isDisabled = dr.GetBoolean(6);
                             shift.WeekendOnly = dr.GetBoolean(7);
+                            shift.locationID = dr.GetInt32(4);
 
                             if (shift.isDisabled)
                             {
@@ -1524,6 +1525,7 @@ namespace PayrollCore
                             activity.userID = dr.GetString(1);
                             activity.inTime = dr.GetDateTime(3);
                             activity.IsSpecialTask = dr.GetBoolean(8);
+                            activity.locationID = locationID;
                             
                             // Checks if out time is null and set their values if not empty
                             if (!dr.IsDBNull(4))
