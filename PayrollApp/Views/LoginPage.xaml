@@ -43,7 +43,8 @@
                 <TextBlock Text="Hello!" Style="{ThemeResource HeaderTextBlockStyle}"/>
                 <TextBlock x:Name="greetingTextBlock" Text="Step in front of the camera or tap your card to get started." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
-                <ctl:CameraControl x:Name="cameraControl" Margin="0,12,0,0" MinHeight="252" />
+                <ctl:CameraControl x:Name="cameraControl" Margin="0,12,0,0" MinHeight="252" 
+                                   Visibility="Collapsed"/>
             </StackPanel>
         </StackPanel>
 

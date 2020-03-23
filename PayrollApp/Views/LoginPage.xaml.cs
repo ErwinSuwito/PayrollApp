@@ -40,6 +40,11 @@ namespace PayrollApp.Views
             Window.Current.Activated += CurrentWindowActivationStateChanged;
             this.cameraControl.FilterOutSmallFaces = true;
             this.cameraControl.HideCameraControls();
+
+            if (Debugger.IsAttached)
+            {
+                cameraControl.Visibility = Visibility.Visible;
+            }
         }
 
         private void StartProcessingLoop()
