@@ -81,7 +81,7 @@
 
         <StackPanel x:Name="footerContent" Orientation="Horizontal" 
                     VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" >
-            <TextBlock x:Name="totalHoursTextBlock" Text="You have 32 duty hours this month." 
+            <TextBlock x:Name="totalHoursTextBlock" 
                        FontSize="16" FontWeight="SemiBold"/>
         </StackPanel>
     </Grid>

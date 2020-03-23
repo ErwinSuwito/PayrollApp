@@ -168,11 +168,11 @@ namespace PayrollApp.Views.UserProfile
 
             if (minHours == 0 || minHours < userState.ApprovedHours)
             {
-                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours.";
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString("0.##") + " hours.";
             }
             else
             { 
-                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString() + " hours out of the minimum " + minHours.ToString() + " hours.";
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString("0.##") + " hours out " + minHours.ToString() + " hours minimum.";
             }
         }
 
