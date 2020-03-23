@@ -210,6 +210,16 @@ namespace PayrollCore
             TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
             activity.ApprovedHours = activityOffset.TotalHours;
             activity.ClaimDate = DateTime.Today;
+
+            if (user.userGroup.DefaultRate.rate > activity.meeting.rate.rate)
+            {
+                activity.ApplicableRate = user.userGroup.DefaultRate;
+            }
+            else
+            {
+                activity.ApplicableRate = activity.meeting.rate;
+            }
+
             activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
 
             return activity;

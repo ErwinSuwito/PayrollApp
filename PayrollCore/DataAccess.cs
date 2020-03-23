@@ -1485,7 +1485,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID LEFT JOIN Rate mRate ON mRate.RateID=Meeting.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
             Activity activity;
 
             try
@@ -1586,6 +1586,15 @@ namespace PayrollCore
                                 rate.rateDesc = dr.GetString(45);
                                 rate.rate = dr.GetFloat(46);
                                 activity.EndShift.DefaultRate = rate;
+                            }
+
+                            if (!dr.IsDBNull(48))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(48);
+                                rate.rateDesc = dr.GetString(49);
+                                rate.rate = dr.GetFloat(50);
+                                activity.meeting.rate = rate;
                             }
 
                             return activity;
