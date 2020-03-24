@@ -1502,7 +1502,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID LEFT JOIN Rate mRate ON mRate.RateID=Meeting.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY inTime DESC";
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID LEFT JOIN Rate mRate ON mRate.RateID=Meeting.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY ActivityID DESC";
             Activity activity;
 
             try

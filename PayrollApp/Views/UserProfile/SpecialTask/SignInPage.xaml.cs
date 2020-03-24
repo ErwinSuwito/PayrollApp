@@ -61,12 +61,6 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
                 {
                     pageContent.Visibility = Visibility.Visible;
                 }
-                else
-                {
-                    this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                }
-
-                await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
             }
             else
             {
@@ -82,7 +76,8 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
                 this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
 
-            loadGrid.Visibility = Visibility.Collapsed;
+            await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
+            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void TimeUpdater_Tick(object sender, object e)

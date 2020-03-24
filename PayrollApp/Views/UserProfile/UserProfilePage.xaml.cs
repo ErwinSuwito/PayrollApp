@@ -1,6 +1,7 @@
 ﻿using PayrollCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -87,6 +88,10 @@ namespace PayrollApp.Views.UserProfile
 
         private void ModifyUI()
         {
+            Debug.WriteLine("activity IsSpecialTask: " + userState.LatestActivity.IsSpecialTask.ToString());
+            Debug.WriteLine("activity StartShift: " + userState.LatestActivity.StartShift.shiftName);
+            Debug.WriteLine("activity Activity ID: " + userState.LatestActivity.ActivityID);
+
             fullNameTextBlock.Text = userState.user.fullName;
             string greeting;
 
@@ -190,7 +195,7 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
-                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == true && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == true)
                 {
                     this.Frame.Navigate(typeof(SpecialTask.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
