@@ -1326,7 +1326,6 @@ namespace PayrollCore
             }
         }
 
-
         public async Task<bool> AddNewShift(Shift shift)
         {
             bool IsSuccess = false;
@@ -1360,9 +1359,6 @@ namespace PayrollCore
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
                 return false;
             }
-
-
-            return IsSuccess;
         }
 
         public async Task<bool> UpdateShiftInfo(Shift shift)
