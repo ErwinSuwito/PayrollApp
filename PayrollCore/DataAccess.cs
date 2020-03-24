@@ -1678,7 +1678,7 @@ namespace PayrollCore
             }
             else if (activity.IsSpecialTask == true)
             {
-                Query = "INSERT INTO Activity(UserID, LocationID, inTime, SpecialTask) VALUES(@UserID, @LocationID, @InTime, 'true')";
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, startShift, endShift, SpecialTask) VALUES(@UserID, @LocationID, @InTime, @StartShift, @EndShift, 'true')";
             }
             else
             {
@@ -1702,7 +1702,7 @@ namespace PayrollCore
                         {
                             cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
                         }
-                        else if (activity.IsSpecialTask != true)
+                        else
                         {
                             cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
                             cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
@@ -1798,7 +1798,5 @@ namespace PayrollCore
 
             return null;
         }
-
-
     }
 }

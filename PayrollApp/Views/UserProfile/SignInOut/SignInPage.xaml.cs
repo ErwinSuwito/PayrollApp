@@ -207,12 +207,6 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                             await contentDialog2.ShowAsync();
                         }
                     }
-                    finally
-                    {
-                        PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
-                        await SettingsHelper.Instance.UpdateUserState(user);
-                        this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                    }
 
                     //case 2:
                     //    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
@@ -235,7 +229,8 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                 await warningDialog.ShowAsync();
             }
 
-            loadGrid.Visibility = Visibility.Collapsed;
+            PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
+            await SettingsHelper.Instance.UpdateUserState(user);
             this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
