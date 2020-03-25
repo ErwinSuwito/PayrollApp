@@ -129,7 +129,7 @@ namespace PayrollCore
                                 item.locationID = dr.GetInt32(2);
                                 item.meetingDay = dr.GetInt32(3);
                                 item.isDisabled = dr.GetBoolean(4);
-                                item.StartTime = dr.GetTimeSpan(5);
+                                item.StartTime = dr.GetTimeSpan(6);
 
                                 var rate = new Rate();
                                 rate.rateID = dr.GetInt32(7);
@@ -205,7 +205,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> SaveLocationAsync(Location location)
         {
-            string Query = "UPDATE Location SET LocationName=@LocationName, EnabledGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
+            string Query = "UPDATE Location SET LocationName=@LocationName, EnableGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
 
             try
             {

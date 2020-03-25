@@ -224,21 +224,24 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             bool IsSuccess = await SettingsHelper.Instance.da.SaveLocationAsync(location);
 
-            if (location.isNewLocation)
+            if (IsSuccess == true)
             {
-                specialTask = new Shift();
-                specialTask.shiftName = "Special Task";
-                specialTask.startTime = DateTime.Now.TimeOfDay;
-                specialTask.endTime = specialTask.startTime;
-                specialTask.locationID = location.locationID;
-                specialTask.isDisabled = true;
-                specialTask.WeekendOnly = false;
+                if (location.isNewLocation)
+                {
+                    specialTask = new Shift();
+                    specialTask.shiftName = "Special Task";
+                    specialTask.startTime = DateTime.Now.TimeOfDay;
+                    specialTask.endTime = specialTask.startTime;
+                    specialTask.locationID = location.locationID;
+                    specialTask.isDisabled = true;
+                    specialTask.WeekendOnly = false;
 
-                IsSuccess = await SettingsHelper.Instance.da.AddNewShift(specialTask);
-            }
-            else
-            {
-                IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(specialTask);
+                    IsSuccess = await SettingsHelper.Instance.da.AddNewShift(specialTask);
+                }
+                else
+                {
+                    IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(specialTask);
+                }
             }
 
             return IsSuccess;
