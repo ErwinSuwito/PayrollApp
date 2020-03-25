@@ -81,10 +81,30 @@
             </ScrollViewer>
         </StackPanel>
 
-        <StackPanel  Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
+        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
+                    DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton x:Name="saveAccBtn" Label="Add user" 
+                          Click="saveAccBtn_Click" Visibility="Collapsed"
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE1E2;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <AppBarButton x:Name="changeSettingsBtn" Label="Save changes" 
+                          Click="changeSettingsBtn_Click" Visibility="Collapsed"
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE105;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+
+
+        <!--<StackPanel  Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
             <Button x:Name="saveAccBtn" Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" 
                     Height="40" Style="{ThemeResource ButtonRevealStyle}" Padding="12,0,12,0" Background="Transparent"
-                    Visibility="Collapsed" Click="saveAccBtn_Click">
+                    Visibility="Visible" Click="saveAccBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE1E2;" FontSize="16"/>
@@ -94,7 +114,7 @@
             </Button>
 
             <Button x:Name="changeSettingsBtn" Height="40" Style="{ThemeResource ButtonRevealStyle}" Padding="12,0,12,0"  Background="Transparent"
-                    Visibility="Collapsed" Click="changeSettingsBtn_Click">
+                    Visibility="Visible" Click="changeSettingsBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE105;" FontSize="16"/>
@@ -102,7 +122,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-        </StackPanel>
+        </StackPanel>-->
         
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
               Background="#B7000000" Visibility="Visible">
