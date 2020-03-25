@@ -235,11 +235,13 @@ namespace PayrollApp.Views.AdminSettings.Location
                     specialTask.locationID = location.locationID;
                     specialTask.isDisabled = true;
                     specialTask.WeekendOnly = false;
+                    specialTask.DefaultRate = defaultRateBox.SelectedItem as Rate;
 
                     IsSuccess = await SettingsHelper.Instance.da.AddNewShift(specialTask);
                 }
                 else
                 {
+                    specialTask.DefaultRate = defaultRateBox.SelectedItem as Rate;
                     IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(specialTask);
                 }
             }
