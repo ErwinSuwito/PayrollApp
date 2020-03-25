@@ -255,10 +255,6 @@ namespace PayrollApp.Views.AdminSettings.Location
                     }
                 }
             }
-            else
-            {
-                IsSuccess = false;
-            }
 
             return IsSuccess;
         }

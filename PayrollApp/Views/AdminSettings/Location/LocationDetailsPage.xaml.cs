@@ -103,14 +103,21 @@ namespace PayrollApp.Views.AdminSettings.Location
 
             if (location.isNewLocation == false)
             {
-                for (int i = 0; i < getRates.Count; i++)
+                try
                 {
-                    var item = getRates.ElementAt(i) as Rate;
-                    if (item.rateID == specialTask.DefaultRate.rateID)
+                    for (int i = 0; i < getRates.Count; i++)
                     {
-                        defaultRateBox.SelectedIndex = i;
-                        break;
+                        var item = getRates.ElementAt(i) as Rate;
+                        if (item.rateID == specialTask.DefaultRate.rateID)
+                        {
+                            defaultRateBox.SelectedIndex = i;
+                            break;
+                        }
                     }
+                }
+                catch (Exception)
+                {
+                    defaultRateBox.SelectedIndex = 0;
                 }
             }
 
@@ -161,6 +168,8 @@ namespace PayrollApp.Views.AdminSettings.Location
             meeting.locationID = location.locationID;
             meeting.meetingName = "New meeting";
             meeting.newMeeting = true;
+            meeting.rate = new Rate();
+            meeting.rate.rateID = 1;
             meeting.meetingID = await SettingsHelper.Instance.da.SaveMeetingAndReturnId(meeting);
 
             this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });

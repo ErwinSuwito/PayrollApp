@@ -242,7 +242,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<int> AddLocationAsync(Location location)
         {
-            string Query = "INSERT INTO locations(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false') select SCOPE_IDENTITY()";
+            string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false') select SCOPE_IDENTITY()";
 
             try
             {
@@ -317,7 +317,7 @@ namespace PayrollCore
 
         public async Task<int> SaveMeetingAndReturnId(Meeting meeting)
         {
-            string Query = "INSERT INTO meetings(MeetingName, LocationID, MeetingDay, IsDisabled, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID, @StartTime) select SCOPE_IDENTITY()";
+            string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, IsDisabled, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID, @StartTime) select SCOPE_IDENTITY()";
             
             try
             {
