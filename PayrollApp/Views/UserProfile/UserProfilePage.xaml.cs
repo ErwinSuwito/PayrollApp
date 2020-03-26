@@ -88,10 +88,6 @@ namespace PayrollApp.Views.UserProfile
 
         private void ModifyUI()
         {
-            Debug.WriteLine("activity IsSpecialTask: " + userState.LatestActivity.IsSpecialTask.ToString());
-            Debug.WriteLine("activity StartShift: " + userState.LatestActivity.StartShift.shiftName);
-            Debug.WriteLine("activity Activity ID: " + userState.LatestActivity.ActivityID);
-
             fullNameTextBlock.Text = userState.user.fullName;
             string greeting;
 

@@ -65,6 +65,12 @@
                             <TextBlock Text="{Binding meetingName}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,4,4,0" />
+                            <Setter Property="Background" Value="#323232" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </StackPanel>
         </StackPanel>
