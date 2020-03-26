@@ -141,16 +141,19 @@ namespace PayrollCore
             DateTime signInTime = activity.inTime;
             DateTime signOutTime = DateTime.Now;
 
-            if (signInTime.DayOfYear < signOutTime.DayOfYear)
+            if (activity.StartShift.shiftName != "Special Task")
             {
-                activity.RequireNotification = true;
-                activity.NotificationReason = 2;
-                string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
-                DateTime.TryParse(s, out signOutTime);
-            }
-            else
-            {
-                activity.RequireNotification = false;
+                if (signInTime.DayOfYear < signOutTime.DayOfYear || signOutTime > signInTime)
+                {
+                    activity.RequireNotification = true;
+                    activity.NotificationReason = 2;
+                    string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
+                    DateTime.TryParse(s, out signOutTime);
+                }
+                else
+                {
+                    activity.RequireNotification = false;
+                }
             }
 
             activity.outTime = signOutTime;
