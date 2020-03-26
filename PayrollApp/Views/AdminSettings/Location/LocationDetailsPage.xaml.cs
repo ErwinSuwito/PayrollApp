@@ -239,8 +239,8 @@ namespace PayrollApp.Views.AdminSettings.Location
                 {
                     specialTask = new Shift();
                     specialTask.shiftName = "Special Task";
-                    specialTask.startTime = DateTime.Now.TimeOfDay;
-                    specialTask.endTime = specialTask.startTime;
+                    specialTask.startTime = TimeSpan.MinValue;
+                    specialTask.endTime = TimeSpan.MaxValue;
                     specialTask.locationID = location.locationID;
                     specialTask.isDisabled = true;
                     specialTask.WeekendOnly = false;

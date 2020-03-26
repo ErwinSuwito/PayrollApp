@@ -1329,7 +1329,16 @@ namespace PayrollCore
         public async Task<bool> AddNewShift(Shift shift)
         {
             bool IsSuccess = false;
-            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly, IsDisabled) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly, @IsDisabled)";
+            string Query;
+            
+            if (shift.shiftName == "Special Task")
+            {
+                Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly, IsDisabled) VALUES(@ShiftName, '0:00:00', '23:59:59', @LocationID, @RateID, @WeekendOnly, @IsDisabled)";
+            }
+            else
+            {
+                Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly, IsDisabled) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly, @IsDisabled)";
+            }
 
             try
             {
@@ -1341,8 +1350,11 @@ namespace PayrollCore
                         cmd.CommandText = Query;
 
                         cmd.Parameters.Add(new SqlParameter("@ShiftName", shift.shiftName));
-                        cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
-                        cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
+                        if (shift.shiftName != "Special Task")
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
+                            cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
+                        }
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
