@@ -62,12 +62,13 @@
                           MaxHeight="372">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:MeetingUserGroup">
-                            <TextBlock Text="{Binding meetingName}" />
+                            <TextBlock Text="{Binding meetingName}" FontSize="18"
+                                       Margin="2,8,4,8" Style="{ThemeResource BaseTextBlockStyle}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="0,4,4,0" />
+                            <Setter Property="Margin" Value="0,8,8,0" />
                             <Setter Property="Background" Value="#323232" />
                         </Style>
                     </ListView.ItemContainerStyle>

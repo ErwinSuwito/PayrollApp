@@ -66,14 +66,14 @@
                             <StackPanel Margin="4,8,0,8">
                                 <TextBlock Text="{Binding shiftName}"  FontSize="18"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding startTime}" Margin="0,0,4,0" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <TextBlock Text="{Binding startTime}" Style="{ThemeResource BaseTextBlockStyle}"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Margin" Value="0,4,4,0" />
+                            <Setter Property="Margin" Value="0,8,8,0" />
                             <Setter Property="Background" Value="#323232" />
                         </Style>
                     </ListView.ItemContainerStyle>
