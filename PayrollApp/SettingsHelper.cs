@@ -422,10 +422,12 @@ namespace PayrollApp
 
         public async Task<bool> UpdateUserState(User user)
         {
-            userState = new UserState();
-            userState.user = user;
-            userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, appLocation.locationID);
-            Instance.userState.ApprovedHours = await da.GetApprovedHours(user.userID);
+            //userState = new UserState();
+            //userState.user = user;
+            //userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, appLocation.locationID);
+            //Instance.userState.ApprovedHours = await da.GetApprovedHours(user.userID);
+
+            userState = await op.GetUserState(user, appLocation.locationID);
 
             if (userState.LatestActivity != null)
             {

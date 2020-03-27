@@ -11,6 +11,7 @@ namespace PayrollCore
     {
         public User user { get; set; }
         public Activity LatestActivity { get; set; }
+        public Activity LatestMeeting { get; set; }
         public double ApprovedHours { get; set; }
     }
 }

@@ -238,5 +238,15 @@ namespace PayrollCore
             return (float)hours * rate;
         }
 
+        public async Task<UserState> GetUserState(User user, int locationID)
+        {
+            UserState userState = new UserState();
+            userState.user = user;
+            userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, locationID);
+            userState.ApprovedHours = await da.GetApprovedHours(user.userID);
+
+            return userState;
+        }
+
     }
 }
