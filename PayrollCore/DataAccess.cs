@@ -1508,7 +1508,7 @@ namespace PayrollCore
             return IsSuccess;
         }
 
-        public async Task<Activity> GetLatestActivityByUserId(string upn, int locationID)
+        public async Task<Activity> GetLatestActivity(string upn, int locationID)
         {
             string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID LEFT JOIN Rate mRate ON mRate.RateID=Meeting.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY ActivityID DESC";
             Activity activity;
@@ -1621,6 +1621,191 @@ namespace PayrollCore
                                 rate.rateDesc = dr.GetString(49);
                                 rate.rate = dr.GetFloat(50);
                                 activity.meeting.rate = rate;
+                            }
+
+                            return activity;
+                        }
+                    }
+                }
+
+                // Initializes activity when theres no result and set NoActivity to true.
+                activity = new Activity();
+                activity.NoActivity = true;
+                return activity;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<Activity> GetLatestSignIn(string upn, int locationID)
+        {
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID AND MeetingID IS NULL ORDER BY ActivityID DESC";
+            Activity activity;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", upn));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            activity = new Activity();
+                            activity.ActivityID = dr.GetInt32(0);
+                            activity.userID = dr.GetString(1);
+                            activity.inTime = dr.GetDateTime(3);
+                            activity.IsSpecialTask = dr.GetBoolean(8);
+                            activity.locationID = locationID;
+
+                            // Checks if out time is null and set their values if not empty
+                            if (!dr.IsDBNull(4))
+                            {
+                                activity.outTime = dr.GetDateTime(4);
+                            }
+
+                            // Checks if start shift is not empty and set their values
+                            if (!dr.IsDBNull(5))
+                            {
+                                var startShift = new Shift();
+                                startShift.shiftID = dr.GetInt32(13);
+                                startShift.shiftName = dr.GetString(14);
+                                startShift.startTime = dr.GetTimeSpan(15);
+                                startShift.endTime = dr.GetTimeSpan(16);
+                                startShift.WeekendOnly = dr.GetBoolean(20);
+                                activity.StartShift = startShift;
+                            }
+
+                            // Checks if end shift is not empty and set their values
+                            if (!dr.IsDBNull(6))
+                            {
+                                var endShift = new Shift();
+                                endShift.shiftID = dr.GetInt32(21);
+                                endShift.shiftName = dr.GetString(22);
+                                endShift.startTime = dr.GetTimeSpan(23);
+                                endShift.endTime = dr.GetTimeSpan(24);
+                                endShift.WeekendOnly = dr.GetBoolean(28);
+                                activity.EndShift = endShift;
+                            }
+
+                            // Checks if approved hours is not empty and set their values
+                            if (!dr.IsDBNull(9))
+                            {
+                                activity.ApprovedHours = dr.GetDouble(9);
+                                activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                activity.ClaimDate = dr.GetDateTime(12);
+                            }
+
+                            // Checks if the applicable rate is not empty and set their values
+                            if (!dr.IsDBNull(29))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(29);
+                                rate.rateDesc = dr.GetString(30);
+                                rate.rate = dr.GetFloat(31);
+                                activity.ApplicableRate = rate;
+                            }
+
+                            //Checks if the start shift rate is not empty and set their values
+                            if (!dr.IsDBNull(33))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(33);
+                                rate.rateDesc = dr.GetString(34);
+                                rate.rate = dr.GetFloat(35);
+                                activity.StartShift.DefaultRate = rate;
+                            }
+
+                            // Checks if end shift default rate is not empty and set their values
+                            if (!dr.IsDBNull(11))
+                            {
+                                var rate = new Rate();
+                                rate.rateID = dr.GetInt32(37);
+                                rate.rateDesc = dr.GetString(38);
+                                rate.rate = dr.GetFloat(39);
+                                activity.EndShift.DefaultRate = rate;
+                            }
+
+                            return activity;
+                        }
+                    }
+                }
+
+                // Initializes activity when theres no result and set NoActivity to true.
+                activity = new Activity();
+                activity.NoActivity = true;
+                return activity;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<Activity> GetLatestMeeting(string upn, int locationID)
+        {
+            string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Rate mR ON mR.RateID=Meeting.RateID LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate WHERE UserID=@UserID AND Activity.LocationID=@LocationID AND Activity.MeetingID IS NOT NULL ORDER BY ActivityID DESC";
+            Activity activity;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", upn));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                        while (dr.Read())
+                        {
+                            activity = new Activity();
+                            activity.ActivityID = dr.GetInt32(0);
+                            activity.userID = dr.GetString(1);
+                            activity.inTime = dr.GetDateTime(3);
+                            activity.IsSpecialTask = dr.GetBoolean(8);
+                            activity.locationID = locationID;
+
+                            var meeting = new Meeting();
+                            meeting.meetingID = dr.GetInt32(13);
+                            meeting.meetingName = dr.GetString(14);
+                            meeting.meetingDay = dr.GetInt32(16);
+
+                            var meetingRate = new Rate();
+                            meetingRate.rateID = dr.GetInt32(20);
+                            meetingRate.rateDesc = dr.GetString(21);
+                            meetingRate.rate = dr.GetFloat(22);
+                            meeting.rate = meetingRate;
+
+                            // Checks if sign out time is not empty and set their values
+                            if (!dr.IsDBNull(4))
+                            {
+                                activity.outTime = dr.GetDateTime(4);
+
+                                activity.ApprovedHours = dr.GetDouble(9);
+                                activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                activity.ClaimDate = dr.GetDateTime(12);
+
+                                var aRate = new Rate();
+                                aRate.rateID = dr.GetInt32(24);
+                                aRate.rateDesc = dr.GetString(25);
+                                aRate.rate = dr.GetFloat(26);
+                                activity.ApplicableRate = aRate;
                             }
 
                             return activity;
