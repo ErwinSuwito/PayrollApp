@@ -104,66 +104,42 @@ namespace PayrollApp.Views.UserProfile
             }
 
             // Starts modify UI based on user activity
-            if (userState.LatestActivity != null && userState.LatestActivity.NoActivity == false)
+            if (userState.LatestActivity != null || userState.LatestActivity.NoActivity == false)
             {
-                // User has signed in before in this location
-
+                // user has signed in before in this location
                 if (userState.LatestActivity.outTime == DateTime.MinValue)
                 {
-                    greeting = "You are already signed in for ";
-                    // User is still logged in
-                    if (userState.LatestActivity.StartShift != null || userState.LatestActivity.IsSpecialTask == true)
+                    // user has not logged out
+                    if (userState.LatestActivity.IsSpecialTask == true)
                     {
-                        // User is on duty.
-                        if (userState.LatestActivity.IsSpecialTask == true)
+                        signButton.Visibility = Visibility.Collapsed;
+                        if (userState.LatestMeeting.outTime == DateTime.MinValue)
                         {
-                            greeting += "the special task";
-                            signButton.Visibility = Visibility.Collapsed;
-                        }
-                        else if (userState.LatestActivity.StartShift.shiftName == userState.LatestActivity.EndShift.shiftName)
-                        {
-                            greeting += userState.LatestActivity.StartShift.shiftName;
-                            signButton.Content = "Sign out";
-                            specialTaskButton.Visibility = Visibility.Collapsed;
+                            greeting = "You are signed in for special task and meeting.";
                         }
                         else
                         {
-                            greeting += userState.LatestActivity.StartShift.shiftName + " and " + userState.LatestActivity.EndShift.shiftName;
-                            signButton.Content = "Sign out";
-                            specialTaskButton.Visibility = Visibility.Collapsed;
-                        }
-
-                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
-                        {
-                            greeting += " today.";
-                        }
-                        else
-                        {
-                            greeting += " on " + userState.LatestActivity.inTime.ToShortDateString();
+                            greeting = "You are signed in for special task.";
                         }
                     }
                     else
                     {
-                        signButton.Content = "Sign in";
-                        greeting = "Your attendance for the meeting";
-
-                        if (userState.LatestActivity.inTime.Date == DateTime.Today)
+                        specialTaskButton.Visibility = Visibility.Collapsed;
+                        if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
                         {
-                            greeting += " today has been recorded.";
+                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " and meeting.";
                         }
                         else
                         {
-                            greeting = "Please sign out from the meeting on " + userState.LatestActivity.inTime.ToShortDateString();
+                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + " and meeting.";
                         }
                     }
                 }
                 else
                 {
-                    greeting = "You are not signed in.";
+                    greetingTextBlock.Text = "You are not signed in.";
                     signButton.Content = "Sign in";
                 }
-
-                greetingTextBlock.Text = greeting;
             }
             else
             {
