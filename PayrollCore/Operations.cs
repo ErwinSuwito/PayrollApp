@@ -242,7 +242,13 @@ namespace PayrollCore
         {
             UserState userState = new UserState();
             userState.user = user;
-            userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, locationID);
+            userState.LatestActivity = await da.GetLatestSignIn(user.userID, locationID);
+
+            if (userState.LatestActivity.NoActivity != true)
+            {
+                userState.LatestMeeting = await da.GetLatestMeeting(user.userID, locationID);
+            }
+
             userState.ApprovedHours = await da.GetApprovedHours(user.userID);
 
             return userState;
