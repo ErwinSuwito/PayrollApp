@@ -101,7 +101,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
                         if (IsSuccess)
                         {
-                            if (NewAccount == true)
+                            if (NewAccount == true && SettingsHelper.Instance.userState.user.userGroup.EnableFaceRec == true)
                             {
                                 this.Frame.Navigate(typeof(FaceRecIntroPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                             }
