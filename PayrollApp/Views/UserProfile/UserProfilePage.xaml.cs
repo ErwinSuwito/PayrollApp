@@ -104,7 +104,7 @@ namespace PayrollApp.Views.UserProfile
             }
 
             // Starts modify UI based on user activity
-            if (userState.LatestActivity != null || userState.LatestActivity.NoActivity == false)
+            if (userState.LatestActivity.NoActivity == false)
             {
                 // user has signed in before in this location
                 if (userState.LatestActivity.outTime == DateTime.MinValue)
