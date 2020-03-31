@@ -101,7 +101,14 @@ namespace PayrollApp.Views.NewUserOnboarding
 
                         if (IsSuccess)
                         {
-                            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                            if (NewAccount == true)
+                            {
+                                this.Frame.Navigate(typeof(FaceRecIntroPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                            }
+                            else
+                            {
+                                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                            }
                         }
                         else
                         {
