@@ -44,6 +44,8 @@ namespace PayrollApp.Views.NewUserOnboarding
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+
         }
 
         private void TimeUpdater_Tick(object sender, object e)
