@@ -152,7 +152,7 @@ namespace PayrollApp
             return false;
         }
 
-        private async Task LoadPersonGroupsFromService()
+        public async Task LoadRegisteredPeople()
         {
             try
             {
@@ -161,11 +161,63 @@ namespace PayrollApp
                 PersonGroups.AddRange(personGroups.OrderBy(pg => pg.Name));
 
                 CurrentPersonGroup = personGroups.FirstOrDefault();
+
+                PersonsInCurrentGroup.Clear();
+                IList<Person> personsInGroup = await FaceServiceHelper.GetPersonsAsync(this.CurrentPersonGroup.PersonGroupId);
+                foreach (Person person in personsInGroup.OrderBy(p => p.Name))
+                {
+                    this.PersonsInCurrentGroup.Add(person);
+                }
             }
             catch (Exception ex)
             {
                 await Util.GenericApiCallExceptionHandler(ex, "Failure loading Person Groups");
             }
+        }
+
+        public async Task CreatePersonAsync(string username)
+        {
+            try
+            {
+                Person person = await FaceServiceHelper.CreatePersonAsync(this.CurrentPersonGroup.PersonGroupId, username);
+                this.PersonsInCurrentGroup.Add(new Person { Name = username, PersonId = person.PersonId });
+            }
+            catch (Exception ex)
+            {
+                await Util.GenericApiCallExceptionHandler(ex, "Failure creating person");
+            }
+        }
+
+        public async Task DeletePersonAsync()
+        {
+            try
+            {
+                await FaceServiceHelper.DeletePersonAsync(this.CurrentPersonGroup.PersonGroupId, this.SelectedPerson.PersonId);
+                this.PersonsInCurrentGroup.Remove(this.SelectedPerson);
+            }
+            catch (Exception ex)
+            {
+                await Util.GenericApiCallExceptionHandler(ex, "Failure deleting person");
+            }
+        }
+
+        public bool SelectPeople(string username)
+        {
+            foreach (Person person in PersonsInCurrentGroup)
+            {
+                if (person.Name == username)
+                {
+                    SelectedPerson = person;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ClearSelectedPerson()
+        {
+            this.SelectedPerson = null;
         }
 
         private void RoamingDataChanged(ApplicationData sender, object args)
