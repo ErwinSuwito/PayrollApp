@@ -48,7 +48,7 @@
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
             </StackPanel>
 
-            <ctl:CameraControl Margin="0,12,0,0" MinHeight="252" />
+            <ctl:CameraControl x:Name="cameraControl" ImageCaptured="cameraControl_ImageCaptured" Margin="0,12,0,0" MinHeight="252" />
 
             <TextBlock Text="Make sure you're centered" Style="{ThemeResource TitleTextBlockStyle}"
                        Margin="0,8,0,0"/>

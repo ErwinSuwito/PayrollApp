@@ -45,7 +45,7 @@ namespace PayrollApp.Views.NewUserOnboarding
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-
+            this.cameraControl.FilterOutSmallFaces = true;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -77,6 +77,11 @@ namespace PayrollApp.Views.NewUserOnboarding
         }
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cameraControl_ImageCaptured(object sender, ServiceHelpers.ImageAnalyzer e)
         {
 
         }

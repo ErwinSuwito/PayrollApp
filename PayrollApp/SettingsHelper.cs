@@ -31,9 +31,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using PayrollCore;
 using PayrollCore.Entities;
+using ServiceHelpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SqlClient;
@@ -57,6 +60,12 @@ namespace PayrollApp
         public string MinHours;
         public UserGroup defaultStudentGroup;
         public UserGroup defaultOtherGroup;
+        public ObservableCollection<PersonGroup> PersonGroups { get; set; } = new ObservableCollection<PersonGroup>();
+        public PersonGroup CurrentPersonGroup { get; set; }
+        public ObservableCollection<Person> PersonsInCurrentGroup { get; set; } = new ObservableCollection<Person>();
+        public ObservableCollection<PersistedFace> SelectedPersonFaces { get; set; } = new ObservableCollection<PersistedFace>();
+        public Person SelectedPerson { get; set; }
+
 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
@@ -141,6 +150,22 @@ namespace PayrollApp
                 }
             }
             return false;
+        }
+
+        private async Task LoadPersonGroupsFromService()
+        {
+            try
+            {
+                PersonGroups.Clear();
+                IEnumerable<PersonGroup> personGroups = await FaceServiceHelper.ListPersonGroupsAsync(this.WorkspaceKey);
+                PersonGroups.AddRange(personGroups.OrderBy(pg => pg.Name));
+
+                CurrentPersonGroup = personGroups.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                await Util.GenericApiCallExceptionHandler(ex, "Failure loading Person Groups");
+            }
         }
 
         private void RoamingDataChanged(ApplicationData sender, object args)
