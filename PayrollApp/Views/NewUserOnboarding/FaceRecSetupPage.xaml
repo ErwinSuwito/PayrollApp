@@ -63,7 +63,7 @@
         </CommandBar>
 
         <Grid x:Name="loadGrid" Grid.RowSpan="5" Grid.ColumnSpan="3"
-              Background="#B7000000" Visibility="Collapsed">
+              Background="#B7000000" Visibility="Visible">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
@@ -72,7 +72,7 @@
             </animations:Implicit.HideAnimations>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ProgressRing IsActive="True" />
-                <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
+                <TextBlock x:Name="loadText" Text="Preparing to register new face..." Margin="4,0,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>

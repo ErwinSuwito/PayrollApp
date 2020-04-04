@@ -31,6 +31,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        string username = SettingsHelper.Instance.userState.user.userID;
 
         public FaceRecSetupPage()
         {
@@ -45,35 +46,48 @@ namespace PayrollApp.Views.NewUserOnboarding
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+
             this.cameraControl.FilterOutSmallFaces = true;
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+
+            bool LoadPersonResult = await SettingsHelper.Instance.LoadRegisteredPeople();
+            if (LoadPersonResult == true)
+            {
+                bool IsUserFound = SettingsHelper.Instance.SelectPeople(username);
+                if (IsUserFound != true)
+                {
+                    bool CreatePersonSuccess = await SettingsHelper.Instance.CreatePersonAsync(username);
+
+                    if (CreatePersonSuccess == true)
+                    {
+                        loadGrid.Visibility = Visibility.Collapsed;
+                        return;
+                    }
+                }
+            }
+            
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Unable to register your face at this time.",
+                Content = "A problem occurred that prevents us to setup your facial recognition settings. You can register your face by selecting the 'Improve recognition' button after you login to Payroll.",
+                CloseButtonText = "Ok"
+            };
+            
+            await contentDialog.ShowAsync();
+            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void TimeUpdater_Tick(object sender, object e)
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-        }
-
-        private async void skipBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Are you sure?",
-                Content = "Enabling facial recognition will make your login faster and easier. All you'll need to do is stand in front of the machine and you're logged in.",
-                PrimaryButtonText = "Set up now",
-                SecondaryButtonText = "Skip"
-            };
-
-            ContentDialogResult result = await contentDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                contentDialog.Hide();
-            }
-            else
-            {
-
-            }
         }
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)

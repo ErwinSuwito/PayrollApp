@@ -152,7 +152,7 @@ namespace PayrollApp
             return false;
         }
 
-        public async Task LoadRegisteredPeople()
+        public async Task<bool> LoadRegisteredPeople()
         {
             try
             {
@@ -168,36 +168,43 @@ namespace PayrollApp
                 {
                     this.PersonsInCurrentGroup.Add(person);
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 await Util.GenericApiCallExceptionHandler(ex, "Failure loading Person Groups");
+                return false;
             }
         }
 
-        public async Task CreatePersonAsync(string username)
+        public async Task<bool> CreatePersonAsync(string username)
         {
             try
             {
                 Person person = await FaceServiceHelper.CreatePersonAsync(this.CurrentPersonGroup.PersonGroupId, username);
                 this.PersonsInCurrentGroup.Add(new Person { Name = username, PersonId = person.PersonId });
+                return true;
             }
             catch (Exception ex)
             {
                 await Util.GenericApiCallExceptionHandler(ex, "Failure creating person");
+                return false;
             }
         }
 
-        public async Task DeletePersonAsync()
+        public async Task<bool> DeletePersonAsync()
         {
             try
             {
                 await FaceServiceHelper.DeletePersonAsync(this.CurrentPersonGroup.PersonGroupId, this.SelectedPerson.PersonId);
                 this.PersonsInCurrentGroup.Remove(this.SelectedPerson);
+                return true;
             }
             catch (Exception ex)
             {
                 await Util.GenericApiCallExceptionHandler(ex, "Failure deleting person");
+                return false;
             }
         }
 
