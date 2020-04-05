@@ -168,6 +168,19 @@ namespace PayrollApp.Views.NewUserOnboarding
                     helper.SelectedPerson.PersonId, 
                     croppedImage.GetImageStreamCallback, 
                     croppedImage.LocalImagePath, null);
+
+                if (addResult != null)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Face registered",
+                        Content = "Your face has been successfully registered. You can simply stand in front of the camera the next time you login to Payroll.",
+                        PrimaryButtonText = "More info",
+                        SecondaryButtonText = "Ok"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -192,10 +205,10 @@ namespace PayrollApp.Views.NewUserOnboarding
 
                     await contentDialog.ShowAsync();
                 }
-                else
-                {
-                    this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-                }
+            }
+            finally
+            {
+                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
         }
     }
