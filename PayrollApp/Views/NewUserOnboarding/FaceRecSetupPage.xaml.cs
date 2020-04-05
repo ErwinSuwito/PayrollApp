@@ -18,6 +18,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using ServiceHelpers;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using Windows.Storage;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -95,9 +98,70 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         }
 
-        private void cameraControl_ImageCaptured(object sender, ServiceHelpers.ImageAnalyzer e)
+        private async void cameraControl_ImageCaptured(object sender, ImageAnalyzer e)
         {
+            loadText.Text = "Detecting faces...";
+            loadGrid.Visibility = Visibility.Visible;
 
+            // Detects and identify if there is any faces on the image.
+            await e.DetectFacesAsync();
+            if (!e.DetectedFaces.Any())
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "No faces detected",
+                    Content = "There are no faces detected on the image. Please stand in front of the camera and make sure that a box is drawn around your face and select the capture button.",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+
+            await e.IdentifyFacesAsync();
+            if (e.IdentifiedPersons.Any())
+            {
+                string identifiedUsername = e.IdentifiedPersons.First().Person.Name;
+                if (identifiedUsername != SettingsHelper.Instance.SelectedPerson.Name)
+                {
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Another person is detected in the photo",
+                        Content = "Another person is identified in the submitted photo. Make sure that you are registering your face for one account only or make sure that there is only one person captured on the image. If you believe that there is an error, please contact Chiefs or HR Functional Unit to help you register for facial recognition.",
+                        CloseButtonText = "Ok"
+                    };
+
+                    await contentDialog.ShowAsync();
+                    this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+            }
+
+            // Crop the primary face
+            FaceRectangle rect = e.DetectedFaces.First().FaceRectangle;
+            double heightScaleFactor = 1.8;
+            double widthScaleFactor = 1.8;
+            FaceRectangle biggerRectangle = new FaceRectangle
+            {
+                Height = Math.Min((int)(rect.Height * heightScaleFactor), e.DecodedImageHeight),
+                Width = Math.Min((int)(rect.Width * widthScaleFactor), e.DecodedImageWidth)
+            };
+            biggerRectangle.Left = Math.Max(0, rect.Left - (int)(rect.Width * ((widthScaleFactor - 1) / 2)));
+            biggerRectangle.Top = Math.Max(0, rect.Top - (int)(rect.Height * ((heightScaleFactor - 1) / 1.4)));
+
+            StorageFile tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(
+                                                    "FaceRecoCameraCapture.jpg",
+                                                    CreationCollisionOption.GenerateUniqueName);
+
+            await Util.CropBitmapAsync(e.GetImageStreamCallback, biggerRectangle, tempFile);
+
+            var croppedImage = new ImageAnalyzer(tempFile.OpenStreamForReadAsync, tempFile.Path);
+
+            loadText.Text = "Uploading your image...";
+
+            try
+            {
+
+            }
         }
     }
 }
