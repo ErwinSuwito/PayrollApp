@@ -192,5 +192,10 @@ namespace PayrollApp.Views
             await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: true);
             this.StartProcessingLoop();
         }
+
+        private void footerContent_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(NewUserOnboarding.RegisterUserPage), "erwin.suwito@taportalteams.onmicrosoft.com", new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
     }
 }

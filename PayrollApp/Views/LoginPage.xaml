@@ -49,7 +49,7 @@
         </StackPanel>
 
         <StackPanel x:Name="footerContent" Margin="0,0,0,0" VerticalAlignment="Bottom"
-                    Grid.Row="2" Grid.Column="1">
+                    Grid.Row="2" Grid.Column="1" DoubleTapped="footerContent_DoubleTapped">
             <TextBlock Text="Can't login?"  FontWeight="SemiBold" FontSize="18"/>
             <TextBlock Text="Contact Chiefs or any of the TA HR Functional Unit members to help you login."
                        FontSize="16" TextWrapping="Wrap" Margin="0,2,0,0"/>

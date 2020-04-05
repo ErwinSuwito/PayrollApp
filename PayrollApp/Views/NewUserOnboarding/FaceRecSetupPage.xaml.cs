@@ -60,21 +60,23 @@ namespace PayrollApp.Views.NewUserOnboarding
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
+            bool InitializeSuccess = false;
 
             bool LoadPersonResult = await SettingsHelper.Instance.LoadRegisteredPeople();
             if (LoadPersonResult == true)
             {
+                InitializeSuccess = true;
                 bool IsUserFound = SettingsHelper.Instance.SelectPeople(username);
-                if (IsUserFound != true)
+                if (IsUserFound == false)
                 {
-                    bool CreatePersonSuccess = await SettingsHelper.Instance.CreatePersonAsync(username);
-
-                    if (CreatePersonSuccess == true)
-                    {
-                        loadGrid.Visibility = Visibility.Collapsed;
-                        return;
-                    }
+                    InitializeSuccess = await SettingsHelper.Instance.CreatePersonAsync(username);
                 }
+            }
+
+            if (InitializeSuccess)
+            {
+                loadGrid.Visibility = Visibility.Collapsed;
+                return;
             }
             
             ContentDialog contentDialog = new ContentDialog
