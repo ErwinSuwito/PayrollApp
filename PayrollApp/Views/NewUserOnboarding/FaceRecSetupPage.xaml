@@ -73,7 +73,7 @@
             </animations:Implicit.HideAnimations>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ProgressRing IsActive="True" />
-                <TextBlock x:Name="loadText" Text="Preparing to register new face..." Margin="4,0,0,0"/>
+                <TextBlock x:Name="loadText" Text="Preparing to register new face..." Margin="6,0,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>

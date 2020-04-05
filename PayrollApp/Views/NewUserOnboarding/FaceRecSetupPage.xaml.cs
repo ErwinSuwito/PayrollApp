@@ -120,7 +120,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                 };
 
                 await contentDialog.ShowAsync();
-                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                return;
             }
 
             await e.IdentifyFacesAsync();
