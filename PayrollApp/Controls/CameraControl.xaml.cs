@@ -590,6 +590,15 @@ namespace PayrollApp.Controls
             catch (Exception ex)
             {
                 //await Util.GenericApiCallExceptionHandler(ex, "Error stopping the camera.");
+                //if (ex.Message.Contains("The op is invalid"))
+                //{
+                //    if (PerformFaceTracking)
+                //    {
+                //        this.FaceTrackingVisualizationCanvas.Children.Clear();
+                //    }
+
+                //    this.captureManager.Dispose();
+                //}
             }
         }
 

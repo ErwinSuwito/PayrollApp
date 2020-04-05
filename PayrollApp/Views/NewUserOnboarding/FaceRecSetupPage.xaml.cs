@@ -73,6 +73,8 @@ namespace PayrollApp.Views.NewUserOnboarding
                 }
             }
 
+            await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: false);
+
             if (InitializeSuccess)
             {
                 loadGrid.Visibility = Visibility.Collapsed;
@@ -171,17 +173,57 @@ namespace PayrollApp.Views.NewUserOnboarding
                     croppedImage.GetImageStreamCallback, 
                     croppedImage.LocalImagePath, null);
 
+
                 if (addResult != null)
                 {
-                    ContentDialog contentDialog = new ContentDialog
+                    // Trains each PersonGroup
+                    loadText.Text = "Training model...";
+                    bool trainingSucceeded = true;
+                    foreach (var group in helper.PersonGroups)
                     {
-                        Title = "Face registered",
-                        Content = "Your face has been successfully registered. You can simply stand in front of the camera the next time you login to Payroll.",
-                        PrimaryButtonText = "More info",
-                        SecondaryButtonText = "Ok"
-                    };
+                        await FaceServiceHelper.TrainPersonGroupAsync(group.PersonGroupId);
 
-                    await contentDialog.ShowAsync();
+                        while (true)
+                        {
+                            TrainingStatus trainingStatus = await FaceServiceHelper.GetPersonGroupTrainingStatusAsync(group.PersonGroupId);
+
+                            if (trainingStatus.Status != TrainingStatusType.Running)
+                            {
+                                if (trainingStatus.Status == TrainingStatusType.Failed)
+                                {
+                                    trainingSucceeded = false;
+                                }
+
+                                break;
+                            }
+
+                            await Task.Delay(500);
+                        }
+                    }
+
+                    if (trainingSucceeded == true)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Face registered",
+                            Content = "Your face has been successfully registered. You can simply stand in front of the camera the next time you login to Payroll.",
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Training failed.",
+                            Content = "Training failed. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit.",
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+
+                    }
                 }
             }
             catch (Exception ex)
