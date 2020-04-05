@@ -154,8 +154,8 @@ namespace PayrollApp
 
         public async Task<bool> LoadRegisteredPeople()
         {
-            //try
-            //{
+            try
+            {
                 PersonGroups.Clear();
                 IEnumerable<PersonGroup> personGroups = await FaceServiceHelper.ListPersonGroupsAsync(this.WorkspaceKey);
                 PersonGroups.AddRange(personGroups.OrderBy(pg => pg.Name));
@@ -170,34 +170,28 @@ namespace PayrollApp
                 }
 
                 return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    await Util.GenericApiCallExceptionHandler(ex, "Failure loading Person Groups");
-            //    return false;
-            //}
         }
+            catch (Exception ex)
+            {
+                await Util.GenericApiCallExceptionHandler(ex, "Failure loading Person Groups");
+                return false;
+            }
+}
 
         public async Task<bool> CreatePersonAsync(string username)
         {
-            //try
-            //{
+            try
+            {
                 Person person = await FaceServiceHelper.CreatePersonAsync(this.CurrentPersonGroup.PersonGroupId, username);
                 this.PersonsInCurrentGroup.Add(new Person { Name = username, PersonId = person.PersonId });
-                if (person != null)
-            {
+                SelectedPerson = PersonsInCurrentGroup.Last();
                 return true;
             }
-                else
+            catch (Exception ex)
             {
+                await Util.GenericApiCallExceptionHandler(ex, "Failure creating person");
                 return false;
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    await Util.GenericApiCallExceptionHandler(ex, "Failure creating person");
-            //    return false;
-            //}
         }
 
         public async Task<bool> DeletePersonAsync()
