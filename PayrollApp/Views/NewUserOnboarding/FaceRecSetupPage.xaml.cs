@@ -35,6 +35,7 @@ namespace PayrollApp.Views.NewUserOnboarding
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
         string username = SettingsHelper.Instance.userState.user.userID;
+        SettingsHelper helper = SettingsHelper.Instance;
 
         public FaceRecSetupPage()
         {
@@ -160,7 +161,41 @@ namespace PayrollApp.Views.NewUserOnboarding
 
             try
             {
+                PersistedFace addResult;
 
+                addResult = await FaceServiceHelper.AddPersonFaceFromStreamAsync(
+                    helper.CurrentPersonGroup.PersonGroupId, 
+                    helper.SelectedPerson.PersonId, 
+                    croppedImage.GetImageStreamCallback, 
+                    croppedImage.LocalImagePath, null);
+            }
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Unable to register your face",
+                    Content = "There is a problem that prevents us to register your face. Please try again later. You can register you face by selecting Improve Recognition after you login into Payroll. Tap on the More info button to see what's wrong.",
+                    PrimaryButtonText = "More info",
+                    SecondaryButtonText = "Ok"
+                };
+
+                ContentDialogResult result = await contentDialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
+                {
+                    contentDialog = new ContentDialog
+                    {
+                        Title = "More info",
+                        Content = ex.Message,
+                        CloseButtonText = "Close"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
             }
         }
     }

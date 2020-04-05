@@ -52,15 +52,15 @@
 
             <TextBlock Text="Make sure you're centered" Style="{ThemeResource TitleTextBlockStyle}"
                        Margin="0,8,0,0"/>
-            <TextBlock Text="Click on the capture button once a box is drawn over your face and then Tap on the Next button." Style="{ThemeResource BodyTextBlockStyle}"/>
+            <TextBlock Text="Click on the capture button once a box is drawn over your face. We'll tell if you there's a problem in registering your face." Style="{ThemeResource BodyTextBlockStyle}"/>
         </StackPanel>
 
-        <CommandBar Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom"
+        <!--<CommandBar Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
             <AppBarButton x:Name="nextBtn" Label="Next" Icon="Forward"
                           Click="nextBtn_Click"  FlowDirection="RightToLeft"
                           Style="{ThemeResource AppBarButtonRevealStyle}" />
-        </CommandBar>
+        </CommandBar>-->
 
         <Grid x:Name="loadGrid" Grid.RowSpan="5" Grid.ColumnSpan="3"
               Background="#B7000000" Visibility="Visible">
