@@ -180,5 +180,10 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         {
             this.Frame.Navigate(typeof(AddUserPage), user, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
+
+        private void improveRecBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(NewUserOnboarding.FaceRecSetupPage), user.userID, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
     }
 }

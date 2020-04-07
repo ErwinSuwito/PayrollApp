@@ -83,7 +83,7 @@ namespace PayrollApp.Views.UserProfile
 
         private void improveRecButton_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(NewUserOnboarding.FaceRecSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void ModifyUI()

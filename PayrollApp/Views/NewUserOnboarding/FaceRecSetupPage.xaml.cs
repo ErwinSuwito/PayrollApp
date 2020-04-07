@@ -36,10 +36,22 @@ namespace PayrollApp.Views.NewUserOnboarding
         DispatcherTimer loadTimer = new DispatcherTimer();
         string username = SettingsHelper.Instance.userState.user.userID;
         SettingsHelper helper = SettingsHelper.Instance;
+        User user;
 
         public FaceRecSetupPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                user = e.Parameter as User;
+                username = user.userID;
+            }
+
+            base.OnNavigatedTo(e);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -89,7 +101,8 @@ namespace PayrollApp.Views.NewUserOnboarding
             };
             
             await contentDialog.ShowAsync();
-            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+
+            NavigateBack();
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -137,7 +150,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                     };
 
                     await contentDialog.ShowAsync();
-                    this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    return;
                 }
             }
 
@@ -222,7 +235,6 @@ namespace PayrollApp.Views.NewUserOnboarding
                         };
 
                         await contentDialog.ShowAsync();
-
                     }
                 }
             }
@@ -252,7 +264,19 @@ namespace PayrollApp.Views.NewUserOnboarding
             }
             finally
             {
+                NavigateBack();
+            }
+        }
+
+        private void NavigateBack()
+        {
+            if (user != null)
+            {
                 this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+            else
+            {
+                this.Frame.GoBack();
             }
         }
     }
