@@ -346,7 +346,7 @@ namespace PayrollApp.Views.AdminSettings
                 ContentDialog contentDialog = new ContentDialog
                 {
                     Title = "Unable to save default groups",
-                    Content = "There is a problem that prevents default groups to be saved. Make sure that this device is connected to a network and is able to access the database."
+                    Content = "There is a problem that prevents default groups to be saved. Make sure that this device is connected to a network and is able to access the database.",
                     CloseButtonText = "Ok"
                 };
 
@@ -357,6 +357,12 @@ namespace PayrollApp.Views.AdminSettings
         private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+        }
+
+        private async void changeFaceApiBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FaceApiSettingsDialog dialog = new FaceApiSettingsDialog();
+            await dialog.ShowAsync();
         }
     }
 }

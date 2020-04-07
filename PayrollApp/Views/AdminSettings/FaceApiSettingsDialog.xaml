@@ -1,0 +1,40 @@
+﻿<ContentDialog
+    x:Class="PayrollApp.Views.AdminSettings.FaceApiSettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views.AdminSettings"
+    xmlns:ctl="using:PayrollApp.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Face API Settings"
+    PrimaryButtonText="Save and Close"
+    SecondaryButtonText="Use Default"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    <ContentDialog.Resources>
+        <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
+    </ContentDialog.Resources>
+
+    <Grid>
+        <StackPanel x:Name="dialogContent">
+            <TextBlock Text="The following are the Face API endpoint and key that are used by the application. Tap on the padlock button to unlock this settings." 
+                           TextWrapping="Wrap"/>
+
+            <TextBox Header="Endpoint" Margin="0,4,0,0" IsEnabled="{Binding ElementName=padlockBtn, Path=IsChecked}"
+                     IsReadOnly="{Binding ElementName=padlockBtn, Path=IsChecked}"
+                     x:Name="endpointTextBox" Text="{Binding CustomFaceApiEndpoint, Mode=OneWay}"/>
+
+            <PasswordBox Header="API Key" Margin="0,4,0,12" IsEnabled="{Binding ElementName=padlockBtn, Path=IsChecked}"
+                         x:Name="keyTextBox" Password="{Binding FaceApiKey, Mode=OneWay}"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <ToggleButton x:Name="padlockBtn" IsChecked="False" Content="&#xE1F6;" FontFamily="Segoe MDL2 Assets"
+                              Width="40" Height="40" Style="{ThemeResource ToggleButtonRevealStyle}"
+                              Click="padlockBtn_Click"/>
+                <TextBlock x:Name="lockStateText" Text="Locked" Margin="16,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

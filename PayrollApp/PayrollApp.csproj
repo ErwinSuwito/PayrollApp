@@ -152,6 +152,9 @@
     <Compile Include="SettingsHelper.cs" />
     <Compile Include="unhandledExParam.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Views\AdminSettings\FaceApiSettingsDialog.xaml.cs">
+      <DependentUpon>FaceApiSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdminSettings\FaceSetup\FaceIdentificationSetup.xaml.cs">
       <DependentUpon>FaceIdentificationSetup.xaml</DependentUpon>
     </Compile>
@@ -321,6 +324,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\FaceApiSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AdminSettings\FaceSetup\FaceIdentificationSetup.xaml">
       <Generator>MSBuild:Compile</Generator>

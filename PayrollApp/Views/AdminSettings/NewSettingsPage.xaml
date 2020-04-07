@@ -48,7 +48,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            
+
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                 <TextBlock x:Name="currentTime" TextAlignment="Right" 
                                FontWeight="SemiBold" Text="12:30 PM"
@@ -188,21 +188,14 @@
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Text="Face API" Style="{ThemeResource TitleTextBlockStyle}" />
-                                <TextBlock Text="The following are the Face API endpoint and key that are used by the application. Changes automatically saved." 
-                                           TextWrapping="Wrap"/>
-                                <TextBox x:Name="faceApiEndpointTextBox" Text="{Binding CustomFaceApiEndpoint, Mode=TwoWay}" HorizontalAlignment="Left"
-                                         Header="Face API Endpoint" PlaceholderText="Endpoint (e.g. https://virginia.api.cognitive.microsoft.us)" Margin="0,8,0,0" 
-                                         Width="{Binding ElementName=ConnectionsStackPanel, Path=ActualWidth}"/>
-                                <PasswordBox x:Name="faceApiKeyTextBox" Password="{Binding FaceApiKey, Mode=TwoWay}" HorizontalAlignment="Left"
-                                             Header="Face API Key" PlaceholderText="Any of the 2 API Keys" Margin="0,8,0,0" 
-                                             PasswordRevealMode="Peek" Width="{Binding ElementName=ConnectionsStackPanel, Path=ActualWidth}"/>
-                                <Button x:Name="useDefaultFaceApi" VerticalAlignment="Bottom" Margin="0,12,0,0" 
-                                        Content="Use Default Endpoint and API Key" Click="useDefaultFaceApi_Click"/>
+                                <TextBlock Text="Face API Key" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="The Face API Key and Endpoint is used to access face data on Azure. To make changes to this settings, click on the button below." TextWrapping="Wrap"/>
+                                <Button x:Name="changeFaceApiBtn" Content="Change settings" Margin="0,12,0,0"
+                                        Click="changeFaceApiBtn_Click"/>
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Text="Office 365" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Microsoft 365" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="Sending emails requires you to be logged in to the E-Docs account. Click the button below to sign in or sign out." 
                                            TextWrapping="Wrap"/>
                                 <controls:LoginButton x:Name="loginButton" Margin="0,12,0,0" />
