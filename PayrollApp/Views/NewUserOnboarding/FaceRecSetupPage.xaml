@@ -64,7 +64,7 @@
         </CommandBar>-->
 
         <Grid x:Name="loadGrid" Grid.RowSpan="5" Grid.ColumnSpan="3"
-              Background="#B7000000" Visibility="Visible">
+              Background="{ThemeResource loadBackground}" Visibility="Visible">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>

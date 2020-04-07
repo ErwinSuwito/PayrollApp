@@ -74,7 +74,7 @@
                          VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" />
 
         <Grid x:Name="loadGrid" Grid.RowSpan="5" Grid.ColumnSpan="3"
-              Background="#B7000000" Visibility="Collapsed">
+              Background="{ThemeResource loadBackground}" Visibility="Collapsed">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
