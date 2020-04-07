@@ -322,9 +322,41 @@ namespace PayrollApp.Views.AdminSettings
             }
         }
 
-        private void saveDefaultGroup_Click(object sender, RoutedEventArgs e)
+        private async void saveDefaultGroup_Click(object sender, RoutedEventArgs e)
         {
+            loadGrid.Visibility = Visibility.Visible;
+            UserGroup[] groups = new UserGroup[2];
+            groups[0] = defaultOtherGroup.SelectedItem as UserGroup;
+            groups[1] = defaultTraineeGroup.SelectedItem as UserGroup;
+            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultGroup", groups[0].groupID.ToString()) &&
+                await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultTraineeGroup", groups[1].groupID.ToString());
 
+            if (IsSuccess)
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Default groups saved!",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Unable to save default groups",
+                    Content = "There is a problem that prevents default groups to be saved. Make sure that this device is connected to a network and is able to access the database."
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+        }
+
+        private void faceIdSetupBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FaceSetup.FaceIdentificationSetup), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
     }
 }

@@ -166,6 +166,13 @@
                                 <Button x:Name="openRatesBtn" Content="Manage rates" Margin="0,8,0,0"  
                                     Click="openRatesBtn_Click"/>
                             </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Face Identification Setup" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Manage all submitted faces here." TextWrapping="Wrap"/>
+                                <Button x:Name="faceIdSetupBtn" Content="Manage faces" Margin="0,8,0,0" 
+                                        Click="faceIdSetupBtn_Click"/>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </PivotItem>
