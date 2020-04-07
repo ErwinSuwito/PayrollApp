@@ -185,5 +185,56 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         {
             this.Frame.Navigate(typeof(NewUserOnboarding.FaceRecSetupPage), user.userID, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
+
+        private async void deleteFaceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Delete face data?",
+                Content = "Are you sure you want to delete face data for " + user.fullName + "? This action is irreversible.",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                loadGrid.Visibility = Visibility.Visible;
+                progText.Text = "Preparing to delete...";
+
+                // Reload all face data
+                bool Reloaded = await SettingsHelper.Instance.LoadRegisteredPeople();
+                if (Reloaded)
+                {
+                    SettingsHelper.Instance.SelectPeople(user.userID);
+                    progText.Text = "Deleting data...";
+                    bool IsSuccess = await SettingsHelper.Instance.DeletePersonAsync();
+
+                    if (IsSuccess)
+                    {
+                        contentDialog = new ContentDialog
+                        {
+                            Title = "Face data deleted",
+                            Content = "Face data for " + user.fullName + " has been successfully deleted. The user can re-register their face data after they login or by tapping on the 'Improve Recognition' button on Admin Settings.",
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+                        contentDialog = new ContentDialog
+                        {
+                            Title = "Unable to delete face data",
+                            Content = "There is an error preventing face data to be deleted. Please try again later. If the problem persists, please double check in Face Identification Setup if face data for the user has been deleted.",
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                }
+            }
+        }
     }
 }

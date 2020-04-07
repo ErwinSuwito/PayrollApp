@@ -96,7 +96,7 @@
                         <TextBlock Text="Face recognition to help them login easier and faster." TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                             <Button x:Name="improveRecBtn" Content="Improve Recognition" Click="improveRecBtn_Click"/>
-                            <Button x:Name="deleteFaceBtn" Content="Delete data" Margin="8,0,0,0" />
+                            <Button x:Name="deleteFaceBtn" Content="Delete data" Margin="8,0,0,0" Click="deleteFaceBtn_Click"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
