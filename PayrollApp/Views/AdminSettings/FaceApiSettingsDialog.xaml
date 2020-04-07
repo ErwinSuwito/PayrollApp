@@ -23,11 +23,11 @@
                            TextWrapping="Wrap"/>
 
             <TextBox Header="Endpoint" Margin="0,4,0,0" IsEnabled="{Binding ElementName=padlockBtn, Path=IsChecked}"
-                     IsReadOnly="{Binding ElementName=padlockBtn, Path=IsChecked}"
                      x:Name="endpointTextBox" Text="{Binding CustomFaceApiEndpoint, Mode=OneWay}"/>
 
             <PasswordBox Header="API Key" Margin="0,4,0,12" IsEnabled="{Binding ElementName=padlockBtn, Path=IsChecked}"
-                         x:Name="keyTextBox" Password="{Binding FaceApiKey, Mode=OneWay}"/>
+                         x:Name="keyTextBox" Password="{Binding FaceApiKey, Mode=OneWay}"
+                         PasswordRevealMode="Peek"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
                 <ToggleButton x:Name="padlockBtn" IsChecked="False" Content="&#xE1F6;" FontFamily="Segoe MDL2 Assets"

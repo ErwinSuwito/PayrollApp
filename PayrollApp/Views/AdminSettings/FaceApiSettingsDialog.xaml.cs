@@ -46,12 +46,12 @@ namespace PayrollApp.Views.AdminSettings
             if (padlockBtn.IsChecked == true)
             {
                 lockStateText.Text = "Unlocked";
-                padlockBtn.Content = "&#xE1F7;";
+                padlockBtn.Content = "\uE1F7";
             }
             else
             {
                 lockStateText.Text = "Locked";
-                padlockBtn.Content = "&#xE1F6;";
+                padlockBtn.Content = "\uE1F6";
             }
         }
     }

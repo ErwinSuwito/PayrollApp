@@ -163,12 +163,6 @@ namespace PayrollApp.Views.AdminSettings
             this.Frame.Navigate(typeof(Location.LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
-        private void useDefaultFaceApi_Click(object sender, RoutedEventArgs e)
-        {
-            faceApiEndpointTextBox.Text = ClientSecret.FaceApiEndpoint;
-            faceApiKeyTextBox.Password = ClientSecret.FaceApiKey;
-        }
-
         private void saveLocationBtn_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values["selectedLocation"] = (locationSelector.SelectedItem as PayrollCore.Entities.Location).locationID;
