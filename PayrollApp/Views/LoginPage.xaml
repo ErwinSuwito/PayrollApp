@@ -54,5 +54,16 @@
             <TextBlock Text="Contact Chiefs or any of the TA HR Functional Unit members to help you login."
                        FontSize="16" TextWrapping="Wrap" Margin="0,2,0,0"/>
         </StackPanel>
+
+        <ContentDialog x:Name="newAccountDialog" Grid.RowSpan="4" Grid.ColumnSpan="3"
+                       Title="Create new account"
+                       PrimaryButtonText="Next"
+                       CloseButtonText="Cancel">
+            <StackPanel>
+                <TextBlock Text="Enter your email below (in AD) and select Next. This lets you login without face authentication or card."
+                           TextWrapping="Wrap"/>
+                <TextBox x:Name="emailBox" Header="Email" Margin="0,4,0,0" />
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>

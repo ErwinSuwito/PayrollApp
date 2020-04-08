@@ -49,7 +49,7 @@
             </StackPanel>
 
             <ctl:CameraControl x:Name="cameraControl" ImageCaptured="cameraControl_ImageCaptured"
-                               Margin="0,12,0,0" MinHeight="252" ShowFaceTracking="False"/>
+                               Margin="0,12,0,0" MinHeight="252" ShowFaceTracking="True"/>
 
             <TextBlock Text="Make sure you're centered" Style="{ThemeResource TitleTextBlockStyle}"
                        Margin="0,8,0,0"/>

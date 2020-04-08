@@ -193,9 +193,15 @@ namespace PayrollApp.Views
             this.StartProcessingLoop();
         }
 
-        private void footerContent_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private async void footerContent_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(NewUserOnboarding.RegisterUserPage), "erwin.suwito@taportalteams.onmicrosoft.com", new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            ContentDialogResult result = await newAccountDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                this.Frame.Navigate(typeof(NewUserOnboarding.RegisterUserPage), emailBox.Text, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
+
+            newAccountDialog.Hide();
         }
     }
 }
