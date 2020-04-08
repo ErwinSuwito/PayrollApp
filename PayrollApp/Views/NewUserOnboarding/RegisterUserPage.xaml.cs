@@ -145,24 +145,39 @@ namespace PayrollApp.Views.NewUserOnboarding
                     NewAccount = true;
                     progText.Text = "Setting up your account...";
                     User newUser = await GetUserFromAD(upn);
-                    bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);
-
-                    if (IsSuccess)
+                    if (newUser != null)
                     {
-                        loadTimer.Start();
+                        bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);
+
+                        if (IsSuccess)
+                        {
+                            loadTimer.Start();
+                        }
+                        else
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Unable to register your account.",
+                                Content = "There's a problem in creating your account. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you login.",
+                                PrimaryButtonText = "Ok"
+                            };
+
+                            await contentDialog.ShowAsync();
+
+                            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                        }
+
                     }
                     else
                     {
                         ContentDialog contentDialog = new ContentDialog
                         {
-                            Title = "Unable to register your account.",
-                            Content = "There's a problem in creating your account. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you login.",
+                            Title = "Unable to create your account",
+                            Content = "There is a problem in creating your account. Please make sure that your AD account is enabled. Please contact Chiefs or HR Functional Unit to get help.",
                             PrimaryButtonText = "Ok"
                         };
 
                         await contentDialog.ShowAsync();
-
-                        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
                 }
             }

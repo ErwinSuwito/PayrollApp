@@ -15,7 +15,7 @@
     
     <Grid>
         <Interactivity:Interaction.Behaviors>
-            <providers:InteractiveProviderBehavior ClientId="bd43d842-e017-4457-bd68-bba4343b8e30" Scopes="User.Read,User.ReadBasic.All,Mail.Send" />
+            <providers:InteractiveProviderBehavior ClientId="ce9d1645-4237-45de-a543-2d442f6b5e1d" Scopes="User.Read,User.ReadBasic.All,User.Read.All,Mail.Send" />
         </Interactivity:Interaction.Behaviors>
         
         <Grid x:Name="BackgroundGrid" Grid.RowSpan="2">
