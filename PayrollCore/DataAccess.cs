@@ -14,6 +14,7 @@ namespace PayrollCore
     {
         string DbConnString;
         string CardConnString;
+        Exception lastError;
 
         /// <summary>
         /// Saves the connection string to memory.
@@ -53,6 +54,7 @@ namespace PayrollCore
         /// </summary>
         public async Task<ObservableCollection<Location>> GetLocations(bool showDisabled)
         {
+            lastError = null;
             const string GetLocationsQuery = "SELECT * FROM Location";
 
             var items = new ObservableCollection<Location>();
@@ -96,6 +98,7 @@ namespace PayrollCore
             catch (Exception ex)
             {
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                lastError = ex;
             }
 
             return null;
@@ -107,6 +110,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<Meeting>> GetMeetings(Location appLocation)
         {
+            lastError = null;
             const string GetLocationsQuery = "SELECT * FROM Meeting JOIN Rate ON Rate.RateID=Meeting.RateID WHERE LocationID=@LocationID";
 
             var items = new ObservableCollection<Meeting>();
@@ -150,7 +154,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -163,6 +168,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Location> GetLocationById(string selectedLocation)
         {
+            lastError = null;
             string GetLocationSettingsQuery = "SELECT * FROM Location WHERE locationID=@LocationID";
             try
             {
@@ -192,7 +198,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -205,6 +212,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> SaveLocationAsync(Location location)
         {
+            lastError = null;
             string Query = "UPDATE Location SET LocationName=@LocationName, EnableGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
 
             try
@@ -229,7 +237,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -242,6 +251,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<int> AddLocationAsync(Location location)
         {
+            lastError = null;
             string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, 'false') select SCOPE_IDENTITY()";
 
             try
@@ -265,7 +275,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return -1;
@@ -279,6 +290,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Boolean> SaveMeetingSettings(Meeting meeting)
         {
+            lastError = null;
             string Query;
 
             try
@@ -309,7 +321,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -317,6 +330,7 @@ namespace PayrollCore
 
         public async Task<int> SaveMeetingAndReturnId(Meeting meeting)
         {
+            lastError = null;
             string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, IsDisabled, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @DisableMeeting, @RateID, @StartTime) select SCOPE_IDENTITY()";
             
             try
@@ -347,7 +361,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return -1;
@@ -359,6 +374,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<User>> GetUsersList()
         {
+            lastError = null;
             const string GetLocationsQuery = "SELECT * FROM Users JOIN user_group ON user_group.GroupID = Users.GroupID";
 
             var items = new ObservableCollection<User>();
@@ -400,7 +416,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -413,6 +430,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Location> GetLocationByName(string locationName)
         {
+            lastError = null;
             string GetLocationSettingsQuery = "SELECT * FROM Location WHERE LocationName=@LocationName";
             try
             {
@@ -441,7 +459,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -454,6 +473,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<User> GetUserFromDbById(string username)
         {
+            lastError = null;
             string GetUserQuery = "SELECT * FROM Users JOIN user_group ON user_group.GroupID=Users.GroupID JOIN Rate ON Rate.RateID=user_group.RateID WHERE UserID=@UserId";
 
             try
@@ -500,7 +520,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -513,6 +534,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateUserInfo(User user)
         {
+            lastError = null;
             string Query;
 
             try
@@ -541,7 +563,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -554,6 +577,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewUser(User user)
         {
+            lastError = null;
             string Query;
 
             try
@@ -582,7 +606,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -596,6 +621,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<Shift>> GetShiftsFromLocation(string locationID, bool showDisabled)
         {
+            lastError = null;
             string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE LocationID=@LocationID";
             ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
             
@@ -654,7 +680,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
             
@@ -681,6 +708,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<UserGroup>> GetAllUserGroups()
         {
+            lastError = null;
             string Query = "SELECT * FROM user_group JOIN Rate ON Rate.RateID=user_group.RateID";
             ObservableCollection<UserGroup> userGroups = new ObservableCollection<UserGroup>();
 
@@ -720,7 +748,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
         }
@@ -732,6 +761,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<UserGroup> GetUserGroupById(int groupId)
         {
+            lastError = null;
             string Query = "SELECT * FROM user_group JOIN Rate ON Rate.RateID=user_group.RateID WHERE GroupID=@GroupID";
             UserGroup userGroup = new UserGroup();
 
@@ -770,7 +800,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -783,6 +814,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewUserGroup(UserGroup userGroup)
         {
+            lastError = null;
             string Query = "INSERT INTO user_group(GroupName, RateID, ShowAdminSettings, EnableFaceRec) VALUES(@GroupName, @RateID, @ShowAdminSettings, @EnableFaceRec)";
 
             try
@@ -807,7 +839,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
@@ -819,6 +852,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateUserGroupInfo(UserGroup userGroup)
         {
+            lastError = null;
             string Query = "UPDATE user_group SET GroupName=@GroupName, RateID=@RateID, ShowAdminSettings=@ShowAdminSettings, EnableFaceRec=@EnableFaceRec WHERE GroupID=@GroupID";
 
             try
@@ -844,7 +878,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
@@ -856,6 +891,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> DeleteUserGroup(UserGroup userGroup)
         {
+            lastError = null;
             string Query = "DELETE FROM user_group WHERE GroupID=@GroupID";
 
             try
@@ -877,7 +913,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
@@ -889,6 +926,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<List<MeetingUserGroup>> GetMeetingUserGroupByMeetingId(int meetingID)
         {
+            lastError = null;
             List<MeetingUserGroup> meetingUserGroups = new List<MeetingUserGroup>();
 
             string Query = "SELECT * FROM Meeting_Group WHERE MeetingID=@MeetingID";
@@ -922,7 +960,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
 
@@ -937,6 +976,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<ObservableCollection<MeetingUserGroup>> GetMeetingUserGroupByUserGroup(int userGroup, int LocationID, bool ShowDisabled)
         {
+            lastError = null;
             ObservableCollection<MeetingUserGroup> meetingUserGroups = new ObservableCollection<MeetingUserGroup>();
 
             string Query = "SELECT * FROM Meeting_Group JOIN Meeting ON Meeting.MeetingID=Meeting_Group.MeetingID WHERE UserGroupID=@UserGroup AND LocationID=@LocationID";
@@ -978,7 +1018,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
 
@@ -986,6 +1027,7 @@ namespace PayrollCore
 
         public async Task<bool> DeleteMeetingUserGroup(int meetingID)
         {
+            lastError = null;
             string Query = "DELETE FROM Meeting_Group WHERE MeetingID=@MeetingID";
 
             try
@@ -1008,7 +1050,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -1017,6 +1060,7 @@ namespace PayrollCore
 
         public async Task<bool> AddMeetingUserGroup(UserGroup userGroup, Meeting meeting)
         {
+            lastError = null;
             string Query = "INSERT INTO Meeting_Group(MeetingID, UserGroupID) VALUES(@MeetingID, @UserGroupID)";
 
             try
@@ -1039,13 +1083,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
 
         public async Task<bool> DeleteMeetingAsync(int meetingID)
         {
+            lastError = null;
             string Query = "DELETE FROM Meeting WHERE MeetingID=@MeetingID";
 
             try
@@ -1068,7 +1114,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -1077,6 +1124,7 @@ namespace PayrollCore
 
         public async Task<int> GetMeetingAttendanceRecNum(Meeting meeting)
         {
+            lastError = null;
             int num = 0;
 
             string Query = "SELECT MeetingID FROM Activity WHERE MeetingID=@MeetingID";
@@ -1105,7 +1153,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return num;
@@ -1113,6 +1162,7 @@ namespace PayrollCore
 
         public async Task<ObservableCollection<Rate>> GetAllRates(bool includeDisabled)
         {
+            lastError = null;
             string Query = "SELECT * FROM Rate";
             ObservableCollection<Rate> rates = new ObservableCollection<Rate>();
 
@@ -1151,13 +1201,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
         }
 
         public async Task<bool> AddNewRate(Rate rate)
         {
+            lastError = null;
             string Query = "INSERT INTO Rate(RateDesc, Rate) VALUES(@RateDesc, @Rate)";
 
             try
@@ -1180,13 +1232,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
 
         public async Task<bool> UpdateRateInfo(Rate rate)
         {
+            lastError = null;
             string Query = "UPDATE Rate SET RateDesc=@RateDesc, Rate=@Rate, IsDisabled=@IsDisabled WHERE RateID=@RateID";
 
             try
@@ -1211,7 +1265,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return false;
@@ -1219,6 +1274,7 @@ namespace PayrollCore
 
         public async Task<Shift> GetShiftById (int shiftID)
         {
+            lastError = null;
             Shift shift = new Shift();
             string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE ShiftID=@ShiftID";
 
@@ -1266,13 +1322,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
         }
 
         public async Task<Shift> GetSpecialTaskShift(int locationID)
         {
+            lastError = null;
             Shift shift = new Shift();
             string Query = "SELECT * FROM Shifts JOIN Rate ON Rate.RateID=Shifts.RateID WHERE ShiftName='Special Task' AND LocationID=@LocationID";
 
@@ -1321,13 +1379,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return null;
             }
         }
 
         public async Task<bool> AddNewShift(Shift shift)
         {
+            lastError = null;
             bool IsSuccess = false;
             string Query;
             
@@ -1368,13 +1428,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
 
         public async Task<bool> UpdateShiftInfo(Shift shift)
         {
+            lastError = null;
             bool IsSuccess = false;
             string Query = "UPDATE Shifts SET ShiftName=@ShiftName, StartTime=@StartTime, EndTime=@EndTime, LocationID=@LocationID, RateID=@RateID, IsDisabled=@IsDisabled, WeekendOnly=@WeekendOnly WHERE ShiftID=@ShiftID";
 
@@ -1405,7 +1467,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return IsSuccess;
@@ -1413,6 +1476,7 @@ namespace PayrollCore
 
         public async Task<string> GetMinHours()
         {
+            lastError = null;
             string MinHours = "";
             string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey='MinHours'";
 
@@ -1436,7 +1500,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return MinHours;
@@ -1444,6 +1509,7 @@ namespace PayrollCore
 
         public async Task<string> GetGlobalSetting(string SettingKey)
         {
+            lastError = null;
             string SettingValue = "";
             string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey=@SettingKey";
 
@@ -1471,7 +1537,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return SettingValue;
@@ -1479,6 +1546,7 @@ namespace PayrollCore
 
         public async Task<bool> UpdateGlobalSetting(string SettingKey, string SettingValue)
         {
+            lastError = null;
             bool IsSuccess = false;
             string Query = "UPDATE Global_Settings SET SettingValue=@SettingValue WHERE SettingKey=@SettingKey";
 
@@ -1502,7 +1570,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return IsSuccess;
@@ -1510,6 +1579,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestActivity(string upn, int locationID)
         {
+            lastError = null;
             string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID LEFT JOIN Rate mRate ON mRate.RateID=Meeting.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID ORDER BY ActivityID DESC";
             Activity activity;
 
@@ -1635,7 +1705,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -1643,6 +1714,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestSignIn(string upn, int locationID)
         {
+            lastError = null;
             string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Shifts s1 ON s1.ShiftID=Activity.StartShift LEFT JOIN Shifts s2 ON s2.ShiftID=Activity.EndShift LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate LEFT JOIN Rate startRate ON startRate.RateID=s1.RateID LEFT JOIN Rate endRate ON endRate.RateID=s2.RateID WHERE UserID=@UserID AND Activity.LocationID=@LocationID AND MeetingID IS NULL ORDER BY ActivityID DESC";
             Activity activity;
 
@@ -1748,7 +1820,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -1756,6 +1829,7 @@ namespace PayrollCore
 
         public async Task<Activity> GetLatestMeeting(string upn, int locationID)
         {
+            lastError = null;
             string Query = "SELECT TOP 1 * FROM Activity LEFT JOIN Meeting ON Meeting.MeetingID=Activity.MeetingID LEFT JOIN Rate mR ON mR.RateID=Meeting.RateID LEFT JOIN Rate aR ON aR.RateID=Activity.ApplicableRate WHERE UserID=@UserID AND Activity.LocationID=@LocationID AND Activity.MeetingID IS NOT NULL ORDER BY ActivityID DESC";
             Activity activity;
 
@@ -1820,7 +1894,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
@@ -1828,6 +1903,7 @@ namespace PayrollCore
 
         public async Task<double> GetApprovedHours(string upn)
         {
+            lastError = null;
             string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM Activity WHERE UserID=@UserID AND ClaimDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
             double approvedHours = 0;
 
@@ -1855,7 +1931,7 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); lastError = ex;
             }
 
             return approvedHours;
@@ -1863,6 +1939,7 @@ namespace PayrollCore
 
         public async Task<bool> AddNewActivity(Activity activity)
         {
+            lastError = null;
             string Query;
 
             if (activity.meeting != null)
@@ -1909,13 +1986,15 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
                 return false;
             }
         }
 
         public async Task<bool> UpdateActivityInfo(Activity activity)
         {
+            lastError = null;
             string Query = "UPDATE Activity SET OutTime=@OutTime, ApprovedHours=@ApprovedHours, ClaimableAmount=@ClaimableAmount, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
 
             try
@@ -1942,13 +2021,14 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); lastError = ex;
                 return false;
             }
         }
 
         public async Task<Meeting> GetMeetingById(int MeetingID)
         {
+            lastError = null;
             string Query = "SELECT * FROM Meeting JOIN Rate on Rate.RateID=Meeting.RateID WHERE MeetingID=@MeetingID";
             try
             {
@@ -1986,7 +2066,8 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                Debug.WriteLine("DataAccess Exception: " + ex.Message); 
+                lastError = ex;
             }
 
             return null;
