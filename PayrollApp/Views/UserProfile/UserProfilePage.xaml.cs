@@ -89,7 +89,7 @@ namespace PayrollApp.Views.UserProfile
         private void ModifyUI()
         {
             fullNameTextBlock.Text = userState.user.fullName;
-            string greeting;
+            string greeting = "";
 
             // Starts modifying UI
             // Modifies UI based on settings
@@ -113,13 +113,13 @@ namespace PayrollApp.Views.UserProfile
                     if (userState.LatestActivity.IsSpecialTask == true)
                     {
                         signButton.Visibility = Visibility.Collapsed;
-                        if (userState.LatestMeeting.outTime == DateTime.MinValue)
+                        if (userState.LatestMeeting == null || userState.LatestMeeting.outTime > DateTime.MinValue)
                         {
-                            greeting = "You are signed in for special task and meeting.";
+                            greeting = "You are signed in for special task.";
                         }
                         else
                         {
-                            greeting = "You are signed in for special task.";
+                            greeting = "You are signed in for special task and meeting.";
                         }
                     }
                     else
@@ -137,15 +137,17 @@ namespace PayrollApp.Views.UserProfile
                 }
                 else
                 {
-                    greetingTextBlock.Text = "You are not signed in.";
+                    greeting = "You are not signed in.";
                     signButton.Content = "Sign in";
                 }
             }
             else
             {
-                greetingTextBlock.Text = "You are not signed in.";
+                greeting = "You are not signed in.";
                 signButton.Content = "Sign in";
             }
+
+            greetingTextBlock.Text = greeting;
 
             int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
 
