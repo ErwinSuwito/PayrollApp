@@ -691,11 +691,11 @@ namespace PayrollCore
         {
             ObservableCollection<Shift> shifts = await GetShiftsFromLocation(locationID, false);
 
-            for (int i = 0; i < shifts.Count; i++)
+            foreach (Shift shift in shifts.ToList())
             {
-                if (shifts.ElementAt(i).WeekendOnly != weekendOnly)
+                if (shift.WeekendOnly != weekendOnly)
                 {
-                    shifts.RemoveAt(i);
+                    shifts.Remove(shift);
                 }
             }
 

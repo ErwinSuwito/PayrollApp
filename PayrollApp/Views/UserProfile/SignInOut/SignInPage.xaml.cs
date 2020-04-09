@@ -144,7 +144,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
                     var message = new Message
                     {
-                        Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + DateTime.Today.ToShortDateString(),
+                        Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + " " + DateTime.Today.ToShortDateString(),
                         Body = new ItemBody
                         {
                             ContentType = BodyType.Text,
