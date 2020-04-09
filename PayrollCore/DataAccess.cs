@@ -1866,6 +1866,8 @@ namespace PayrollCore
                             meetingRate.rate = dr.GetFloat(22);
                             meeting.rate = meetingRate;
 
+                            activity.meeting = meeting;
+
                             // Checks if sign out time is not empty and set their values
                             if (!dr.IsDBNull(4))
                             {

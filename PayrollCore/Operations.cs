@@ -244,7 +244,7 @@ namespace PayrollCore
             userState.user = user;
             userState.LatestActivity = await da.GetLatestSignIn(user.userID, locationID);
 
-            if (userState.LatestActivity.NoActivity != true)
+            if (userState.LatestActivity.NoActivity == false)
             {
                 userState.LatestMeeting = await da.GetLatestMeeting(user.userID, locationID);
             }

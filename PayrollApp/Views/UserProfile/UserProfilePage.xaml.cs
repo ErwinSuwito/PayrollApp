@@ -103,48 +103,79 @@ namespace PayrollApp.Views.UserProfile
                 adminSettingsButton.Visibility = Visibility.Visible;
             }
 
-            // Starts modify UI based on user activity
             if (userState.LatestActivity.NoActivity == false)
             {
-                // user has signed in before in this location
-                if (userState.LatestActivity.outTime == DateTime.MinValue)
+                if (userState.LatestActivity.IsSpecialTask == true)
                 {
-                    // user has not logged out
-                    if (userState.LatestActivity.IsSpecialTask == true)
+                    signButton.Visibility = Visibility.Collapsed;
+                    if (userState.LatestMeeting != null && userState.LatestMeeting.outTime == DateTime.MinValue)
                     {
-                        signButton.Visibility = Visibility.Collapsed;
-                        if (userState.LatestMeeting == null || userState.LatestMeeting.outTime > DateTime.MinValue)
+                        if (userState.LatestMeeting.outTime == DateTime.MinValue)
                         {
-                            greeting = "You are signed in for special task.";
+                            greeting = "You are signed in for both special task and meeting.";
                         }
                         else
                         {
-                            greeting = "You are signed in for special task and meeting.";
+                            greeting = "You are signed in for special task.";
                         }
                     }
                     else
                     {
-                        specialTaskButton.Visibility = Visibility.Collapsed;
-                        if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
-                        {
-                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " and meeting.";
-                        }
-                        else
-                        {
-                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + " and meeting.";
-                        }
+                        greeting = "You are signed in for special task.";
                     }
                 }
                 else
                 {
-                    greeting = "You are not signed in.";
-                    signButton.Content = "Sign in";
+                    specialTaskButton.Visibility = Visibility.Collapsed;
+                    signButton.Content = "Sign out";
+                    if (userState.LatestMeeting != null && userState.LatestMeeting.outTime == DateTime.MinValue)
+                    {
+                        if (userState.LatestMeeting.outTime == DateTime.MinValue)
+                        {
+                            if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                            {
+                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " and meeting.";
+                            }
+                            else
+                            {
+                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + " and meeting.";
+                            }
+                        }
+                        else
+                        {
+                            if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                            {
+                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + ".";
+                            }
+                            else
+                            {
+                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + ".";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                        {
+                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + ".";
+                        }
+                        else
+                        {
+                            greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + ".";
+                        }
+                    }
                 }
             }
             else
             {
-                greeting = "You are not signed in.";
-                signButton.Content = "Sign in";
+                if (userState.LatestMeeting != null)
+                {
+                    greeting = "Your attendance for the meeting has been recorded.";
+                }
+                else
+                {
+                    greeting = "You are not signed in.";
+                }
             }
 
             greetingTextBlock.Text = greeting;

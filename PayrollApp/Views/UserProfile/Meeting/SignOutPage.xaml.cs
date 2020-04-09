@@ -51,7 +51,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = SettingsHelper.Instance.op.CompleteMeetingAttendance(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
+                Activity newActivity = SettingsHelper.Instance.op.CompleteMeetingAttendance(SettingsHelper.Instance.userState.LatestMeeting, SettingsHelper.Instance.userState.user);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
                 if (IsSuccess)
