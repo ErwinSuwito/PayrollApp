@@ -77,7 +77,8 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
             }
 
             await SettingsHelper.Instance.UpdateUserState(SettingsHelper.Instance.userState.user);
-            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
