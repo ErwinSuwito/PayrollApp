@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
     xmlns:entity="using:PayrollCore.Entities"
+    xmlns:data="using:PayrollApp.GroupList"
+    xmlns:wuxdata="using:Windows.UI.Xaml.Data"
     xmlns:ctl="using:PayrollApp.Controls"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,6 +18,36 @@
     <Page.Resources>
         <ctl:BooleanToColorConverter x:Key="BooleanToColorConverter" />
         <CollectionViewSource x:Name="UsersCVS" IsSourceGrouped="True"/>
+
+        <!-- This style is used for a letter Group that has one or more Contact members by the ZoomedOutTemplate data template below.-->
+        <Style TargetType="TextBlock" x:Key="TileHeaderTextStyle">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="20,12,20,12"/>
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+
+        <!-- This style is used for a letter Group that has no Contact members by the GrayZoomedOutTemplate data template below.-->
+        <Style TargetType="TextBlock" x:Key="TileHeaderTextStyleGray">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Padding" Value="20,12,20,12"/>
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Opacity" Value=".05" />
+        </Style>
+        
+        <DataTemplate x:Key="GrayZoomedOutTemplate" x:DataType="wuxdata:ICollectionViewGroup">
+            
+            <TextBlock Text="{x:Bind Group.(data:GroupedUsers.Key)}" Style="{StaticResource TileHeaderTextStyleGray}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="ZoomedOutTemplate" x:DataType="wuxdata:ICollectionViewGroup">
+            <TextBlock Text="{x:Bind Group.(data:GroupedUsers.Key)}" Style="{StaticResource TileHeaderTextStyle}" />
+        </DataTemplate>
+
+        <data:GroupEmptyOrFullSelector x:Key="GroupEmptyOrFullSelector" Empty="{StaticResource GrayZoomedOutTemplate}" Full="{StaticResource ZoomedOutTemplate}" />
 
         <DataTemplate x:Name="UserListViewTemplate" x:DataType="entity:User">
             <Grid>
@@ -92,9 +124,11 @@
 
                 <SemanticZoom x:Name="semanticZoom" Margin="0,8,0,0" Height="400">
                     <SemanticZoom.ZoomedOutView>
-                        <GridView ItemsSource="{x:Bind UsersCVS.View.CollectionGroups}" HorizontalAlignment="Center"
+                        <GridView ItemsSource="{x:Bind UsersCVS.View.CollectionGroups}" 
+                                  ItemTemplateSelector="{StaticResource GroupEmptyOrFullSelector}"
+                                  HorizontalAlignment="Center"
                                   VerticalAlignment="Center" Width="372">
-                            <GridView.ItemTemplate>
+                            <!--<GridView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Width="56" Height="56">
                                         <TextBlock Text="{Binding Group.Key}" FontWeight="SemiBold"
@@ -102,7 +136,8 @@
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>
                                 </DataTemplate>
-                            </GridView.ItemTemplate>
+                            </GridView.ItemTemplate>-->
+
                         </GridView>
                     </SemanticZoom.ZoomedOutView>
 
@@ -113,9 +148,9 @@
                                   ItemClick="userListView_ItemClick" IsItemClickEnabled="True"
                                   ShowsScrollingPlaceholders="True" SelectionMode="None">
                             <ListView.GroupStyle>
-                                <GroupStyle>
+                                <GroupStyle HidesIfEmpty="True">
                                     <GroupStyle.HeaderTemplate>
-                                        <DataTemplate x:DataType="entity:GroupedUsers">
+                                        <DataTemplate x:DataType="data:GroupedUsers">
                                             <TextBlock Text="{x:Bind Key}"
                                                        Style="{ThemeResource TitleTextBlockStyle}" />
                                         </DataTemplate>

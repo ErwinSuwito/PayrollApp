@@ -1,4 +1,6 @@
-﻿using PayrollCore.Entities;
+﻿using Microsoft.Graph;
+using PayrollApp.GroupList;
+using PayrollCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -61,11 +64,44 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            UsersCVS.Source = await GetUsersGroupedAsync();
+            UsersCVS.Source = await GetUserGroupsAsync();
             Bindings.Update();
 
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;
+        }
+
+        async Task<ObservableCollection<GroupedUsers>> GetUserGroupsAsync()
+        {
+            ObservableCollection<GroupedUsers> groups = new ObservableCollection<GroupedUsers>();
+            var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToList();
+            var users = await SettingsHelper.Instance.da.GetUsersList();
+
+            var groupByAlpha = from letter in letters
+                               select new
+                               { 
+                                   Key = letter.ToString(),
+
+                                   query = from item in users
+                                           where item.fullName.StartsWith(letter.ToString(), StringComparison.CurrentCultureIgnoreCase)
+                                           orderby item.fullName
+                                           select item
+                               };
+
+            foreach (var g in groupByAlpha)
+            {
+                GroupedUsers groupedUsers = new GroupedUsers();
+                groupedUsers.Key = g.Key;
+
+                foreach (var item in g.query)
+                {
+                    groupedUsers.Add(item);
+                }
+
+                groups.Add(groupedUsers);
+            }
+
+            return groups;
         }
 
         async Task<ObservableCollection<GroupedUsers>> GetUsersGroupedAsync()
@@ -104,7 +140,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
         private void userListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            User user = e.ClickedItem as User;
+            PayrollCore.Entities.User user = e.ClickedItem as PayrollCore.Entities.User;
             this.Frame.Navigate(typeof(UserDetailsPage), user, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }

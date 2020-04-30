@@ -145,6 +145,8 @@
     <Compile Include="Controls\RealTimeFaceIdentificationBorder.xaml.cs">
       <DependentUpon>RealTimeFaceIdentificationBorder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GroupList\EmptyOrFullSelector.cs" />
+    <Compile Include="GroupList\GroupedUsers.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

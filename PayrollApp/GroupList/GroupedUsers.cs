@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PayrollCore.Entities
+namespace PayrollApp.GroupList
 {
     public class GroupedUsers : List<object>
     {
