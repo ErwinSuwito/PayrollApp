@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Windows.System;
 using PayrollCore.Entities;
 using ServiceHelpers;
 using System.Diagnostics;
@@ -32,18 +33,45 @@ namespace PayrollApp.Views
         private bool isProcessingLoopInProgress;
         private bool isProcessingPhoto;
         private bool isLogginIn = false;
+        private string cardId = string.Empty;
 
         public LoginPage()
         {
             this.InitializeComponent();
 
             Window.Current.Activated += CurrentWindowActivationStateChanged;
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             this.cameraControl.FilterOutSmallFaces = true;
             this.cameraControl.HideCameraControls();
 
             if (Debugger.IsAttached)
             {
                 cameraControl.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
+        {
+            
+            if (args.VirtualKey == Windows.System.VirtualKey.Enter && !string.IsNullOrEmpty(cardId))
+            {
+                //TO-DO: Add code to get card owner from database
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Entry finished",
+                    Content = cardId + " was pressed",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+                cardId = string.Empty;
+            }
+            else 
+            {
+                if (dict.TryGetValue(args.VirtualKey, out int newInt))
+                {
+                    cardId += newInt.ToString();
+                }
             }
         }
 
@@ -141,7 +169,6 @@ namespace PayrollApp.Views
             this.greetingTextBlock.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
         }
 
-
         private async void CurrentWindowActivationStateChanged(object sender, Windows.UI.Core.WindowActivatedEventArgs e)
         {
             if ((e.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.CodeActivated ||
@@ -180,6 +207,7 @@ namespace PayrollApp.Views
         {
             this.isProcessingLoopInProgress = false;
             Window.Current.Activated -= CurrentWindowActivationStateChanged;
+            Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
 
             await this.cameraControl.StopStreamAsync();
             base.OnNavigatedFrom(e);
@@ -203,5 +231,29 @@ namespace PayrollApp.Views
 
             newAccountDialog.Hide();
         }
+
+        private Dictionary<VirtualKey, int> dict = new Dictionary<VirtualKey, int>
+        {
+            { VirtualKey.Number0, 0},
+            {VirtualKey.NumberPad0, 0 },
+            { VirtualKey.Number1, 1},
+            {VirtualKey.NumberPad1, 1 },
+            { VirtualKey.Number2, 2},
+            {VirtualKey.NumberPad2, 2 },
+            { VirtualKey.Number3, 3},
+            {VirtualKey.NumberPad3, 3 },
+            { VirtualKey.Number4, 4},
+            {VirtualKey.NumberPad4, 4 },
+            { VirtualKey.Number5, 5},
+            {VirtualKey.NumberPad5, 5 },
+            { VirtualKey.Number6, 6},
+            {VirtualKey.NumberPad6, 6 },
+            { VirtualKey.Number7, 7},
+            {VirtualKey.NumberPad7, 7 },
+            { VirtualKey.Number8, 8},
+            {VirtualKey.NumberPad8, 8 },
+            { VirtualKey.Number9, 9},
+            {VirtualKey.NumberPad9, 9 }
+        };
     }
 }
