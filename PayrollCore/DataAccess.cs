@@ -14,7 +14,7 @@ namespace PayrollCore
     {
         string DbConnString;
         string CardConnString;
-        Exception lastError;
+        public Exception lastError;
 
         /// <summary>
         /// Saves the connection string to memory.
@@ -2094,7 +2094,24 @@ namespace PayrollCore
                         {
                             while (dr.Read())
                             {
-                                return dr.GetString(0);
+                                string username = dr.GetString(0);
+                                if (username != null)
+                                {
+                                    if (username.Contains("TP"))
+                                    {
+                                        username += "@mail.apu.edu.my";
+                                    }
+                                    else
+                                    {
+                                        username += "@cloudmails.apu.edu.my";
+                                    }
+
+                                    return username;
+                                }
+                                else
+                                {
+                                    username = string.Empty;
+                                }
                             }
                         }
                     }

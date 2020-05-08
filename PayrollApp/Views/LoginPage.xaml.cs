@@ -58,7 +58,64 @@ namespace PayrollApp.Views
                 string _cardId = cardId;
                 cardId = string.Empty;
 
+                string upn = await SettingsHelper.Instance.da.GetUsernameFromCardId(_cardId);
+                
+                if (string.IsNullOrEmpty(upn))
+                {
+                    // Checks if username is null or empty and shows the correct error to the user
+                    if (upn == null)
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Unable to scan your card.",
+                            Content = "There is a problem when scanning your card. Please try again later.",
+                            PrimaryButtonText = "More info",
+                            CloseButtonText = "Ok"
+                        };
 
+                        ContentDialogResult result = await contentDialog.ShowAsync();
+                        
+                        // More info button is selected
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            contentDialog = new ContentDialog
+                            {
+                                Title = "More info",
+                                Content = SettingsHelper.Instance.da.lastError.Message,
+                                CloseButtonText = "Close"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+                    else
+                    {
+                        ContentDialog contentDialog = new ContentDialog
+                        {
+                            Title = "Unable to find your card.",
+                            Content = "We're unable to find your card in the database. Do check your card if its usable elsewhere. If it is, please contact Supervisor for help.",
+                            PrimaryButtonText = "More info",
+                            CloseButtonText = "Ok"
+                        };
+
+                        ContentDialogResult result = await contentDialog.ShowAsync();
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            contentDialog = new ContentDialog
+                            {
+                                Title = "More info",
+                                Content = "upn value = " + upn + "\n Error message: " + SettingsHelper.Instance.da.lastError.Message,
+                                CloseButtonText = "Ok"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(NewUserOnboarding.RegisterUserPage), upn, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
             }
             else 
             {
