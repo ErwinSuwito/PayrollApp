@@ -55,16 +55,10 @@ namespace PayrollApp.Views
             
             if (args.VirtualKey == Windows.System.VirtualKey.Enter && !string.IsNullOrEmpty(cardId))
             {
-                //TO-DO: Add code to get card owner from database
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "Entry finished",
-                    Content = cardId + " was pressed",
-                    CloseButtonText = "Ok"
-                };
-
-                await contentDialog.ShowAsync();
+                string _cardId = cardId;
                 cardId = string.Empty;
+
+
             }
             else 
             {

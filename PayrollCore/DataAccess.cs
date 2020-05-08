@@ -2074,5 +2074,39 @@ namespace PayrollCore
 
             return null;
         }
+
+        public async Task<string> GetUsernameFromCardId(string cardId)
+        {
+            try
+            {
+                lastError = null;
+
+                string Query = "SELECT Name FROM CardDetail WHERE Badgenumber=@BadgeNumber";
+
+                using (SqlConnection conn = new SqlConnection(CardConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@BadgeNumber", cardId));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                return dr.GetString(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                lastError = ex;
+            }
+            
+            return null;
+        }
     }
 }
