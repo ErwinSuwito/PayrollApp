@@ -2092,27 +2092,21 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@BadgeNumber", cardId));
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
+                            string username = string.Empty;
                             while (dr.Read())
                             {
-                                string username = dr.GetString(0);
-                                if (username != null)
-                                {
-                                    if (username.Contains("TP"))
-                                    {
-                                        username += "@mail.apu.edu.my";
-                                    }
-                                    else
-                                    {
-                                        username += "@cloudmails.apu.edu.my";
-                                    }
-
-                                    return username;
+                                username = dr.GetString(0);
+                                if (username.Contains("TP"))
+                                { 
+                                    username += "@mail.apu.edu.my";
                                 }
                                 else
                                 {
-                                    username = string.Empty;
+                                    username += "@cloudmails.apu.edu.my";
                                 }
                             }
+
+                            return username;
                         }
                     }
                 }

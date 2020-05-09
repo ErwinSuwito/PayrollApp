@@ -104,7 +104,7 @@ namespace PayrollApp.Views
                             contentDialog = new ContentDialog
                             {
                                 Title = "More info",
-                                Content = "upn value = " + upn + "\n Error message: " + SettingsHelper.Instance.da.lastError.Message,
+                                Content = "upn value = " + upn,
                                 CloseButtonText = "Ok"
                             };
 
@@ -247,11 +247,6 @@ namespace PayrollApp.Views
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-        }
-
-        private void pageContent_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
