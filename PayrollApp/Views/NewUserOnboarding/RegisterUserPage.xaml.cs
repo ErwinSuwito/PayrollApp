@@ -109,6 +109,8 @@ namespace PayrollApp.Views.NewUserOnboarding
                             {
                                 this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                             }
+
+                            return;
                         }
                         else
                         {
@@ -120,10 +122,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                             };
 
                             await contentDialog.ShowAsync();
-
-                            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
-
                     }
                     else
                     {
@@ -135,8 +134,6 @@ namespace PayrollApp.Views.NewUserOnboarding
                         };
 
                         await contentDialog.ShowAsync();
-
-                        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
                 }
                 else
@@ -163,10 +160,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                             };
 
                             await contentDialog.ShowAsync();
-
-                            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                         }
-
                     }
                     else
                     {
@@ -178,14 +172,11 @@ namespace PayrollApp.Views.NewUserOnboarding
                         };
 
                         await contentDialog.ShowAsync();
-                        this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
                     }
                 }
             }
-            else
-            {
-                this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
+
+            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void TimeUpdater_Tick(object sender, object e)
