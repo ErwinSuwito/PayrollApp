@@ -208,6 +208,9 @@
     <Compile Include="Views\DebugModePage.xaml.cs">
       <DependentUpon>DebugModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Experiments\ViewShiftsPage.xaml.cs">
+      <DependentUpon>ViewShiftsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstRunSetup\CardDbSetupPage.xaml.cs">
       <DependentUpon>CardDbSetupPage.xaml</DependentUpon>
     </Compile>
@@ -396,6 +399,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\DebugModePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Experiments\ViewShiftsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

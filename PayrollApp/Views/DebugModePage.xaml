@@ -43,6 +43,14 @@
                         Click="faceIdSetupBtn_Click"/>
                 </StackPanel>
 
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Shifts integration" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="View all shared shifts data" 
+                               TextWrapping="Wrap"/>
+                    <Button x:Name="shiftsBtn" Content="Shifts" Margin="0,8,0,0"
+                            Click="shiftsBtn_Click"/>
+                </StackPanel>
+
                 <!--<StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Tags" Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <StackPanel Orientation="Horizontal" Margin="8,8,0,0">
