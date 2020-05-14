@@ -17,11 +17,12 @@
     <StackPanel Padding="0,0,12,0">
         <ToggleSwitch x:Name="connStringToggle" Margin="0,8,0,0" Header="Do you have a connection string?"
                           OffContent="No" OnContent="Yes" 
-                          IsOn="False"/>
+                          IsOn="{Binding haveConnString, Mode=TwoWay}"/>
 
         <TextBox x:Name="connStringTextBox" Header="Connection string" Margin="0,8,0,0"
-                     PlaceholderText="Data Source=hostname\instance; Initial Catalog=db_name; Integrated Security=SSPI"
-                     Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                 Text="{Binding connString, Mode=TwoWay}"
+                 PlaceholderText="Data Source=hostname\instance; Initial Catalog=db_name; Integrated Security=SSPI"
+                 Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <StackPanel x:Name="connWizard" Padding="0,0,-12,0"
                     Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
@@ -34,8 +35,10 @@
 
             <TextBox x:Name="dataSourceTextBox" HorizontalAlignment="Left"
                      Header="Data Source" PlaceholderText="IPAddress\InstanceName" Margin="0,8,0,0" 
+                     Text="{Binding dataSource, Mode=TwoWay}"
                      Width="{Binding ElementName=connWizard, Path=ActualWidth}"/>
             <TextBox x:Name="dbNameTextBox" HorizontalAlignment="Left"
+                     Text="{Binding dbName, Mode=TwoWay}"
                      Header="Database name" PlaceholderText="Database name (e.g. payroll)" Margin="0,8,0,0" 
                      Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
             <ToggleSwitch x:Name="securityTypeToggle" Header="Authentication" Margin="0,8,0,0"
@@ -51,8 +54,10 @@
 
                 <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left"
                          Header="Username" PlaceholderText="Username" Margin="0,8,0,0" 
+                         Text="{Binding sqlUser, Mode=TwoWay}"
                          Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
                 <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left"
+                             Password="{Binding sqlPass, Mode=TwoWay}"
                          Header="Password" PlaceholderText="Password" Margin="0,8,0,0" 
                          Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
             </StackPanel>
