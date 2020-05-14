@@ -6,9 +6,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    mc:Ignorable="d">
     <UserControl.Resources>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ReverseBooleanToVisibilityConverter x:Key="ReverseBooleanToVisibilityConv" />
@@ -17,10 +15,10 @@
     <StackPanel Padding="0,0,12,0">
         <ToggleSwitch x:Name="connStringToggle" Margin="0,8,0,0" Header="Do you have a connection string?"
                           OffContent="No" OnContent="Yes" 
-                          IsOn="{Binding haveConnString, Mode=TwoWay}"/>
+                          IsOn="{x:Bind haveConnString, Mode=TwoWay}"/>
 
         <TextBox x:Name="connStringTextBox" Header="Connection string" Margin="0,8,0,0"
-                 Text="{Binding connString, Mode=TwoWay}"
+                 Text="{x:Bind connString, Mode=TwoWay}"
                  PlaceholderText="Data Source=hostname\instance; Initial Catalog=db_name; Integrated Security=SSPI"
                  Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
@@ -35,15 +33,15 @@
 
             <TextBox x:Name="dataSourceTextBox" HorizontalAlignment="Left"
                      Header="Data Source" PlaceholderText="IPAddress\InstanceName" Margin="0,8,0,0" 
-                     Text="{Binding dataSource, Mode=TwoWay}"
+                     Text="{x:Bind dataSource, Mode=TwoWay}"
                      Width="{Binding ElementName=connWizard, Path=ActualWidth}"/>
             <TextBox x:Name="dbNameTextBox" HorizontalAlignment="Left"
-                     Text="{Binding dbName, Mode=TwoWay}"
+                     Text="{x:Bind dbName, Mode=TwoWay}"
                      Header="Database name" PlaceholderText="Database name (e.g. payroll)" Margin="0,8,0,0" 
                      Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
             <ToggleSwitch x:Name="securityTypeToggle" Header="Authentication" Margin="0,8,0,0"
                           OffContent="SQL Server Authentication" OnContent="Windows Authentication" 
-                          IsOn="True"/>
+                          IsOn="{x:Bind sqlServerAuthPanel, Mode=TwoWay}"/>
             <StackPanel x:Name="sqlServerAuthPanel" Visibility="{Binding ElementName=securityTypeToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
                 <animations:Implicit.ShowAnimations>
                     <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
@@ -54,10 +52,10 @@
 
                 <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left"
                          Header="Username" PlaceholderText="Username" Margin="0,8,0,0" 
-                         Text="{Binding sqlUser, Mode=TwoWay}"
+                         Text="{x:Bind sqlUser, Mode=TwoWay}"
                          Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
                 <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left"
-                             Password="{Binding sqlPass, Mode=TwoWay}"
+                             Password="{x:Bind sqlPass, Mode=TwoWay}"
                          Header="Password" PlaceholderText="Password" Margin="0,8,0,0" 
                          Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
             </StackPanel>

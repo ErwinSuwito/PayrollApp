@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace PayrollApp.Controls
 {
-    public sealed partial class DatabaseSettingsControl : UserControl
+    public sealed partial class DatabaseSettingsControl : UserControl, INotifyPropertyChanged
     {
         public bool haveConnString
         {
@@ -27,7 +28,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for haveConnString.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty haveConnStringProperty =
-            DependencyProperty.Register("haveConnString", typeof(bool), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("haveConnString", typeof(bool), typeof(DatabaseSettingsControl), new PropertyMetadata(false));
 
         public bool useWinAuth
         {
@@ -37,7 +38,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for useWinAuth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty useWinAuthProperty =
-            DependencyProperty.Register("useWinAuth", typeof(bool), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("useWinAuth", typeof(bool), typeof(DatabaseSettingsControl), new PropertyMetadata(true));
 
         public string connString
         {
@@ -47,7 +48,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for ConnString.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty connStringProperty =
-            DependencyProperty.Register("ConnString", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("ConnString", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(""));
 
         public string dataSource
         {
@@ -57,7 +58,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for dataSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty dataSourceProperty =
-            DependencyProperty.Register("dataSource", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("dataSource", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(""));
 
         public string dbName
         {
@@ -67,7 +68,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for dbName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty dbNameProperty =
-            DependencyProperty.Register("dbName", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("dbName", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(""));
 
         public string sqlUser
         {
@@ -77,7 +78,7 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for sqlUser.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty sqlUserProperty =
-            DependencyProperty.Register("sqlUser", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("sqlUser", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(""));
 
         public string sqlPass
         {
@@ -87,11 +88,21 @@ namespace PayrollApp.Controls
 
         // Using a DependencyProperty as the backing store for sqlPass.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty sqlPassProperty =
-            DependencyProperty.Register("sqlPass", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(0));
+            DependencyProperty.Register("sqlPass", typeof(string), typeof(DatabaseSettingsControl), new PropertyMetadata(""));
 
         public DatabaseSettingsControl()
         {
             this.InitializeComponent();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyEventChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
     }
 }
