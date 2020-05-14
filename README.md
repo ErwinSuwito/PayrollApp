@@ -9,8 +9,8 @@ namespace PayrollApp
 {
     public class ClientSecret
     {
-        public string FaceApiEndpoint = "YOUR-ENDPOINT-HERE";
-        public string FaceApiKey = "YOUR-API-KEY-HERE";
+        public static string FaceApiEndpoint = "YOUR-ENDPOINT-HERE";
+        public static string FaceApiKey = "YOUR-API-KEY-HERE";
     }
 }
 ```
