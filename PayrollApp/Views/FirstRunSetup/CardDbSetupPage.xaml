@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
     xmlns:entity="using:PayrollCore.Entities"
+    xmlns:ctl="using:PayrollApp.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -44,22 +45,7 @@
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
-            <TextBox x:Name="dataSourceTextBox" HorizontalAlignment="Left"
-                     Header="Data Source" PlaceholderText="IPAddress\InstanceName" Margin="0,8,0,0" 
-                     Width="{Binding ElementName=pageContent, Path=ActualWidth}"/>
-            <TextBox x:Name="dbNameTextBox" HorizontalAlignment="Left"
-                     Header="Database name" Margin="0,8,0,0" 
-                     Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-            <StackPanel x:Name="sqlServerAuthPanel">
-
-                <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left"
-                         Header="Username" PlaceholderText="Username" Margin="0,8,0,0" 
-                         Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-                <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left"
-                         Header="Password" PlaceholderText="Password" Margin="0,8,0,0" 
-                         Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-            </StackPanel>
-            
+            <ctl:DatabaseSettingsControl x:Name="dbSettingsControl" />
         </StackPanel>
 
         <Button x:Name="nextBtn" Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" 

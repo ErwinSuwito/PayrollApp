@@ -48,7 +48,23 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            string connString = SettingsHelper.Instance.GenerateConnectionString(dataSourceTextBox.Text, dbNameTextBox.Text, userNameTextBox.Text, passwordBox.Password.ToString());
+            string connString;
+
+            if (dbSettingsControl.haveConnString)
+            {
+                connString = dbSettingsControl.connString;
+            }
+            else
+            {
+                if (dbSettingsControl.useWinAuth)
+                {
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName);
+                }
+                else
+                {
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName, dbSettingsControl.sqlUser, dbSettingsControl.sqlPass);
+                }
+            }
 
             if (SettingsHelper.Instance.da.TestConnString(connString))
             {
