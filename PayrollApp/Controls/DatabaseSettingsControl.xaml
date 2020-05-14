@@ -1,0 +1,61 @@
+﻿<UserControl
+    x:Class="PayrollApp.Controls.DatabaseSettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:ReverseBooleanToVisibilityConverter x:Key="ReverseBooleanToVisibilityConv" />
+    </UserControl.Resources>
+
+    <StackPanel Padding="0,0,12,0">
+        <ToggleSwitch x:Name="connStringToggle" Margin="0,8,0,0" Header="Do you have a connection string?"
+                          OffContent="No" OnContent="Yes" 
+                          IsOn="False"/>
+
+        <TextBox x:Name="connStringTextBox" Header="Connection string" Margin="0,8,0,0"
+                     PlaceholderText="Data Source=hostname\instance; Initial Catalog=db_name; Integrated Security=SSPI"
+                     Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <StackPanel x:Name="connWizard" Padding="0,0,-12,0"
+                    Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+
+            <TextBox x:Name="dataSourceTextBox" HorizontalAlignment="Left"
+                     Header="Data Source" PlaceholderText="IPAddress\InstanceName" Margin="0,8,0,0" 
+                     Width="{Binding ElementName=connWizard, Path=ActualWidth}"/>
+            <TextBox x:Name="dbNameTextBox" HorizontalAlignment="Left"
+                     Header="Database name" PlaceholderText="Database name (e.g. payroll)" Margin="0,8,0,0" 
+                     Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
+            <ToggleSwitch x:Name="securityTypeToggle" Header="Authentication" Margin="0,8,0,0"
+                          OffContent="SQL Server Authentication" OnContent="Windows Authentication" 
+                          IsOn="True"/>
+            <StackPanel x:Name="sqlServerAuthPanel" Visibility="{Binding ElementName=securityTypeToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
+                <animations:Implicit.ShowAnimations>
+                    <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+                </animations:Implicit.HideAnimations>
+
+                <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left"
+                         Header="Username" PlaceholderText="Username" Margin="0,8,0,0" 
+                         Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
+                <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left"
+                         Header="Password" PlaceholderText="Password" Margin="0,8,0,0" 
+                         Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -124,6 +124,9 @@
       <DependentUpon>CameraControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Converters.cs" />
+    <Compile Include="Controls\DatabaseSettingsControl.xaml.cs">
+      <DependentUpon>DatabaseSettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EmotionEmojiControl.xaml.cs">
       <DependentUpon>EmotionEmojiControl.xaml</DependentUpon>
     </Compile>
@@ -297,6 +300,10 @@
     <Page Include="Controls\CameraControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DatabaseSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\EmotionEmojiControl.xaml">
       <Generator>MSBuild:Compile</Generator>
