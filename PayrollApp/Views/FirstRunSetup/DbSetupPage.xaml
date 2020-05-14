@@ -50,48 +50,7 @@
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
-            <ToggleSwitch x:Name="connStringToggle" Margin="0,8,0,0" Header="Do you have a connection string?"
-                          OffContent="No" OnContent="Yes" 
-                          IsOn="False"/>
-
-            <TextBox x:Name="connStringTextBox" Header="Connection string" Margin="0,8,0,0"
-                     PlaceholderText="Data Source=hostname\instance; Initial Catalog=db_name; Integrated Security=SSPI"
-                     Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-            <StackPanel x:Name="connWizard" 
-                        Visibility="{Binding ElementName=connStringToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
-                <animations:Implicit.ShowAnimations>
-                    <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
-                </animations:Implicit.ShowAnimations>
-                <animations:Implicit.HideAnimations>
-                    <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
-                </animations:Implicit.HideAnimations>
-
-                <TextBox x:Name="dataSourceTextBox" HorizontalAlignment="Left"
-                     Header="Data Source" PlaceholderText="IPAddress\InstanceName" Margin="0,8,0,0" 
-                     Width="{Binding ElementName=pageContent, Path=ActualWidth}"/>
-                <TextBox x:Name="dbNameTextBox" HorizontalAlignment="Left"
-                     Header="Database name" PlaceholderText="Database name (e.g. payroll)" Margin="0,8,0,0" 
-                     Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-                <ToggleSwitch x:Name="securityTypeToggle" Header="Authentication" Margin="0,8,0,0"
-                          OffContent="SQL Server Authentication" OnContent="Windows Authentication" 
-                          IsOn="True"/>
-                <StackPanel x:Name="sqlServerAuthPanel" Visibility="{Binding ElementName=securityTypeToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
-                    <animations:Implicit.ShowAnimations>
-                        <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
-                    </animations:Implicit.ShowAnimations>
-                    <animations:Implicit.HideAnimations>
-                        <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
-                    </animations:Implicit.HideAnimations>
-
-                    <TextBox x:Name="userNameTextBox" HorizontalAlignment="Left"
-                         Header="Username" PlaceholderText="Username" Margin="0,8,0,0" 
-                         Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-                    <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left"
-                         Header="Password" PlaceholderText="Password" Margin="0,8,0,0" 
-                         Width="{Binding ElementName=pageContent, Path=ActualWidth}" />
-                </StackPanel>
-            </StackPanel>
+            <ctl:DatabaseSettingsControl x:Name="dbSettingsControl" />
 
         </StackPanel>
 

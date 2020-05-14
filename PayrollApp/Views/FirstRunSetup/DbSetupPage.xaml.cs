@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,19 +51,19 @@ namespace PayrollApp.Views.FirstRunSetup
         {
             string connString;
 
-            if (connStringToggle.IsOn)
+            if (dbSettingsControl.haveConnString)
             {
-                connString = connStringTextBox.Text;
+                connString = dbSettingsControl.connString;
             }
             else
             {
-                if (securityTypeToggle.IsOn)
+                if (dbSettingsControl.useWinAuth)
                 {
-                    connString = SettingsHelper.Instance.GenerateConnectionString(dataSourceTextBox.Text, dbNameTextBox.Text);
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName);
                 }
                 else
                 {
-                    connString = SettingsHelper.Instance.GenerateConnectionString(dataSourceTextBox.Text, dbNameTextBox.Text, userNameTextBox.Text, passwordBox.Password);
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName, dbSettingsControl.sqlUser, dbSettingsControl.sqlPass);
                 }
             }
 
