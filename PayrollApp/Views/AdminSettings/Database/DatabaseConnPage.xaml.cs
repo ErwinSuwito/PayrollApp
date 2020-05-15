@@ -67,24 +67,40 @@ namespace PayrollApp.Views.AdminSettings.Database
             }
         }
 
-        private void changeSettingsBtn_Click(object sender, RoutedEventArgs e)
+        private async void changePayrollConn_Click(object sender, RoutedEventArgs e)
         {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Change connection setting?",
+                Content = "Configuring a wrong connection will cause the app to not work properly. You'll be logged out after changing this settings.",
+                PrimaryButtonText = "Change",
+                CloseButtonText = "Cancel"
+            };
 
+            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.DbSetupPage), string.Empty, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
 
-        private void resetBtn_Click(object sender, RoutedEventArgs e)
+        private async void changeCardsConn_Click(object sender, RoutedEventArgs e)
         {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Change connection setting?",
+                Content = "Configuring a wrong connection will cause the app to not work properly. You'll be logged out after changing this settings.",
+                PrimaryButtonText = "Change",
+                CloseButtonText = "Cancel"
+            };
 
-        }
+            ContentDialogResult result = await contentDialog.ShowAsync();
 
-        private void changePayrollConn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void changeCardsConn_Click(object sender, RoutedEventArgs e)
-        {
-
+            if (result == ContentDialogResult.Primary)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.CardDbSetupPage), string.Empty, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }
