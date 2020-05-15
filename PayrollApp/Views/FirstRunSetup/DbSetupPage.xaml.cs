@@ -77,11 +77,24 @@ namespace PayrollApp.Views.FirstRunSetup
                 ContentDialog contentDialog = new ContentDialog
                 {
                     Title = "Unable to connect to database!",
-                    Content = "We can't connect to the database based on the specified info. Make sure that this device has network connection and that the database is reachable.",
-                    PrimaryButtonText = "Ok"
+                    Content = "We can't connect to the database based on the specified info. Make sure that this device has network connection and that the database is reachable. Click on More info to see what's wrong.",
+                    PrimaryButtonText = "More info",
+                    CloseButtonText = "Ok"
                 };
 
-                await contentDialog.ShowAsync();
+                ContentDialogResult result = await contentDialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
+                {
+                    contentDialog = new ContentDialog
+                    {
+                        Title = "More info",
+                        Content = SettingsHelper.Instance.da.lastError,
+                        CloseButtonText = "Close"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
             }
         }
     }
