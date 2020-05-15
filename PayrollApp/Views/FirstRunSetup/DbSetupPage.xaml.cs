@@ -84,6 +84,7 @@ namespace PayrollApp.Views.FirstRunSetup
 
                 if (appNameText.Visibility == Visibility.Collapsed)
                 {
+                    SettingsHelper.Instance.userState = null;
                     this.Frame.Navigate(typeof(AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
                 else
