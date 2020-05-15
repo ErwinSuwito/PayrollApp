@@ -41,7 +41,7 @@
                      Width="{Binding ElementName=connWizard, Path=ActualWidth}" />
             <ToggleSwitch x:Name="securityTypeToggle" Header="Authentication" Margin="0,8,0,0"
                           OffContent="SQL Server Authentication" OnContent="Windows Authentication" 
-                          IsOn="{x:Bind sqlServerAuthPanel, Mode=TwoWay}"/>
+                          IsOn="{x:Bind useWinAuth, Mode=TwoWay}"/>
             <StackPanel x:Name="sqlServerAuthPanel" Visibility="{Binding ElementName=securityTypeToggle, Path=IsOn, Converter={StaticResource ReverseBooleanToVisibilityConv}}">
                 <animations:Implicit.ShowAnimations>
                     <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>

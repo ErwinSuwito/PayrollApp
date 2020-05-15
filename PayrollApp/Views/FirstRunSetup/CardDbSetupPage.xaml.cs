@@ -29,6 +29,17 @@ namespace PayrollApp.Views.FirstRunSetup
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                logoutButton.Visibility = Visibility.Visible;
+                appNameText.Visibility = Visibility.Collapsed;
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
         DispatcherTimer timeUpdater = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -48,27 +59,68 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            string connString = SettingsHelper.Instance.GenerateConnectionString(dataSourceTextBox.Text, dbNameTextBox.Text, userNameTextBox.Text, passwordBox.Password.ToString());
+            string connString;
+
+            if (dbSettingsControl.haveConnString)
+            {
+                connString = dbSettingsControl.connString;
+            }
+            else
+            {
+                if (dbSettingsControl.useWinAuth)
+                {
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName);
+                }
+                else
+                {
+                    connString = SettingsHelper.Instance.GenerateConnectionString(dbSettingsControl.dataSource, dbSettingsControl.dbName, dbSettingsControl.sqlUser, dbSettingsControl.sqlPass);
+                }
+            }
 
             if (SettingsHelper.Instance.da.TestConnString(connString))
             {
                 SettingsHelper.Instance.SaveConnectionString(false, connString);
-                SettingsHelper.Instance.Initializev2();
 
-                this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                if (appNameText.Visibility == Visibility.Collapsed)
+                {
+                    SettingsHelper.Instance.userState = null;
+                    this.Frame.Navigate(typeof(AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    SettingsHelper.Instance.Initializev2();
+                    this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
             }
             else
             {
                 ContentDialog contentDialog = new ContentDialog
                 {
                     Title = "Unable to connect to database!",
-                    Content = "We can't connect to the database based on the specified info. Make sure that this device has network connection and that the database is reachable.",
-                    PrimaryButtonText = "Ok"
+                    Content = "We can't connect to the database based on the specified info. Make sure that this device has network connection and that the database is reachable. Click on More info to see what's wrong.",
+                    PrimaryButtonText = "More info",
+                    CloseButtonText = "Ok"
                 };
 
-                await contentDialog.ShowAsync();
-            }
+                ContentDialogResult result = await contentDialog.ShowAsync();
 
+                if (result == ContentDialogResult.Primary)
+                {
+                    contentDialog = new ContentDialog
+                    {
+                        Title = "More info",
+                        Content = SettingsHelper.Instance.da.lastError,
+                        CloseButtonText = "Close"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
+
+            }
+    }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.GoBack();
         }
     }
-}

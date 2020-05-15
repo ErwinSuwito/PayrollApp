@@ -157,6 +157,9 @@
     <Compile Include="SettingsHelper.cs" />
     <Compile Include="unhandledExParam.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Views\AdminSettings\Database\DatabaseConnPage.xaml.cs">
+      <DependentUpon>DatabaseConnPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdminSettings\FaceApiSettingsDialog.xaml.cs">
       <DependentUpon>FaceApiSettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -334,6 +337,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Database\DatabaseConnPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

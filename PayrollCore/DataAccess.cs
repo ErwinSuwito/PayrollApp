@@ -34,6 +34,7 @@ namespace PayrollCore
         /// <returns>Boolean</returns>
         public bool TestConnString(string connString)
         {
+            lastError = null;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connString))
@@ -44,6 +45,7 @@ namespace PayrollCore
             }
             catch (Exception ex)
             {
+                lastError = ex;
                 Debug.WriteLine("DataAccess Exception: " + ex.Message);
                 return false;
             }
