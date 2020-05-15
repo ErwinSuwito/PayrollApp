@@ -117,10 +117,11 @@ namespace PayrollApp.Views.FirstRunSetup
                 }
 
             }
-    }
+        }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.GoBack();
         }
     }
+}

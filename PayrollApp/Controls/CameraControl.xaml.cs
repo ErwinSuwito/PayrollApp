@@ -215,7 +215,10 @@ namespace PayrollApp.Controls
 
                     captureManager = new MediaCapture();
 
-                    MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings();
+                    MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
+                    {
+                        StreamingCaptureMode = StreamingCaptureMode.Video
+                    };
                     var allCameras = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
                     var selectedCamera = allCameras.FirstOrDefault(c => c.Name == SettingsHelper.Instance.CameraName);
                     if (desiredCamera != null)
