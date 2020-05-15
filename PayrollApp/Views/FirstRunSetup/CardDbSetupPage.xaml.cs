@@ -29,6 +29,17 @@ namespace PayrollApp.Views.FirstRunSetup
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                logoutButton.Visibility = Visibility.Visible;
+                appNameText.Visibility = Visibility.Collapsed;
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
         DispatcherTimer timeUpdater = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -69,9 +80,16 @@ namespace PayrollApp.Views.FirstRunSetup
             if (SettingsHelper.Instance.da.TestConnString(connString))
             {
                 SettingsHelper.Instance.SaveConnectionString(false, connString);
-                SettingsHelper.Instance.Initializev2();
 
-                this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                if (appNameText.Visibility == Visibility.Collapsed)
+                {
+                    this.Frame.Navigate(typeof(AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    SettingsHelper.Instance.Initializev2();
+                    this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
             }
             else
             {
@@ -99,4 +117,9 @@ namespace PayrollApp.Views.FirstRunSetup
 
             }
     }
-}
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.GoBack();
+        }
+    }
