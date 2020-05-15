@@ -49,5 +49,11 @@ namespace PayrollApp.Views.FirstRunSetup
         {
             this.Frame.Navigate(typeof(GraphSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
+
+        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            CameraTipsDialog cameraTipsDialog = new CameraTipsDialog();
+            await cameraTipsDialog.ShowAsync();
+        }
     }
 }

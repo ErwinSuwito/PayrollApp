@@ -1,0 +1,24 @@
+﻿<ContentDialog
+    x:Class="PayrollApp.Views.FirstRunSetup.CameraTipsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views.FirstRunSetup"
+    xmlns:ctl="using:PayrollApp.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Camera tips"
+    PrimaryButtonText="Close"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <StackPanel>
+        <TextBlock Text="Here's some things to try when your camera isn't working:" TextWrapping="Wrap"/>
+        <TextBlock Text="&#x2022; Payroll needs permission to access camera. You can go to Windows settings to allow apps and Payroll to access your camera" 
+                   TextWrapping="Wrap"/>
+        <TextBlock Text="&#x2022; Make sure that your camera is attached to the device and is detected" 
+                   TextWrapping="Wrap"/>
+        <TextBlock Text="&#x2022; Make sure that nothing is covering the camera" 
+                   TextWrapping="Wrap" />
+    </StackPanel>
+</ContentDialog>
