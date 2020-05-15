@@ -285,7 +285,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private void dbConnSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(Database.DatabaseConnPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private async void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
