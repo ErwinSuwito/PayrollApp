@@ -57,7 +57,14 @@ namespace PayrollApp.Views.AdminSettings.Database
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
 
         private void changeSettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -66,6 +73,16 @@ namespace PayrollApp.Views.AdminSettings.Database
         }
 
         private void resetBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void changePayrollConn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void changeCardsConn_Click(object sender, RoutedEventArgs e)
         {
 
         }

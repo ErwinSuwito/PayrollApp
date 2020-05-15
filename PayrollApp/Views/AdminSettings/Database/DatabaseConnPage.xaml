@@ -67,41 +67,27 @@
 
             <Pivot x:Name="rootPivot" Margin="-12,0,0,0">
                 <PivotItem Header="Payroll">
-                    <ScrollViewer Height="480">
-                        <StackPanel Margin="0,4,0,0">
-                            <ctl:DatabaseSettingsControl x:Name="payrollDB" />
-                        </StackPanel>
-                    </ScrollViewer>
+                    <StackPanel Margin="0,4,0,0">
+                        <TextBox x:Name="payrollDbConn" Header="Current connection string" 
+                                 IsReadOnly="True" TextWrapping="Wrap"/>
+
+                        <Button x:Name="changePayrollConn" Content="Change" Margin="0,8,0,0"
+                                Click="changePayrollConn_Click"/>
+                    </StackPanel>
                 </PivotItem>
                 <PivotItem Header="Cards">
-                    <ScrollViewer Height="480">
-                        <StackPanel Margin="0,4,0,0">
-                            <ctl:DatabaseSettingsControl x:Name="cardsDB" />
-                        </StackPanel>
-                    </ScrollViewer>
+                    <StackPanel Margin="0,4,0,0">
+                        <TextBox x:Name="cardsDbConn" Header="Current connection string" 
+                                 IsReadOnly="True" TextWrapping="Wrap"/>
+                        <Button x:Name="changeCardsConn" Content="Change" Margin="0,8,0,0"
+                                Click="changeCardsConn_Click"/>
+                    </StackPanel>
                 </PivotItem>
             </Pivot>
         </StackPanel>
-
-        <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
-                    DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="resetBtn" Label="Reset" Click="resetBtn_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE72C;" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="changeSettingsBtn" Label="Save" 
-                          Click="changeSettingsBtn_Click" Visibility="Visible"
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE105;" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-        </CommandBar>
-
+        
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
-              Background="{ThemeResource loadBackground}" Visibility="Collapsed">
+              Background="{ThemeResource loadBackground}" Visibility="Visible">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
