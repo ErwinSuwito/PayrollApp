@@ -45,15 +45,20 @@ namespace PayrollApp.Views.FirstRunSetup
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
-        private void nextBtn_Click(object sender, RoutedEventArgs e)
+        private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(GraphSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-        }
+            CameraTestDialog testDialog = new CameraTestDialog();
+            ContentDialogResult result = await testDialog.ShowAsync();
 
-        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
-        {
-            CameraTipsDialog cameraTipsDialog = new CameraTipsDialog();
-            await cameraTipsDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                CameraTipsDialog tipsDialog = new CameraTipsDialog();
+                await tipsDialog.ShowAsync();
+            }
+            else if (result == ContentDialogResult.Secondary)
+            {
+                this.Frame.Navigate(typeof(GraphSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }

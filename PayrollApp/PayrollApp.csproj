@@ -217,6 +217,9 @@
     <Compile Include="Views\Experiments\ViewShiftsPage.xaml.cs">
       <DependentUpon>ViewShiftsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstRunSetup\CameraTestDialog.xaml.cs">
+      <DependentUpon>CameraTestDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstRunSetup\CardDbSetupPage.xaml.cs">
       <DependentUpon>CardDbSetupPage.xaml</DependentUpon>
     </Compile>
@@ -423,6 +426,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Experiments\ViewShiftsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FirstRunSetup\CameraTestDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

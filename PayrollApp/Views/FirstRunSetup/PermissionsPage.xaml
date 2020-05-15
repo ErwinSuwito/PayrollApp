@@ -39,17 +39,12 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Test your camera" Style="{ThemeResource HeaderTextBlockStyle}"/>
-                <TextBlock Text="Let's make sure your camera is working properly." 
+                <TextBlock Text="Camera" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="We'll need your permission to access your camera." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
-            </StackPanel>
 
-            <ctl:CameraControl x:Name="CameraControl" Margin="0,4,0,0"/>
-
-            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                <FontIcon Glyph="&#xE7BA;" Foreground="Yellow" VerticalAlignment="Center"/>
-                <TextBlock Text="Not seeing your camera?" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                <HyperlinkButton Content="Get help" Click="HyperlinkButton_Click" Margin="8,0,0,0"/>
+                <TextBlock Text="Tap Continue to continue. When prompted, please allow access to your camera." 
+                           Style="{ThemeResource BaseTextBlockStyle}" FontSize="16" Margin="0,4,0,0"/>
             </StackPanel>
         </StackPanel>
 

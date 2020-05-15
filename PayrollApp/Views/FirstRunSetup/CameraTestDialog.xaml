@@ -1,0 +1,29 @@
+﻿<ContentDialog
+    x:Class="PayrollApp.Views.FirstRunSetup.CameraTestDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views.FirstRunSetup"
+    xmlns:ctl="using:PayrollApp.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Let's test your camera"
+    PrimaryButtonText="Get help"
+    SecondaryButtonText="Continue"
+    Loaded="ContentDialog_Loaded"
+    Closing="ContentDialog_Closing">
+
+    <Grid>
+        <StackPanel>
+            <ctl:CameraControl x:Name="cameraControl" ShowFaceTracking="False"
+                               EnableCameraControls="False" ShowDialogOnApiErrors="False"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <FontIcon Glyph="&#xE7BA;" Foreground="Yellow" VerticalAlignment="Center"/>
+                <TextBlock Text="Not seeing your camera?" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Tap on Get help for troubleshooting steps" Margin="4,0,0,0"
+                           Style="{ThemeResource BaseTextBlockStyle}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</ContentDialog>
