@@ -36,15 +36,6 @@ namespace PayrollCore
             return location;
         }
 
-        public async Task<UserState> GenerateUserState(User user)
-        {
-            UserState state = new UserState();
-
-
-
-            return state;
-        }
-
         /// <summary>
         /// Generates Activity object for regular shift sign in
         /// </summary>
@@ -143,8 +134,7 @@ namespace PayrollCore
 
             if (activity.StartShift.shiftName != "Special Task")
             {
-                // Remove the part after || to enable "just record stuff for sign out"
-                if (signInTime.DayOfYear < signOutTime.DayOfYear || signOutTime > signInTime)
+                if (signInTime.DayOfYear < signOutTime.DayOfYear)
                 {
                     activity.RequireNotification = true;
                     activity.NotificationReason = 2;
