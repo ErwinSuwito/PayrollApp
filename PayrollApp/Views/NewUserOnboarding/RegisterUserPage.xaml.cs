@@ -149,6 +149,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                         if (IsSuccess)
                         {
                             loadTimer.Start();
+                            return;
                         }
                         else
                         {

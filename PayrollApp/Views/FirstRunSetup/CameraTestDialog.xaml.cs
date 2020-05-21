@@ -19,6 +19,7 @@ namespace PayrollApp.Views.FirstRunSetup
 {
     public sealed partial class CameraTestDialog : ContentDialog
     {
+        DispatcherTimer timer = new DispatcherTimer();
         public CameraTestDialog()
         {
             this.InitializeComponent();
@@ -26,7 +27,16 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void ContentDialog_Loaded(object sender, RoutedEventArgs e)
         {
+            timer.Interval = new TimeSpan(0, 0, 6);
+            timer.Tick += Timer_Tick;
+            timer.Start();
             await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: false);
+        }
+
+        private void Timer_Tick(object sender, object e)
+        {
+            timer.Stop();
+            helpPanel.Visibility = Visibility.Visible;
         }
 
         private async void ContentDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)

@@ -37,6 +37,7 @@ namespace PayrollApp.Views.NewUserOnboarding
         string username = SettingsHelper.Instance.userState.user.userID;
         SettingsHelper helper = SettingsHelper.Instance;
         User user;
+        bool IsTrainingSuccess = true;
 
         public FaceRecSetupPage()
         {
@@ -191,7 +192,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                 {
                     // Trains each PersonGroup
                     loadText.Text = "Training model...";
-                    bool trainingSucceeded = true;
+                    IsTrainingSuccess = true;
                     foreach (var group in helper.PersonGroups)
                     {
                         await FaceServiceHelper.TrainPersonGroupAsync(group.PersonGroupId);
@@ -204,7 +205,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                             {
                                 if (trainingStatus.Status == TrainingStatusType.Failed)
                                 {
-                                    trainingSucceeded = false;
+                                    IsTrainingSuccess = false;
                                 }
 
                                 break;
@@ -214,7 +215,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                         }
                     }
 
-                    if (trainingSucceeded == true)
+                    if (IsTrainingSuccess == true)
                     {
                         ContentDialog contentDialog = new ContentDialog
                         {
@@ -270,7 +271,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
         private void NavigateBack()
         {
-            if (user != null)
+            if (IsTrainingSuccess)
             {
                 this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }

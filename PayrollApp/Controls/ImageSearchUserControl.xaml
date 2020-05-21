@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <AutoSuggestBox x:Name="autoSuggestBox" HorizontalAlignment="Stretch" Margin="0" QueryIcon="Find" PlaceholderText="Search Bing Images" QuerySubmitted="onQuerySubmitted" TextChanged="onTextChanged"/>
+            <AutoSuggestBox x:Name="autoSuggestBox" HorizontalAlignment="Stretch" Margin="0" QueryIcon="Find" PlaceholderText="Search Bing Images"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Rectangle Width="2" Fill="White" Opacity="0.2" Margin="20,3,10,3"></Rectangle>
