@@ -139,7 +139,8 @@ namespace PayrollCore
                     activity.RequireNotification = true;
                     activity.NotificationReason = 2;
                     string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
-                    DateTime.TryParse(s, out signOutTime);
+                    DateTime.TryParse(s, out DateTime actualSignOutTime);
+                    activity.actualOutTime = actualSignOutTime;
                 }
                 else
                 {

@@ -14,6 +14,7 @@ namespace PayrollCore.Entities
         public int locationID { get; set; }
         public DateTime inTime { get; set; }
         public DateTime outTime { get; set; }
+        public DateTime actualOutTime { get; set; }
         public Shift StartShift { get; set; }
         public Shift EndShift { get; set; }
         public Meeting meeting { get; set; }
