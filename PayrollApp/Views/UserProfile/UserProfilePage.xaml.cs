@@ -115,11 +115,11 @@ namespace PayrollApp.Views.UserProfile
                         {
                             if (userState.LatestMeeting.outTime == DateTime.MinValue)
                             {
-                                greeting = "You are signed in for both special task and meeting.";
+                                greeting = "You are signed in for special task.";
                             }
                             else
                             {
-                                greeting = "You are signed in for special task.";
+                                greeting = "You are signed in for both special task and meeting.";
                             }
                         }
                         else
@@ -137,22 +137,22 @@ namespace PayrollApp.Views.UserProfile
                             {
                                 if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
                                 {
-                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " and meeting.";
+                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + ".";
                                 }
                                 else
                                 {
-                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + " and meeting.";
+                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + ".";
                                 }
                             }
                             else
                             {
                                 if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
                                 {
-                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + ".";
+                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " and meeting.";
                                 }
                                 else
                                 {
-                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + ".";
+                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName + " and meeting.";
                                 }
                             }
                         }
@@ -228,13 +228,13 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
-                if (SettingsHelper.Instance.userState.LatestMeeting.outTime == DateTime.MinValue)
+                if (SettingsHelper.Instance.userState.LatestMeeting.NoActivity == true || SettingsHelper.Instance.userState.LatestMeeting.outTime != DateTime.MinValue)
                 {
-                    this.Frame.Navigate(typeof(Meeting.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    this.Frame.Navigate(typeof(Meeting.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
                 else
                 {
-                    this.Frame.Navigate(typeof(Meeting.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    this.Frame.Navigate(typeof(Meeting.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
             }
         }
