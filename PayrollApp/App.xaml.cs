@@ -22,6 +22,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Core;
+using PayrollApp.Views;
 
 namespace PayrollApp
 {
@@ -38,9 +39,19 @@ namespace PayrollApp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += App_UnhandledException;
 
             // Added AppCenter integration
             AppCenter.Start("c0435fcf-6e04-4356-a3d9-fda41bff20fb", typeof(Analytics), typeof(Crashes));
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            unhandledExParam exParam = new unhandledExParam();
+            exParam.exception = e.Exception;
+            (Window.Current.Content as Frame).Navigate(typeof(UnhandledExceptionPage), exParam);
         }
 
         /// <summary>

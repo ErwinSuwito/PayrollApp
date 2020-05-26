@@ -32,7 +32,7 @@
             <!-- Future content here -->
         </StackPanel>
 
-        <Button x:Name="DebugModeNotice" Visibility="Collapsed" Style="{ThemeResource AccentButtonStyle}"
+        <Button x:Name="DebugModeNotice" Visibility="Visible" Style="{ThemeResource AccentButtonStyle}"
                 Margin="0,0,32,32" Click="DebugModeNotice_Click" Padding="20,12,20,12"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="2">
             <Button.Content>

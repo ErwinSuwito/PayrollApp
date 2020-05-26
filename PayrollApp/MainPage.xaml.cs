@@ -51,10 +51,10 @@ namespace PayrollApp
 
             //Background.MediaPlayer.Play();
 
-            if (Debugger.IsAttached)
-            {
-                DebugModeNotice.Visibility = Visibility.Visible;
-            }
+            //if (Debugger.IsAttached)
+            //{
+            //    DebugModeNotice.Visibility = Visibility.Visible;
+            //}
 
         }
 

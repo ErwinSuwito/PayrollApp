@@ -33,6 +33,8 @@ namespace PayrollApp.Views
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
         }
 
+        DispatcherTimer loadTimer = new DispatcherTimer();
+
         private async void ResetBtn_Click(object sender, RoutedEventArgs e)
         {
             var provider = ProviderManager.Instance.GlobalProvider;
@@ -100,6 +102,18 @@ namespace PayrollApp.Views
         private void shiftsBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Experiments.ViewShiftsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            loadTimer.Interval = new TimeSpan(0, 0, 5);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private void LoadTimer_Tick(object sender, object e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
