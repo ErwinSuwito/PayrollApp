@@ -184,6 +184,10 @@ namespace PayrollApp.Views.UserProfile
                 else
                 {
                     greeting = "You are not signed in.";
+                    if (userState.user.IsNewUser)
+                    {
+                        signButton.Content = "Sign in";
+                    }
                 }
             }
 

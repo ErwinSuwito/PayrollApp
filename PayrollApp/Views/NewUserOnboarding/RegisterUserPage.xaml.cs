@@ -37,7 +37,6 @@ namespace PayrollApp.Views.NewUserOnboarding
         IProvider provider = ProviderManager.Instance.GlobalProvider;
         string upn;
         bool AccNotEnabledOrNotFound = false;
-        bool NewAccount = false;
 
         public RegisterUserPage()
         {
@@ -101,7 +100,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
                         if (IsSuccess)
                         {
-                            if (NewAccount == true && SettingsHelper.Instance.userState.user.userGroup.EnableFaceRec == true)
+                            if (user.IsNewUser == true && SettingsHelper.Instance.userState.user.userGroup.EnableFaceRec == true)
                             {
                                 this.Frame.Navigate(typeof(FaceRecIntroPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                             }
@@ -139,11 +138,11 @@ namespace PayrollApp.Views.NewUserOnboarding
                 else
                 {
                     // User not registered in system yet, proceed to set up user account.
-                    NewAccount = true;
                     progText.Text = "Setting up your account...";
                     User newUser = await GetUserFromAD(upn);
                     if (newUser != null)
                     {
+                        newUser.IsNewUser = true;
                         bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);
 
                         if (IsSuccess)
