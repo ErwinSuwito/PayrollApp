@@ -53,6 +53,11 @@ namespace PayrollApp.Views
                 errorInfo += "Error message: " + ex.Message + "\n \n";
                 errorInfo += "StackTrace: " + ex.StackTrace + "\n \n";
                 errorInfo += "Source: " + ex.Source;
+
+                if (ex.Message.Contains("SQL"))
+                {
+                    chgDbSettingsBtn.Visibility = Visibility.Visible;
+                }
             }
             else
             {
