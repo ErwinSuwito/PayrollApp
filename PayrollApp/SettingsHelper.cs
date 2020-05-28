@@ -65,6 +65,15 @@ namespace PayrollApp
         public ObservableCollection<Person> PersonsInCurrentGroup { get; set; } = new ObservableCollection<Person>();
         public ObservableCollection<PersistedFace> SelectedPersonFaces { get; set; } = new ObservableCollection<PersistedFace>();
         public Person SelectedPerson { get; set; }
+        public InitStates InitState;
+        
+        public enum InitStates
+        {
+            InProgress,
+            Failed,
+            Success,
+            Completed
+        }
 
 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -102,54 +111,64 @@ namespace PayrollApp
             instance = new SettingsHelper();
         }
 
-        public async Task<bool> Initializev2()
+        public async void Initializev2()
         {
-            LoadRoamingSettings();
-            Windows.Storage.ApplicationData.Current.DataChanged += RoamingDataChanged;
-            da = new DataAccess();
-
-            if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null)
+            InitState = InitStates.InProgress;
+            try
             {
-                DbConnectionString = localSettings.Values["DbConnString"].ToString();
-                CardConnString = localSettings.Values["CardConnString"].ToString();
-                if (da.TestConnString(DbConnectionString) == true && da.TestConnString(CardConnString) == true)
+                LoadRoamingSettings();
+                Windows.Storage.ApplicationData.Current.DataChanged += RoamingDataChanged;
+                da = new DataAccess();
+
+                if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null)
                 {
-                    da.StoreConnStrings(DbConnectionString, CardConnString);
-                    op = new Operations(DbConnectionString, CardConnString);
-
-                    var selLocation = localSettings.Values["selectedLocation"];
-
-                    if (selLocation != null)
+                    DbConnectionString = localSettings.Values["DbConnString"].ToString();
+                    CardConnString = localSettings.Values["CardConnString"].ToString();
+                    if (da.TestConnString(DbConnectionString) == true && da.TestConnString(CardConnString) == true)
                     {
-                        string selectedLocation = localSettings.Values["selectedLocation"].ToString();
+                        da.StoreConnStrings(DbConnectionString, CardConnString);
+                        op = new Operations(DbConnectionString, CardConnString);
 
-                        appLocation = await da.GetLocationById(selectedLocation);
-                        if (appLocation != null && appLocation.isDisabled != true)
+                        var selLocation = localSettings.Values["selectedLocation"];
+
+                        if (selLocation != null)
                         {
-                            MinHours = await da.GetMinHours();
-                            
-                            // Gets the default user group for students or trainee
-                            string groupIdString = await da.GetGlobalSetting("DefaultTraineeGroup");
-                            int.TryParse(groupIdString, out int groupID);
-                            defaultStudentGroup = await da.GetUserGroupById(groupID);
+                            string selectedLocation = localSettings.Values["selectedLocation"].ToString();
 
-                            // Gets the default user gorup for all other users
-                            groupIdString = await da.GetGlobalSetting("DefaultGroup");
-                            int.TryParse(groupIdString, out groupID);
-                            defaultOtherGroup = await da.GetUserGroupById(groupID);
+                            appLocation = await da.GetLocationById(selectedLocation);
+                            if (appLocation != null && appLocation.isDisabled != true)
+                            {
+                                MinHours = await da.GetMinHours();
 
-                            return true;
+                                // Gets the default user group for students or trainee
+                                string groupIdString = await da.GetGlobalSetting("DefaultTraineeGroup");
+                                int.TryParse(groupIdString, out int groupID);
+                                defaultStudentGroup = await da.GetUserGroupById(groupID);
+
+                                // Gets the default user gorup for all other users
+                                groupIdString = await da.GetGlobalSetting("DefaultGroup");
+                                int.TryParse(groupIdString, out groupID);
+                                defaultOtherGroup = await da.GetUserGroupById(groupID);
+
+                                InitState = InitStates.Success;
+                                return;
+                            }
                         }
                     }
+                    else
+                    {
+                        // Clears the saved connection string as it is invalid.
+                        localSettings.Values["DbConnString"] = null;
+                        localSettings.Values["CardConnString"] = null;
+                    }
                 }
-                else
-                {
-                    // Clears the saved connection string as it is invalid.
-                    localSettings.Values["DbConnString"] = null;
-                    localSettings.Values["CardConnString"] = null;
-                }
+                InitState = InitStates.Completed;
+                return;
             }
-            return false;
+            catch (Exception)
+            {
+                InitState = InitStates.Failed;
+            }
         }
 
         public async Task<bool> LoadRegisteredPeople()

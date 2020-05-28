@@ -41,18 +41,19 @@ namespace PayrollApp.Views
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null)
+            
+            while (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InProgress)
             {
-                while (SettingsHelper.Instance.appLocation == null)
-                {
-                    loadText.Text = "Getting settings...";
-                }
+                
+            }
 
-                this.Frame.Navigate(typeof(Views.LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.Success)
+            {
+                this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
-                this.Frame.Navigate(typeof(Views.FirstRunSetup.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                this.Frame.Navigate(typeof(FirstRunSetup.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
         }
 
