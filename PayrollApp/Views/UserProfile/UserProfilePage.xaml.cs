@@ -60,7 +60,7 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
-                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false && SettingsHelper.Instance.userState.LatestActivity.meeting == null)
+                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false)
                 {
                     this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }

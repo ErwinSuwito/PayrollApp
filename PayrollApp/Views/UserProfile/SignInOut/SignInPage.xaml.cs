@@ -119,6 +119,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                     };
 
                     await warningDialog.ShowAsync();
+                    loadGrid.Visibility = Visibility.Collapsed;
                     return;
                 }
             }
