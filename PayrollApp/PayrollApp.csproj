@@ -274,6 +274,7 @@
     <Compile Include="Views\UserProfile\Meeting\SignOutPage.xaml.cs">
       <DependentUpon>SignOutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserProfile\SignInOut\SelectedShifts.cs" />
     <Compile Include="Views\UserProfile\SignInOut\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>

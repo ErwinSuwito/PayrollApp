@@ -35,6 +35,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        ObservableCollection<PayrollCore.Entities.Shift> shifts;
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -52,7 +53,6 @@ namespace PayrollApp.Views.UserProfile.SignInOut
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            ObservableCollection<PayrollCore.Entities.Shift> shifts;
 
             if (DateTime.Today.DayOfWeek == System.DayOfWeek.Saturday || DateTime.Today.DayOfWeek == System.DayOfWeek.Sunday)
             {
@@ -306,6 +306,38 @@ namespace PayrollApp.Views.UserProfile.SignInOut
             }
 
             return IsSelectionValid;
+        }
+
+        private SelectedShifts GetSelectedShifts()
+        {
+            List<PayrollCore.Entities.Shift> selectedShiftList = new List<PayrollCore.Entities.Shift>();
+            foreach (PayrollCore.Entities.Shift shift in shiftSelectionView.SelectedItems)
+            {
+                selectedShiftList.Add(shift);
+            }
+
+            selectedShiftList.Sort((s1, s2) => TimeSpan.Compare(s1.startTime, s2.startTime));
+
+            SelectedShifts selectedShifts = new SelectedShifts() { StartShift = selectedShiftList.First(), EndShift = selectedShiftList.Last() };
+
+            TimeSpan lastEndTime = new TimeSpan();
+            foreach (PayrollCore.Entities.Shift shift in selectedShiftList)
+            {
+                if (lastEndTime != TimeSpan.MinValue)
+                {
+                    if (lastEndTime != shift.startTime)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    lastEndTime = shift.endTime;
+                    selectedShiftList.Add(shift);
+                }
+            }
+
+            return selectedShifts;
         }
     }
 }

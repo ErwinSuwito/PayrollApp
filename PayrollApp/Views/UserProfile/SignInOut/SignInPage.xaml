@@ -60,7 +60,8 @@
 
                 <ListView x:Name="shiftSelectionView" HorizontalAlignment="Left" VerticalAlignment="Top"
                           SelectionMode="Multiple" IsItemClickEnabled="True" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
-                          MaxHeight="372" IsMultiSelectCheckBoxEnabled="False" >
+                          MaxHeight="372" IsMultiSelectCheckBoxEnabled="False" 
+                          SelectionChanged="shiftSelectionView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:Shift">
                             <StackPanel Margin="4,8,0,8">
