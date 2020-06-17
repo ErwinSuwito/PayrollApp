@@ -297,6 +297,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\wave1.mp4" />
     <Content Include="Assets\wave.jpg" />
     <Content Include="Payroll_DB_dummydata.sql" />
     <Content Include="Properties\Default.rd.xml" />

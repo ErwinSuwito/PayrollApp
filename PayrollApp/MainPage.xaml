@@ -20,7 +20,7 @@
         
         <Grid x:Name="BackgroundGrid" Grid.RowSpan="2">
             <Image Source="Assets/wave.jpg" Stretch="UniformToFill"/>
-            <!--<MediaPlayerElement x:Name="Background" Opacity="1" Stretch="UniformToFill" AreTransportControlsEnabled="False" />-->
+            <MediaPlayerElement x:Name="Background" Opacity="1" Stretch="UniformToFill" AreTransportControlsEnabled="False" />
             <Rectangle Opacity="0.15" Fill="Black" x:Name="BackgroundOverlay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             </Rectangle>
         </Grid>

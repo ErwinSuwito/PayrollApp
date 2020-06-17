@@ -39,17 +39,17 @@ namespace PayrollApp
         {
             base.OnNavigatedTo(e);
 
-            //Background.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/video.mp4"));
-            //Background.MediaPlayer.IsLoopingEnabled = true;
-            //Background.MediaPlayer.IsMuted = true;
-            //Background.MediaPlayer.PlaybackRate = 0.7;
+            Background.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/wave1.mp4"));
+            Background.MediaPlayer.IsLoopingEnabled = true;
+            Background.MediaPlayer.IsMuted = true;
+            Background.MediaPlayer.PlaybackRate = 0.7;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             rootFrame.Navigate(typeof(Views.AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
 
-            //Background.MediaPlayer.Play();
+            Background.MediaPlayer.Play();
 
             //if (Debugger.IsAttached)
             //{
