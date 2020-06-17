@@ -68,7 +68,7 @@
                 </StackPanel>
                 <ListView x:Name="shiftSelectionView" HorizontalAlignment="Left" VerticalAlignment="Top"
                           SelectionMode="Single" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
-                          Margin="0,0,0,80">
+                          MaxHeight="372">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:MeetingUserGroup">
                             <TextBlock Text="{Binding meetingName}" FontSize="18"
@@ -85,14 +85,19 @@
             </Grid>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,52">
-            <TextBlock Text="Something missing?" Style="{ThemeResource BaseTextBlockStyle}" FontSize="18"/>
-            <TextBlock Text="Contact Chiefs or HR Functional Unit to check if the meeting has been added to this location or enabled for your account." 
-                       TextWrapping="Wrap"/>
-        </StackPanel>
-
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton Label="Help" Icon="Help">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <TextBlock Text="Something missing?" Style="{ThemeResource BaseTextBlockStyle}" FontSize="18"/>
+                            <TextBlock Text="Contact Chiefs or HR Functional Unit to check if the shift has been added to this location." 
+                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton x:Name="signInButton" Label="Sign in" Icon="Accept"
                           Click="signInButton_Click"
                           Style="{ThemeResource AppBarButtonRevealStyle}" />
