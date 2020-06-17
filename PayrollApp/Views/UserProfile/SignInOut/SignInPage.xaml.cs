@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Graph;
 using Microsoft.Toolkit.Graph.Providers;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -83,75 +84,84 @@ namespace PayrollApp.Views.UserProfile.SignInOut
         private async void signInButton_Click(object sender, RoutedEventArgs e)
         {
             loadGrid.Visibility = Visibility.Visible;
+            bool AllowSignin = false;
 
-            PayrollCore.Entities.Shift firstItem = new PayrollCore.Entities.Shift();
-            PayrollCore.Entities.Shift lastItem = new PayrollCore.Entities.Shift();
+            PayrollCore.Entities.Shift startShift;
+            PayrollCore.Entities.Shift endShift;
 
             if (shiftSelectionView.SelectedItems.Count > 1)
             {
-                bool IsSelectionValid = CheckUserSelection();
-                int firstIndex;
-                int lastIndex;
+                List<PayrollCore.Entities.Shift> selectedShiftList = new List<PayrollCore.Entities.Shift>();
 
-                if (IsSelectionValid == true)
+                foreach (PayrollCore.Entities.Shift shift in shiftSelectionView.SelectedItems)
                 {
-                    if (shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First()) < shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last()))
+                    selectedShiftList.Add(shift);
+                }
+
+                selectedShiftList.Sort((s1, s2) => TimeSpan.Compare(s1.startTime, s2.startTime));
+                startShift = selectedShiftList.First();
+                endShift = selectedShiftList.Last();
+
+                TimeSpan lastEndTime = new TimeSpan();
+                foreach (PayrollCore.Entities.Shift shift in selectedShiftList)
+                {
+                    Debug.WriteLine("[SHIFT] Checking shift: " + shift.shiftName);
+                    if (shift.Equals(startShift))
                     {
-                        firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                        lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
+                        Debug.WriteLine("[SHIFT] First shift selected: " + shift.shiftName);
+                        lastEndTime = shift.endTime;
                     }
                     else
                     {
-                        firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                        lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
+                        if (lastEndTime != shift.startTime)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            lastEndTime = shift.endTime;
+                        }
                     }
 
-                    firstItem = (shiftSelectionView.Items[firstIndex] as PayrollCore.Entities.Shift);
-                    lastItem = (shiftSelectionView.Items[lastIndex] as PayrollCore.Entities.Shift);
-                }
-                else
-                {
-                    ContentDialog warningDialog = new ContentDialog
+                    if (shift.Equals(endShift))
                     {
-                        Title = "Shift selection not valid!",
-                        Content = "You can only sign in for continuous shifts. For example, if you have S1 to S2 and S4, you can only sign in for S1 and S2.",
-                        PrimaryButtonText = "Ok"
-                    };
-
-                    await warningDialog.ShowAsync();
-                    loadGrid.Visibility = Visibility.Collapsed;
-                    return;
+                        Debug.WriteLine("[SHIFT] Last shift selected: " + shift.shiftName);
+                        AllowSignin = true;
+                    }
                 }
             }
             else
             {
-                firstItem = shiftSelectionView.SelectedItem as PayrollCore.Entities.Shift;
-                lastItem = firstItem;
+                AllowSignin = true;
+                startShift = shiftSelectionView.SelectedItem as PayrollCore.Entities.Shift;
+                endShift = startShift;
             }
 
-            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, firstItem, lastItem);
-
-            bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
-
-            if (IsSuccess)
+            if (AllowSignin)
             {
-                if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
-                {
-                    string emailContent;
-                    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late. Below are the details of the shift.";
-                    emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
-                    emailContent += newActivity.StartShift.startTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
-                    emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
+                var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, startShift, endShift);
 
-                    var message = new Message
+                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
+
+                if (IsSuccess)
+                {
+                    if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
                     {
-                        Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + " " + DateTime.Today.ToShortDateString(),
-                        Body = new ItemBody
+                        string emailContent;
+                        emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late. Below are the details of the shift.";
+                        emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
+                        emailContent += newActivity.StartShift.startTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
+                        emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
+
+                        var message = new Message
                         {
-                            ContentType = BodyType.Text,
-                            Content = emailContent
-                        },
-                        ToRecipients = new List<Recipient>()
+                            Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + " " + DateTime.Today.ToShortDateString(),
+                            Body = new ItemBody
+                            {
+                                ContentType = BodyType.Text,
+                                Content = emailContent
+                            },
+                            ToRecipients = new List<Recipient>()
                             {
                                 new Recipient
                                 {
@@ -161,7 +171,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                                     }
                                 }
                             },
-                        CcRecipients = new List<Recipient>()
+                            CcRecipients = new List<Recipient>()
                             {
                                 new Recipient
                                 {
@@ -171,173 +181,73 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                                     }
                                 }
                             }
-                    };
-
-                    var saveToItems = false;
-
-                    try
-                    {
-                        var provider = ProviderManager.Instance.GlobalProvider;
-
-                        if (provider != null && provider.State == ProviderState.SignedIn)
-                        {
-                            await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
-                        }
-                    }
-                    catch (Microsoft.Graph.ServiceException graphEx)
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Unable to send late sign in notification",
-                            Content = "Please send the Sign In Late email to HR. You are signed in. There is no need to re-sign in. Tap on the More info button to see what failed.",
-                            PrimaryButtonText = "Ok",
-                            SecondaryButtonText = "More info"
                         };
 
-                        ContentDialogResult result = await contentDialog.ShowAsync();
+                        var saveToItems = false;
 
-                        if (result == ContentDialogResult.Secondary)
+                        try
                         {
-                            ContentDialog contentDialog2 = new ContentDialog
+                            var provider = ProviderManager.Instance.GlobalProvider;
+
+                            if (provider != null && provider.State == ProviderState.SignedIn)
                             {
-                                Title = "Graph API error",
-                                Content = graphEx.Error,
-                                PrimaryButtonText = "Close"
+                                await provider.Graph.Me.SendMail(message, saveToItems).Request().PostAsync();
+                            }
+                        }
+                        catch (Microsoft.Graph.ServiceException graphEx)
+                        {
+                            ContentDialog contentDialog = new ContentDialog
+                            {
+                                Title = "Unable to send late sign in notification",
+                                Content = "Please send the Sign In Late email to HR. You are signed in. There is no need to re-sign in. Tap on the More info button to see what failed.",
+                                PrimaryButtonText = "Ok",
+                                SecondaryButtonText = "More info"
                             };
 
-                            await contentDialog2.ShowAsync();
+                            ContentDialogResult result = await contentDialog.ShowAsync();
+
+                            if (result == ContentDialogResult.Secondary)
+                            {
+                                ContentDialog contentDialog2 = new ContentDialog
+                                {
+                                    Title = "Graph API error",
+                                    Content = graphEx.Error,
+                                    PrimaryButtonText = "Close"
+                                };
+
+                                await contentDialog2.ShowAsync();
+                            }
                         }
                     }
-
-                    //case 2:
-                    //    emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
-                    //    emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + newActivity.location.locationName + "\n Shift ends: ";
-                    //    emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.outTime;
-                    //    emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
-
-                    //    break;
                 }
+                else
+                {
+                    ContentDialog warningDialog = new ContentDialog
+                    {
+                        Title = "Unable to sign in!",
+                        Content = "There's a problem preventing us to sign you in. Please try again later. If the problem persits, please contact Chiefs or HR Functional Unit to help you sign in.",
+                        PrimaryButtonText = "Ok"
+                    };
+
+                    await warningDialog.ShowAsync();
+                }
+
+                PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
+                await SettingsHelper.Instance.UpdateUserState(user);
+                this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
             else
             {
-                ContentDialog warningDialog = new ContentDialog
+                ContentDialog contentDialog = new ContentDialog()
                 {
-                    Title = "Unable to sign in!",
-                    Content = "There's a problem preventing us to sign you in. Please try again later. If the problem persits, please contact Chiefs or HR Functional Unit to help you sign in.",
-                    PrimaryButtonText = "Ok"
+                    Title = "Invalid selection",
+                    Content = "The shifts you selected are invalid. Please make sure that the shifts you selected are back to back.",
+                    CloseButtonText = "Ok"
                 };
 
-                await warningDialog.ShowAsync();
+                await contentDialog.ShowAsync();
+                loadGrid.Visibility = Visibility.Collapsed;
             }
-
-            PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
-            await SettingsHelper.Instance.UpdateUserState(user);
-            this.Frame.Navigate(typeof(UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-        }
-
-        private bool CheckUserSelection()
-        {
-            bool IsSelectionValid = false;
-            if (shiftSelectionView.SelectedItems.Count > 1)
-            {
-                int firstIndex;
-                int lastIndex;
-
-                if (shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First()) < shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last()))
-                {
-                    firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                    lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                }
-                else
-                {
-                    firstIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.Last());
-                    lastIndex = shiftSelectionView.Items.IndexOf(shiftSelectionView.SelectedItems.First());
-                }
-
-                PayrollCore.Entities.Shift firstItem = (shiftSelectionView.Items[firstIndex] as PayrollCore.Entities.Shift);
-
-                PayrollCore.Entities.Shift lastItem = (shiftSelectionView.Items[lastIndex] as PayrollCore.Entities.Shift);
-                int checkingItem = 0;
-
-                foreach (PayrollCore.Entities.Shift item in shiftSelectionView.Items)
-                {
-                    Debug.WriteLine("checkingItem: " + checkingItem);
-                    Debug.WriteLine("Start checking shift: " + item.shiftName);
-
-                    if (checkingItem <= lastIndex && checkingItem >= firstIndex)
-                    {
-                        Debug.WriteLine("Item is within firstIndex and lastIndex");
-
-                        if (checkingItem == firstIndex || checkingItem == lastIndex)
-                        {
-                            Debug.WriteLine("Item being checked matches firstIndex or lastIndex");
-                            if (item.shiftID == firstItem.shiftID || item.shiftID == lastItem.shiftID)
-                            {
-                                Debug.WriteLine("Item shiftID matches firstItem or lastItem shiftID");
-                            }
-                            else
-                            {
-                                Debug.WriteLine("shiftID does not match");
-                            }
-                        }
-                        else
-                        {
-                            Debug.WriteLine("Item being checked does not match firstIndex or lastIndex");
-
-                            if (item.selected == false)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Checking skipped.");
-                    }
-
-                    checkingItem++;
-                }
-
-                IsSelectionValid = true;
-            }
-            else
-            {
-                IsSelectionValid = true;
-            }
-
-            return IsSelectionValid;
-        }
-
-        private SelectedShifts GetSelectedShifts()
-        {
-            List<PayrollCore.Entities.Shift> selectedShiftList = new List<PayrollCore.Entities.Shift>();
-            foreach (PayrollCore.Entities.Shift shift in shiftSelectionView.SelectedItems)
-            {
-                selectedShiftList.Add(shift);
-            }
-
-            selectedShiftList.Sort((s1, s2) => TimeSpan.Compare(s1.startTime, s2.startTime));
-
-            SelectedShifts selectedShifts = new SelectedShifts() { StartShift = selectedShiftList.First(), EndShift = selectedShiftList.Last() };
-
-            TimeSpan lastEndTime = new TimeSpan();
-            foreach (PayrollCore.Entities.Shift shift in selectedShiftList)
-            {
-                if (lastEndTime != TimeSpan.MinValue)
-                {
-                    if (lastEndTime != shift.startTime)
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    lastEndTime = shift.endTime;
-                    selectedShiftList.Add(shift);
-                }
-            }
-
-            return selectedShifts;
         }
     }
 }
