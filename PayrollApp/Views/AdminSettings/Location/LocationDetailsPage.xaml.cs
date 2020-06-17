@@ -101,6 +101,11 @@ namespace PayrollApp.Views.AdminSettings.Location
             ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.da.GetMeetings(location);
             dataGrid.ItemsSource = getItem;
 
+            if (getItem.Count <1)
+            {
+                noItemsPanel.Visibility = Visibility.Visible;
+            }
+
             if (location.isNewLocation == false)
             {
                 try

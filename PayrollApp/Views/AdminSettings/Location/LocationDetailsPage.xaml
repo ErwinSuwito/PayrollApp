@@ -108,6 +108,14 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
+                        <StackPanel x:Name="noItemsPanel" Visibility="Collapsed" Orientation="Horizontal">
+                            <animations:Implicit.ShowAnimations>
+                                <animations:TranslationAnimation Duration="0:0:0.5" From="20, 0, 0" To="0" />
+                                <animations:OpacityAnimation Duration="0:0:0.5" From="0" To="1.0"/>
+                            </animations:Implicit.ShowAnimations>
+                            <TextBlock Text="No meetings found! Tap on the Add button to create one." TextAlignment="Center" Margin="8,0,0,0"
+                                       Style="{ThemeResource BaseTextBlockStyle}"/>
+                        </StackPanel>
                         <controls:DataGrid x:Name="dataGrid" Height="180"
                                    AutoGenerateColumns="True" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
                                    IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False"
