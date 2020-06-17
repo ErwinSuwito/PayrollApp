@@ -66,6 +66,11 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             shiftSelectionView.ItemsSource = shifts;
 
+            if (shifts.Count < 1)
+            {
+                noItemsPanel.Visibility = Visibility.Visible;
+            }
+
             loadGrid.Visibility = Visibility.Collapsed;
         }
 

@@ -68,7 +68,7 @@
                 </StackPanel>
                 <ListView x:Name="shiftSelectionView" HorizontalAlignment="Left" VerticalAlignment="Top"
                           SelectionMode="Single" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
-                          Margin="0,0,0,120">
+                          Margin="0,0,0,80">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:MeetingUserGroup">
                             <TextBlock Text="{Binding meetingName}" FontSize="18"
