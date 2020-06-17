@@ -55,6 +55,11 @@ namespace PayrollApp.Views.UserProfile.Meeting
             ObservableCollection<MeetingUserGroup> shifts = await SettingsHelper.Instance.da.GetMeetingUserGroupByUserGroup(SettingsHelper.Instance.userState.user.userGroup.groupID, SettingsHelper.Instance.appLocation.locationID, false);
             shiftSelectionView.ItemsSource = shifts;
 
+            if (shifts.Count < 1)
+            {
+                noItemsPanel.Visibility = Visibility.Visible;
+            }
+
             loadGrid.Visibility = Visibility.Collapsed;
         }
 

@@ -56,10 +56,19 @@
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
-            <StackPanel x:Name="actualContent" Margin="0,12,0,0">
+            <Grid x:Name="actualContent" Margin="0,12,0,0">
+                <StackPanel x:Name="noItemsPanel" Visibility="Collapsed" Orientation="Horizontal">
+                    <animations:Implicit.ShowAnimations>
+                        <animations:TranslationAnimation Duration="0:0:0.5" From="20, 0, 0" To="0" />
+                        <animations:OpacityAnimation Duration="0:0:0.5" From="0" To="1.0"/>
+                    </animations:Implicit.ShowAnimations>
+                    <FontIcon Glyph="&#x1F973;" FontFamily="Segoe UI Emoji" FontSize="24"/>
+                    <TextBlock Text="No meetings found!" TextAlignment="Center" Margin="8,0,0,0"
+                               FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </StackPanel>
                 <ListView x:Name="shiftSelectionView" HorizontalAlignment="Left" VerticalAlignment="Top"
                           SelectionMode="Single" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
-                          MaxHeight="372">
+                          Margin="0,0,0,120">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:MeetingUserGroup">
                             <TextBlock Text="{Binding meetingName}" FontSize="18"
@@ -73,7 +82,13 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
-            </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,52">
+            <TextBlock Text="Something missing?" Style="{ThemeResource BaseTextBlockStyle}" FontSize="18"/>
+            <TextBlock Text="Contact Chiefs or HR Functional Unit to check if the meeting has been added to this location or enabled for your account." 
+                       TextWrapping="Wrap"/>
         </StackPanel>
 
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
