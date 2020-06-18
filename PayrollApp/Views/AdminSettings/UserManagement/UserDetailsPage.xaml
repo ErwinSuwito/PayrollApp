@@ -105,17 +105,21 @@
 
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="disableAccBtn" Label="Disable account" 
-                          Click="disableAccBtn_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
+            <AppBarButton x:Name="signInAsBtn" Label="Add duty"
+                          Click="signInAsBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE710;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="disableAccBtn" Label="Disable" 
+                          Click="disableAccBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE107;" />
                 </AppBarButton.Icon>
             </AppBarButton>
 
-            <AppBarButton x:Name="changeSettingsBtn" Label="Change user settings" 
-                          Click="changeSettingsBtn_Click"
-                          Style="{ThemeResource AppBarButtonRevealStyle}">
+            <AppBarButton x:Name="changeSettingsBtn" Label="Change settings" 
+                          Click="changeSettingsBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xEF58;" />
                 </AppBarButton.Icon>

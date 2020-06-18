@@ -236,5 +236,10 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                 }
             }
         }
+
+        private void signInAsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
