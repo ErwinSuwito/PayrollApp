@@ -207,6 +207,9 @@
     <Compile Include="Views\AdminSettings\UserGroups\UserGroupListPage.xaml.cs">
       <DependentUpon>UserGroupListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AdminSettings\UserManagement\AddDutyPage.xaml.cs">
+      <DependentUpon>AddDutyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdminSettings\UserManagement\AddUserPage.xaml.cs">
       <DependentUpon>AddUserPage.xaml</DependentUpon>
     </Compile>
@@ -419,6 +422,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AdminSettings\UserGroups\UserGroupListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\UserManagement\AddDutyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
