@@ -66,6 +66,7 @@ namespace PayrollApp
         public ObservableCollection<PersistedFace> SelectedPersonFaces { get; set; } = new ObservableCollection<PersistedFace>();
         public Person SelectedPerson { get; set; }
         public InitStates InitState;
+        public bool AllowShifts;
         
         public enum InitStates
         {
@@ -297,6 +298,12 @@ namespace PayrollApp
             {
                 this.FaceApiKeyEndpoint = value.ToString();
             }
+
+            value = ApplicationData.Current.RoamingSettings.Values["AllowShifts"];
+            if (value != null)
+            {
+                bool.TryParse(value.ToString(), out this.AllowShifts);
+            }    
 
             value = ApplicationData.Current.RoamingSettings.Values["WorkspaceKey"];
             if (value != null)

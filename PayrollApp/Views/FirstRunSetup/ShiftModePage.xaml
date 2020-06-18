@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="PayrollApp.Views.FirstRunSetup.PermissionsPage"
+    x:Class="PayrollApp.Views.FirstRunSetup.ShiftModePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
@@ -42,7 +42,7 @@
                 <TextBlock Text="Shifts" Style="{ThemeResource HeaderTextBlockStyle}"/>
                 <TextBlock Text="Toggle the swith below to enable or disable shifts." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
-                <ToggleSwitch x:Name="shiftToggleBtn" IsOn="True" Margin="0,8,0,0" 
+                <ToggleSwitch x:Name="shiftToggleBtn" IsOn="{Binding AllowShift, Mode=TwoWay}" Margin="0,8,0,0" 
                               OnContent="Shifts enabled" OffContent="Shifts disabled" />
             </StackPanel>
         </StackPanel>
