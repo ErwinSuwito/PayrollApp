@@ -78,22 +78,22 @@ namespace PayrollApp.Views.FirstRunSetup
             if (provider != null && provider.State == ProviderState.SignedIn)
             {
                 var user = await provider.Graph.Me.Request().GetAsync();
-                if (user.UserPrincipalName == "ta@cloudmails.apu.edu.my" || user.UserPrincipalName == "TADev@cloudmails.apu.edu.my")
+                if (ClientSecret.AcceptableEmails.Contains(user.UserPrincipalName))
                 {
                     nextBtn.IsEnabled = true;
                 }
                 else
                 {
-                    //await provider.LogoutAsync();
-                    nextBtn.IsEnabled = true;
-                    //ContentDialog contentDialog = new ContentDialog
-                    //{
-                    //    Title = "Access denied",
-                    //    Content = "You are not signed in as E-Docs. Please sign in again as E-Docs to proceed.",
-                    //    PrimaryButtonText = "Ok"
-                    //};
+                    await provider.LogoutAsync();
+                    nextBtn.IsEnabled = false;
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Access denied",
+                        Content = "Your account is not approved to be used on this app. Please login with another account.",
+                        PrimaryButtonText = "Ok"
+                    };
 
-                    //await contentDialog.ShowAsync();
+                    await contentDialog.ShowAsync();
                 }
             }
             else
