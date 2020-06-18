@@ -120,7 +120,7 @@
             </StackPanel>
         </Grid>
         <ContentDialog x:Name="confirmDialog" Title="Add duty?" Grid.RowSpan="4" Grid.ColumnSpan="3"
-                       PrimaryButtonText="Add" SecondaryButtonText="Cancel">
+                       PrimaryButtonText="Add" CloseButtonText="Cancel">
             <StackPanel>
                 <TextBlock Text="Make sure that the following information is correct." />
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">

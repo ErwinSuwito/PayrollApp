@@ -237,9 +237,13 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             }
         }
 
-        private void signInAsBtn_Click(object sender, RoutedEventArgs e)
+        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-
+            var menu = (MenuFlyoutItem)sender;
+            if (menu.Tag.ToString() == "Duty")
+            {
+                this.Frame.Navigate(typeof(AddDutyPage), user, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }

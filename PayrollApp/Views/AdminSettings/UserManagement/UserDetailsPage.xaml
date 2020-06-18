@@ -106,10 +106,16 @@
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
             <AppBarButton x:Name="signInAsBtn" Label="Add duty"
-                          Click="signInAsBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE710;" />
                 </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Duty" Tag="Duty" Click="MenuFlyoutItem_Click"/>
+                        <MenuFlyoutItem Text="Meeting" Tag="Meeting" Click="MenuFlyoutItem_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="disableAccBtn" Label="Disable" 
                           Click="disableAccBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">

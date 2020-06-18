@@ -70,9 +70,13 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             this.Frame.Navigate(typeof(UserListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private void signInAsBtn_Click(object sender, RoutedEventArgs e)
+        private async void signInAsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var result = await confirmDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                
+            }
         }
 
         private async void datePicker1_DateChanged(object sender, DatePickerValueChangedEventArgs e)
