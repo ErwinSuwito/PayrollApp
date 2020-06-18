@@ -11,6 +11,11 @@ namespace PayrollApp
     {
         public static string FaceApiEndpoint = "YOUR-ENDPOINT-HERE";
         public static string FaceApiKey = "YOUR-API-KEY-HERE";
+        public static readonly string[] AcceptableEmails = new string[]
+        {
+            "ACCOUNT ONE",
+            "ACCOUNT TWO"
+        };
     }
 }
 ```
