@@ -151,6 +151,7 @@ namespace PayrollCore
             activity.outTime = signOutTime;
 
             TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+            TimeSpan approvedWork;
 
             if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
             {
@@ -164,8 +165,15 @@ namespace PayrollCore
             }
 
             activity.ClaimDate = DateTime.Today;
+            int removeTimes = Convert.ToInt32(activityOffset.TotalHours / 6);
+            
+            for (int i =0; i != removeTimes; i++)
+            {
+                approvedWork = activityOffset.Subtract(new TimeSpan(0, 30, 0));
+            }
+
             activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
-            activity.ApprovedHours = activityOffset.TotalHours;
+            activity.ApprovedHours = approvedWork.TotalHours;
 
             return activity;
         }

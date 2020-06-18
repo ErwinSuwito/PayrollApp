@@ -64,7 +64,7 @@
             </StackPanel>
             <StackPanel x:Name="actualContent" Margin="0,16,0,0">
                 <TextBlock Text="reminder" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBlock Text="Don't forget to sign out after your special task has ended. You are automatically signed out of special task after 6 hours and will need to sign in again if you're not done." 
+                <TextBlock Text="Don't forget to sign out after your special task has ended." 
                            FontSize="16" TextWrapping="Wrap"/>
             </StackPanel>
         </StackPanel>

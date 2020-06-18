@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="4459df45-2cd3-4bb8-aa3e-e98939871ab6"
-    Publisher="CN=Erwin"
-    Version="1.0.0.0" />
+    Name="29437ErwinSuwitoandojo.TAPayroll"
+    Publisher="CN=EB87CADD-5C4D-4A02-8C6B-C25705F9A969"
+    Version="1.0.2.0" />
 
-  <mp:PhoneIdentity PhoneProductId="4459df45-2cd3-4bb8-aa3e-e98939871ab6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="dc1a9379-ad46-4f59-a4ba-07888b46ed08" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>PayrollApp</DisplayName>
-    <PublisherDisplayName>Erwin</PublisherDisplayName>
+    <DisplayName>TA Payroll</DisplayName>
+    <PublisherDisplayName>Erwin Suwitoandojo</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="PayrollApp.App">
       <uap:VisualElements
-        DisplayName="PayrollApp"
+        DisplayName="TA Payroll"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="PayrollApp"
