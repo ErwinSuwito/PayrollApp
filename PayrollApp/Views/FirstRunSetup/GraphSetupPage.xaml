@@ -39,8 +39,8 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="E-Docs account" Style="{ThemeResource HeaderTextBlockStyle}"/>
-                <TextBlock Text="Sign in using the E-Docs account to send notifications to TAs and HR" 
+                <TextBlock Text="Sign in" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="Sign in to your email account to continue." 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
 
                 <controls:LoginButton x:Name="loginButton" Margin="0,12,0,0" />
