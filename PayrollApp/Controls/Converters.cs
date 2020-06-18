@@ -316,4 +316,32 @@ namespace PayrollApp.Controls
         }
     }
 
+    public class DateTimeOffsetToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            DateTimeOffset date = (DateTimeOffset)value;
+            return date.ToString("dd/MM/yyyy");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+    }
+
+    public class TimeSpanToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            TimeSpan ts = (TimeSpan)value;
+            return ts.ToString("hh:mm t");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return value;
+        }
+    }
+
 }

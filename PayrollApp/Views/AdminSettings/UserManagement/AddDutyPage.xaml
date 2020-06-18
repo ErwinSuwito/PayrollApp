@@ -15,8 +15,8 @@
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
-        <ctl:BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-        <ctl:ReverseBooleanToVisibilityConverter x:Key="ReverseBooleanToVisibility" />
+        <ctl:DateTimeOffsetToStringConverter x:Key="DateTimeOffsetToStringConverter" />
+        <ctl:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -69,8 +69,9 @@
                           Margin="0,12,0,0">
                 <StackPanel x:Name="actualContent">
                     <StackPanel x:Name="shiftInfoPanel">
-                        <TextBlock Text="Duty info" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <DatePicker x:Name="datePicker1" Header="Duty date" Margin="0,4,0,0"
+                        <TextBlock Text="Fill in the details below and tap on the Add duty button to continue." 
+                                   Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <DatePicker x:Name="datePicker1" Header="Duty date" Margin="0,8,0,0"
                                     DateChanged="datePicker1_DateChanged"/>
                         <TimePicker x:Name="inTimeBox" Header="Sign in time" Margin="0,4,0,0"/>
                         <TimePicker x:Name="outTimeBox" Header="Sign out time" Margin="0,4,0,0"/>
@@ -89,21 +90,6 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel x:Name="payInfo" Margin="0,8,0,0">
-                        <TextBlock Text="Pay info" Margin="0,0,0,4" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel>
-                                <TextBlock Text="Applicable rate:" />
-                                <TextBlock Text="Approved Hours:" />
-                                <TextBlock Text="Claimable amount:" />
-                            </StackPanel>
-                            <StackPanel Margin="20,0,0,0">
-                                <TextBlock Text="Applicable rate:" />
-                                <TextBlock Text="Approved Hours:" />
-                                <TextBlock Text="Claimable amount:" />
-                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -133,5 +119,29 @@
                 <TextBlock x:Name="progText" Text="Just a moment..." Margin="4,0,0,0"/>
             </StackPanel>
         </Grid>
+        <ContentDialog x:Name="confirmDialog" Title="Add duty?" Grid.RowSpan="4" Grid.ColumnSpan="3"
+                       PrimaryButtonText="Add" SecondaryButtonText="Cancel">
+            <StackPanel>
+                <TextBlock Text="Make sure that the following information is correct." />
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <StackPanel>
+                        <TextBlock Text="User:" />
+                        <TextBlock Text="Duty date:" />
+                        <TextBlock Text="Sign in time:" />
+                        <TextBlock Text="Sign out time:" />
+                        <TextBlock Text="Start shift:" />
+                        <TextBlock Text="End shift:" />
+                    </StackPanel>
+                    <StackPanel Margin="16,0,0,0">
+                        <TextBlock Text="{Binding ElementName=nameTextBlock, Path=Text}"/>
+                        <TextBlock Text="{Binding ElementName=datePicker1, Path=SelectedDate, Converter={StaticResource DateTimeOffsetToStringConverter}}"/>
+                        <TextBlock Text="{Binding ElementName=inTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
+                        <TextBlock Text="{Binding ElementName=outTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
+                        <TextBlock x:Name="confirmStartShiftText"/>
+                        <TextBlock x:Name="confirmEndShiftText"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>
