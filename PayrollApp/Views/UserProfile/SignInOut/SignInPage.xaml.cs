@@ -123,7 +123,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                             break;
                         }
                         else
-                        {
+                        {   
                             lastEndTime = shift.endTime;
                         }
                     }

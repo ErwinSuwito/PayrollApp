@@ -58,7 +58,7 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user);
+                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user, false);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
                 if (IsSuccess)

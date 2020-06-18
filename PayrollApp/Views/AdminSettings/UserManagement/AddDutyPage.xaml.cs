@@ -72,10 +72,55 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
         private async void signInAsBtn_Click(object sender, RoutedEventArgs e)
         {
+            Shift startShift = startShiftBox.SelectedItem as Shift;
+            Shift endShift = endShiftBox.SelectedItem as Shift;
+            confirmStartShiftText.Text = startShift.shiftName;
+            confirmEndShiftText.Text = endShift.shiftName;
+
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                
+                var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(user, startShift, endShift);
+                newActivity.inTime = datePicker1.Date.DateTime + inTimeBox.Time;
+                newActivity.outTime = datePicker1.Date.DateTime + outTimeBox.Time;
+                var completedActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(newActivity, user, true);
+
+                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(completedActivity);
+                if (IsSuccess)
+                {
+                    ContentDialog contentDialog = new ContentDialog()
+                    {
+                        Title = "Added successfully",
+                        Content = "The duty has been added successfully.",
+                        CloseButtonText = "Ok"
+                    };
+
+                    await contentDialog.ShowAsync();
+                    this.Frame.GoBack();
+                }
+                else
+                {
+                    ContentDialog contentDialog = new ContentDialog()
+                    {
+                        Title = "An error occurred",
+                        Content = "There's a problem in adding the duty. Please try again later. Tap on More info to see what's wrong.",
+                        CloseButtonText = "Ok",
+                        PrimaryButtonText = "More info"
+                    };
+
+                    var result2 = await contentDialog.ShowAsync();
+                    if (result2 == ContentDialogResult.Primary)
+                    {
+                        contentDialog = new ContentDialog()
+                        {
+                            Title = "More info",
+                            Content = SettingsHelper.Instance.da.lastError.Message + "\n" + SettingsHelper.Instance.da.lastError.StackTrace,
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                }
             }
         }
 
@@ -93,6 +138,9 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             {
                 shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
             }
+
+            startShiftBox.ItemsSource = shifts;
+            endShiftBox.ItemsSource = shifts;
 
             loadGrid.Visibility = Visibility.Collapsed;
         }

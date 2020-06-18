@@ -75,82 +75,41 @@ namespace PayrollCore
 
             return signInInfo;
         }
-
-        /// <summary>
-        /// Generate Activity object for special task
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="location"></param>
-        /// <returns></returns>
-        //public  Activity GenerateSpecialTask(User user, Location location)
-        //{
-        //    Activity signInInfo = new Activity();
-
-        //    signInInfo.userID = user.userID;
-        //    signInInfo.locationID = location.locationID;
-        //    signInInfo.inTime = DateTime.Now;
-        //    signInInfo.RequireNotification = false;
-        //    signInInfo.IsSpecialTask = true;
-
-        //    return signInInfo;
-        //}
-
-        //public Activity CompleteSpecialTask(Activity activity, User user)
-        //{
-        //    DateTime signInTime = activity.inTime;
-        //    DateTime signOutTime = DateTime.Now;
-
-        //    if (signInTime.DayOfYear < signOutTime.DayOfYear)
-        //    {
-        //        activity.RequireNotification = false;
-        //        activity.NotificationReason = 2;
-        //    }
-        //    else
-        //    {
-        //        activity.RequireNotification = false;
-        //    }
-
-        //    if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
-        //    {
-        //        activity.ApplicableRate = user.userGroup.DefaultRate;
-        //    }
-        //    else
-        //    {
-        //        activity.ApplicableRate = 
-        //    }
-
-        //    TimeSpan activityOffset = signOutTime.Subtract(signInTime);
-        //    activity.ApprovedHours = activityOffset.TotalHours;
-        //    activity.ClaimDate = DateTime.Today;
-        //    activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
-
-        //    return activity;
-        //}
         
-        public async Task<Activity> GenerateSignOutInfo(Activity activity, User user)
+        /// <summary>
+        /// Calculates the applicable rates, work hours, and claimable amount from an Activity object
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="user"></param>
+        /// <param name="OverrideTime">Set to true to use the sign in and sign out time in the Activity object</param>
+        /// <returns></returns>
+        public async Task<Activity> GenerateSignOutInfo(Activity activity, User user, bool OverrideTime)
         {
-            DateTime signInTime = activity.inTime;
-            DateTime signOutTime = DateTime.Now;
-
-            if (activity.StartShift.shiftName != "Special Task")
+            if (OverrideTime == false)
             {
-                if (signInTime.DayOfYear < signOutTime.DayOfYear)
+                DateTime signInTime = activity.inTime;
+                DateTime signOutTime = DateTime.Now;
+
+                if (activity.StartShift.shiftName != "Special Task")
                 {
-                    activity.RequireNotification = true;
-                    activity.NotificationReason = 2;
-                    string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
-                    DateTime.TryParse(s, out DateTime actualSignOutTime);
-                    activity.actualOutTime = actualSignOutTime;
+                    if (signInTime.DayOfYear < signOutTime.DayOfYear)
+                    {
+                        activity.RequireNotification = true;
+                        activity.NotificationReason = 2;
+                        string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
+                        DateTime.TryParse(s, out DateTime actualSignOutTime);
+                        activity.actualOutTime = actualSignOutTime;
+                    }
+                    else
+                    {
+                        activity.RequireNotification = false;
+                    }
                 }
-                else
-                {
-                    activity.RequireNotification = false;
-                }
+
+                activity.outTime = signOutTime;
             }
 
-            activity.outTime = signOutTime;
-
-            TimeSpan activityOffset = signOutTime.Subtract(signInTime);
+            TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
             TimeSpan approvedWork;
 
             if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
