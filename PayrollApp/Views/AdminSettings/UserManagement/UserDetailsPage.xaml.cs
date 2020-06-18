@@ -244,6 +244,10 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             {
                 this.Frame.Navigate(typeof(AddDutyPage), user, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
+            else
+            {
+                this.Frame.Navigate(typeof(AddMeetingPage), user, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }
