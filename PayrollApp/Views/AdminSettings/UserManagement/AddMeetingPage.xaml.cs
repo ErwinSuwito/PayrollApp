@@ -89,9 +89,11 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
+                Rate meetingRate = await SettingsHelper.Instance.da.GetRateById(meeting.rate.rateID);
                 var newActivity = await SettingsHelper.Instance.op.GenerateMeetingAttendance(user, meeting.meetingID);
                 newActivity.inTime = datePicker1.Date.DateTime + inTimeBox.Time;
                 newActivity.outTime = datePicker1.Date.DateTime + outTimeBox.Time;
+                newActivity.meeting.rate = meetingRate;
                 var completedActivity = SettingsHelper.Instance.op.CompleteMeetingAttendance(newActivity, user, true);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(completedActivity);

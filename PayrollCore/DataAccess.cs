@@ -207,6 +207,45 @@ namespace PayrollCore
             return null;
         }
 
+        public async Task<Rate> GetRateById(int rateID)
+        {
+            lastError = null;
+            string GetLocationSettingsQuery = "SELECT * FROM Rate WHERE RateID=@RateID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = GetLocationSettingsQuery;
+                        cmd.Parameters.Add(new SqlParameter("@RateID", rateID));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Rate rate = new Rate();
+                                rate.rateID = dr.GetInt32(0);
+                                rate.rateDesc = dr.GetString(1);
+                                rate.rate = dr.GetFloat(2);
+                                rate.isDisabled = dr.GetBoolean(3);
+
+                                return rate;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                lastError = ex;
+            }
+
+            return null;
+        }
+
+
         /// <summary>
         /// Adds a new location to the database
         /// </summary>

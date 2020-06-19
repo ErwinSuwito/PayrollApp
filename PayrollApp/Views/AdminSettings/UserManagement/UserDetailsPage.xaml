@@ -105,7 +105,7 @@
 
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="signInAsBtn" Label="Add duty"
+            <AppBarButton x:Name="signInAsBtn" Label="Add record"
                           Style="{ThemeResource AppBarButtonRevealStyle}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE710;" />
