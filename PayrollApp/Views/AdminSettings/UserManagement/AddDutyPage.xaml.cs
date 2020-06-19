@@ -57,6 +57,17 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+            user = await SettingsHelper.Instance.da.GetUserFromDbById(user.userID);
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -83,9 +94,12 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                 var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(user, startShift, endShift);
                 newActivity.inTime = datePicker1.Date.DateTime + inTimeBox.Time;
                 newActivity.outTime = datePicker1.Date.DateTime + outTimeBox.Time;
-                var completedActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(newActivity, user, true);
+                var completedActivity = await SettingsHelper.Instance.op.GenerateSignOut(newActivity, user, true);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(completedActivity);
+                newActivity = await SettingsHelper.Instance.da.GetLatestSignIn(user.userID, completedActivity.locationID);
+                completedActivity.ActivityID = newActivity.ActivityID;
+                IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(completedActivity);
                 if (IsSuccess)
                 {
                     ContentDialog contentDialog = new ContentDialog()

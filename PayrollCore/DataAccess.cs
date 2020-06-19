@@ -404,6 +404,7 @@ namespace PayrollCore
                                 user_group.groupName = dr.GetString(6);
                                 user_group.ShowAdminSettings = dr.GetBoolean(8);
                                 user_group.EnableFaceRec = dr.GetBoolean(9);
+                                user_group.DefaultRate = new Rate() { rateID = dr.GetInt32(7) };
 
                                 user.userGroup = user_group;
 

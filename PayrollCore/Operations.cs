@@ -85,6 +85,9 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Activity> GenerateSignOutInfo(Activity activity, User user, bool OverrideTime)
         {
+            TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
+            TimeSpan approvedWork;
+
             if (OverrideTime == false)
             {
                 DateTime signInTime = activity.inTime;
@@ -109,9 +112,6 @@ namespace PayrollCore
                 activity.outTime = signOutTime;
             }
 
-            TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
-            TimeSpan approvedWork;
-
             if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
             {
                 // Use user's default rate
@@ -133,6 +133,75 @@ namespace PayrollCore
 
             activity.ClaimableAmount = CalcPay(activityOffset.TotalHours, activity.ApplicableRate.rate);
             activity.ApprovedHours = approvedWork.TotalHours;
+
+            return activity;
+        }
+
+        public async Task<Activity> GenerateSignOut(Activity activity, User user, bool OverrideTime)
+        {
+            DateTime signInTime = activity.inTime;
+            DateTime signOutTime = activity.outTime;
+
+            // Checks if there is no need to assign out time.
+            if (OverrideTime == false)
+            {
+                signOutTime = DateTime.Now;
+
+                if (activity.StartShift.shiftName != "Special Task")
+                {
+                    if (signInTime.DayOfYear < signOutTime.DayOfYear)
+                    {
+                        activity.RequireNotification = true;
+                        activity.NotificationReason = 2;
+                        string s = activity.inTime.ToShortDateString() + " " + activity.EndShift.startTime.ToString();
+                        DateTime.TryParse(s, out DateTime actualSignOutTime);
+                        activity.actualOutTime = actualSignOutTime;
+                    }
+                    else
+                    {
+                        activity.RequireNotification = false;
+                    }
+                }
+
+                activity.outTime = signOutTime;
+            }
+
+            // Calculates approved work hour
+            TimeSpan workHour = signOutTime.Subtract(signInTime);
+
+            // Calculates how much times the workHour needs to be decreased by 30 minutes
+            var d = workHour.TotalHours / 6;
+            int removeTimes = Convert.ToInt32(Math.Floor(d));
+            if (removeTimes > 0)
+            {
+                for (int i = 0; i <= removeTimes; i++)
+                {
+                    workHour = workHour.Subtract(new TimeSpan(0, 30, 0));
+                }
+            }
+
+            // Checks which rate applies
+            if (activity.StartShift.DefaultRate.rate != 0)
+            {
+                // Applies the bigger rate
+                if (user.userGroup.DefaultRate.rate > activity.StartShift.DefaultRate.rate)
+                {
+                    activity.ApplicableRate = user.userGroup.DefaultRate;
+                }
+                else
+                {
+                    activity.ApplicableRate = activity.StartShift.DefaultRate;
+                }
+            }
+            else
+            {
+                activity.ApplicableRate = activity.StartShift.DefaultRate;
+            }
+
+            // Calculates the claimable amount
+            activity.ClaimableAmount = CalcPay(workHour.TotalHours, activity.ApplicableRate.rate);
+            activity.ApprovedHours = workHour.TotalHours;
+            activity.ClaimDate = DateTime.Today;
 
             return activity;
         }
