@@ -57,7 +57,7 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock x:Name="pageTitle" Text="Adding duty for" 
+                <TextBlock x:Name="pageTitle" Text="Adding meeting for" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
                 <TextBlock x:Name="nameTextBlock" Text="Erwin Suwitoandojo" 
                            Style="{ThemeResource TitleTextBlockStyle}" Margin="0,2,0,0"/>
@@ -69,28 +69,19 @@
                           Margin="0,12,0,0">
                 <StackPanel x:Name="actualContent">
                     <StackPanel x:Name="shiftInfoPanel">
-                        <TextBlock Text="Fill in the details below and tap on the Add duty button to continue." 
+                        <TextBlock Text="Fill in the details below and tap on the Add meeting button to continue." 
                                    Style="{ThemeResource BaseTextBlockStyle}"/>
-                        <DatePicker x:Name="datePicker1" Header="Duty date" Margin="0,8,0,0"
+                        <DatePicker x:Name="datePicker1" Header="Meeting date" Margin="0,8,0,0"
                                     DateChanged="datePicker1_DateChanged"/>
                         <TimePicker x:Name="inTimeBox" Header="Sign in time" Margin="0,4,0,0"/>
                         <TimePicker x:Name="outTimeBox" Header="Sign out time" Margin="0,4,0,0"/>
-                        <StackPanel x:Name="shiftSelectPanel" Orientation="Horizontal" Margin="0,4,0,0">
-                            <ComboBox x:Name="startShiftBox" Header="Start Shift" Width="216">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="entity:Shift">
-                                        <TextBlock Text="{Binding shiftName}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <ComboBox x:Name="endShiftBox" Header="End Shift" Width="216" Margin="12,0,0,0">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="entity:Shift">
-                                        <TextBlock Text="{Binding shiftName}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </StackPanel>
+                        <ComboBox x:Name="meetingBox" Header="Meeting name" Margin="0,4,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="entity:Meeting">
+                                    <TextBlock Text="{Binding meetingName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
@@ -98,7 +89,7 @@
 
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
-            <AppBarButton x:Name="signInAsBtn" Label="Add duty"
+            <AppBarButton x:Name="signInAsBtn" Label="Add meeting"
                           Click="signInAsBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE710;" />
@@ -120,7 +111,7 @@
             </StackPanel>
         </Grid>
         <ContentDialog x:Name="confirmDialog" Title="Add duty?" Grid.RowSpan="4" Grid.ColumnSpan="3"
-                       PrimaryButtonText="Add" CloseButtonText="Cancel">
+                       PrimaryButtonText="Add" CloseButtonText="Cancel" d:IsHidden="True">
             <StackPanel>
                 <TextBlock Text="Make sure that the following information is correct." />
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
