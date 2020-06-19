@@ -239,9 +239,12 @@ namespace PayrollCore
             }
         }
 
-        public Activity CompleteMeetingAttendance(Activity activity, User user)
+        public Activity CompleteMeetingAttendance(Activity activity, User user, bool OverrideTime)
         {
-            activity.outTime = DateTime.Now;
+            if (OverrideTime == false)
+            {
+                activity.outTime = DateTime.Now;
+            }
             TimeSpan activityOffset = activity.outTime.Subtract(activity.inTime);
             activity.ApprovedHours = activityOffset.TotalHours;
             activity.ClaimDate = DateTime.Today;

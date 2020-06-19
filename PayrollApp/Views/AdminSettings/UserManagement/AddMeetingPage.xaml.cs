@@ -83,21 +83,19 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
         private async void signInAsBtn_Click(object sender, RoutedEventArgs e)
         {
-            Shift startShift = startShiftBox.SelectedItem as Shift;
-            Shift endShift = endShiftBox.SelectedItem as Shift;
-            confirmStartShiftText.Text = startShift.shiftName;
-            confirmEndShiftText.Text = endShift.shiftName;
+            Meeting meeting = meetingBox.SelectedItem as Meeting;
+            confirmStartShiftText.Text = meeting.meetingName;
 
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(user, startShift, endShift);
+                var newActivity = await SettingsHelper.Instance.op.GenerateMeetingAttendance(user, meeting.meetingID);
                 newActivity.inTime = datePicker1.Date.DateTime + inTimeBox.Time;
                 newActivity.outTime = datePicker1.Date.DateTime + outTimeBox.Time;
-                var completedActivity = await SettingsHelper.Instance.op.GenerateSignOut(newActivity, user, true);
+                var completedActivity = SettingsHelper.Instance.op.CompleteMeetingAttendance(newActivity, user, true);
 
                 bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(completedActivity);
-                newActivity = await SettingsHelper.Instance.da.GetLatestSignIn(user.userID, completedActivity.locationID);
+                newActivity = await SettingsHelper.Instance.da.GetLatestMeeting(user.userID, completedActivity.locationID);
                 completedActivity.ActivityID = newActivity.ActivityID;
                 IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(completedActivity);
                 if (IsSuccess)
@@ -142,19 +140,8 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         {
             loadGrid.Visibility = Visibility.Visible;
 
-            ObservableCollection<Shift> shifts;
-
-            if (datePicker1.SelectedDate.Value.DayOfWeek == DayOfWeek.Saturday || datePicker1.SelectedDate.Value.DayOfWeek == DayOfWeek.Sunday)
-            {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), true);
-            }
-            else
-            {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
-            }
-
-            startShiftBox.ItemsSource = shifts;
-            endShiftBox.ItemsSource = shifts;
+            ObservableCollection<Meeting> meetings = await SettingsHelper.Instance.da.GetMeetings(SettingsHelper.Instance.appLocation);
+            meetingBox.ItemsSource = meetings;
 
             loadGrid.Visibility = Visibility.Collapsed;
         }

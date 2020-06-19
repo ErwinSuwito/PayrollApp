@@ -129,7 +129,6 @@
                         <TextBlock Text="{Binding ElementName=inTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
                         <TextBlock Text="{Binding ElementName=outTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
                         <TextBlock x:Name="confirmStartShiftText"/>
-                        <TextBlock x:Name="confirmEndShiftText"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
