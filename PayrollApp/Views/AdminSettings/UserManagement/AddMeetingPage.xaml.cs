@@ -84,7 +84,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         private async void signInAsBtn_Click(object sender, RoutedEventArgs e)
         {
             Meeting meeting = meetingBox.SelectedItem as Meeting;
-            confirmStartShiftText.Text = meeting.meetingName;
+            confirmMeetingText.Text = meeting.meetingName;
 
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)

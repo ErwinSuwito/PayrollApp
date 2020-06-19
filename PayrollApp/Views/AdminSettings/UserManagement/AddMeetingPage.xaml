@@ -128,7 +128,7 @@
                         <TextBlock Text="{Binding ElementName=datePicker1, Path=SelectedDate, Converter={StaticResource DateTimeOffsetToStringConverter}}"/>
                         <TextBlock Text="{Binding ElementName=inTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
                         <TextBlock Text="{Binding ElementName=outTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
-                        <TextBlock x:Name="confirmStartShiftText"/>
+                        <TextBlock x:Name="confirmMeetingText"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
