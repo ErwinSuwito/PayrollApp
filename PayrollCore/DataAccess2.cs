@@ -453,6 +453,205 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Gets the requested user
+        /// </summary>
+        /// <param name="GroupID"></param>
+        /// <returns></returns>
+        public async Task<User> GetUserByIdAsync(string userID)
+        {
+            string Query = "SELECT * FROM Users WHERE UserID=@UserID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@userID", userID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                User user = new User();
+                                user.userID = dr.GetString(0);
+                                user.fullName = dr.GetString(1);
+                                user.fromAD = dr.GetBoolean(2);
+                                user.isDisabled = dr.GetBoolean(3);
+                                user.userGroup = new UserGroup() { groupID = dr.GetInt32(4) };
+
+                                return user;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all users and returns in an ObservableCollection
+        /// </summary>
+        /// <param name="GetDisabled">True to include disabled user groups</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<User>> GetAllUsersAsync(bool GetDisabled)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Users";
+
+            if (!GetDisabled)
+            {
+                Query += " WHERE IsDisabled=0";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<User> users = new ObservableCollection<User>();
+
+                            while (dr.Read())
+                            {
+                                User user = new User();
+                                user.userID = dr.GetString(0);
+                                user.fullName = dr.GetString(1);
+                                user.fromAD = dr.GetBoolean(2);
+                                user.isDisabled = dr.GetBoolean(3);
+                                user.userGroup = new UserGroup() { groupID = dr.GetInt32(4) };
+
+                                users.Add(user);
+                            }
+
+                            return users;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds a new user group
+        /// </summary>
+        /// <param name="userGroup"></param>
+        /// <returns></returns>
+        public async Task<bool> AddNewUserAsync(User user)
+        {
+            string Query = "INSERT INTO Users(UserID, FullName, FromAD, IsDisabled, GroupID) VALUES(@UserID, @FullName, @FromAD, @IsDisabled, @GroupID)";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", user.userID));
+                        cmd.Parameters.Add(new SqlParameter("@FullName", user.fullName));
+                        cmd.Parameters.Add(new SqlParameter("@FromAD", user.fromAD));
+                        cmd.Parameters.Add(new SqlParameter("@GroupID", user.userGroup.groupID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified user group from the database
+        /// </summary>
+        /// <param name="userGroup"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteUserAsync(User user)
+        {
+            string Query = "DELETE FROM Users WHERE UserID=@UserID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", user.userID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Updates the specified rate
+        /// </summary>
+        /// <param name="rate">The rate to be updated</param>
+        /// <returns></returns>
+        public async Task<bool> UpdateUserAsync(User user)
+        {
+            string Query = "UPDATE Users SET FullName=@FullName AND FromAD=@FromAD AND IsDisabled=@IsDisabled AND GroupID=@GroupID WHERE UserID=@UserID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", user.userID));
+                        cmd.Parameters.Add(new SqlParameter("@FullName", user.fullName));
+                        cmd.Parameters.Add(new SqlParameter("@FromAD", user.fromAD));
+                        cmd.Parameters.Add(new SqlParameter("@GroupID", user.userGroup.groupID));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", user.userGroup.IsDisabled));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("DataAccess Exception: " + ex.Message);
+                return false;
+            }
+        }
 
     }
 }
