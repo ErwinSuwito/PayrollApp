@@ -18,7 +18,8 @@ CREATE TABLE user_group(
 	GroupName nvarchar(60) NOT NULL,
 	RateID int NOT NULL,
 	ShowAdminSettings BIT DEFAULT 0,
-	EnableFaceRec BIT DEFAULT 0
+	EnableFaceRec BIT DEFAULT 0,
+	IsDisabled BIT DEFAULT (0),
 	FOREIGN KEY (RateID) REFERENCES rate(rateID)
 );
 
