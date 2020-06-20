@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using PayrollCore.Entities;
@@ -1103,6 +1104,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.isDisabled));
                         cmd.Parameters.Add(new SqlParameter("@ShiftID", shift.shiftID));
 
                         await cmd.ExecuteNonQueryAsync();
@@ -1119,9 +1121,14 @@ namespace PayrollCore
             }
         }
 
-        public async Task<Shift> GetShiftById(int ShiftID)
+        /// <summary>
+        /// Gets the requested meeting
+        /// </summary>
+        /// <param name="MeetingID"></param>
+        /// <returns></returns>
+        public async Task<Meeting> GetMeetingByIdAsync(int MeetingID)
         {
-            string Query = "SELECT * FROM Shifts WHERE ShiftID=@ShiftID";
+            string Query = "SELECT * FROM Meeting WHERE MeetingID=@MeetingID";
 
             try
             {
@@ -1131,23 +1138,22 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@ShiftID", ShiftID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", MeetingID));
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
                             while (dr.Read())
                             {
-                                Shift shift = new Shift();
-                                shift.shiftID = dr.GetInt32(0);
-                                shift.shiftName = dr.GetString(1);
-                                shift.startTime = dr.GetTimeSpan(2);
-                                shift.endTime = dr.GetTimeSpan(3);
-                                shift.locationID = dr.GetInt32(4);
-                                shift.DefaultRate = new Rate() { rateID = dr.GetInt32(5) };
-                                shift.isDisabled = dr.GetBoolean(6);
-                                shift.WeekendOnly = dr.GetBoolean(7);
+                                Meeting meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(0);
+                                meeting.meetingName = dr.GetString(1);
+                                meeting.locationID = dr.GetInt32(2);
+                                meeting.meetingDay = dr.GetInt32(3);
+                                meeting.isDisabled = dr.GetBoolean(4);
+                                meeting.rate = new Rate() { rateID = dr.GetInt32(5) };
+                                meeting.StartTime = dr.GetTimeSpan(6);
 
-                                return shift;
+                                return meeting;
                             }
                         }
                     }
@@ -1162,11 +1168,15 @@ namespace PayrollCore
             return null;
         }
 
-
-        public async Task<ObservableCollection<Shift>> GetAllShiftsAsync(bool GetDisabled)
+        /// <summary>
+        /// Gets all meetings in the database
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Meeting>> GetAllMeetingsAsync(bool GetDisabled)
         {
             lastError = null;
-            string Query = "SELECT * FROM Shifts";
+            string Query = "SELECT * FROM Meetings";
 
             if (!GetDisabled)
             {
@@ -1183,24 +1193,23 @@ namespace PayrollCore
                         cmd.CommandText = Query;
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
-                            ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
+                            ObservableCollection<Meeting> meetings = new ObservableCollection<Meeting>();
 
                             while (dr.Read())
                             {
-                                Shift shift = new Shift();
-                                shift.shiftID = dr.GetInt32(0);
-                                shift.shiftName = dr.GetString(1);
-                                shift.startTime = dr.GetTimeSpan(2);
-                                shift.endTime = dr.GetTimeSpan(3);
-                                shift.locationID = dr.GetInt32(4);
-                                shift.DefaultRate = new Rate() { rateID = dr.GetInt32(5) };
-                                shift.isDisabled = dr.GetBoolean(6);
-                                shift.WeekendOnly = dr.GetBoolean(7);
+                                Meeting meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(0);
+                                meeting.meetingName = dr.GetString(1);
+                                meeting.locationID = dr.GetInt32(2);
+                                meeting.meetingDay = dr.GetInt32(3);
+                                meeting.isDisabled = dr.GetBoolean(4);
+                                meeting.rate = new Rate() { rateID = dr.GetInt32(5) };
+                                meeting.StartTime = dr.GetTimeSpan(6);
 
-                                shifts.Add(shift);
+                                meetings.Add(meeting);
                             }
 
-                            return shifts;
+                            return meetings;
                         }
                     }
                 }
@@ -1213,10 +1222,22 @@ namespace PayrollCore
             }
         }
 
-
-        public async Task<bool> AddNewShiftAsync(Shift shift)
+        /// <summary>
+        /// Gets all the meetings on the specified location
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Meeting>> GetAllMeetingsAsync(bool GetDisabled, int locationID)
         {
-            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly)";
+            lastError = null;
+            string Query = "SELECT * FROM Meetings WHERE LocationID=@LocationID";
+
+            if (!GetDisabled)
+            {
+                Query += " AND IsDisabled=0";
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1225,12 +1246,59 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@ShiftName", shift.shiftName));
-                        cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
-                        cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
-                        cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
-                        cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
-                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                            ObservableCollection<Meeting> meetings = new ObservableCollection<Meeting>();
+
+                            while (dr.Read())
+                            {
+                                Meeting meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(0);
+                                meeting.meetingName = dr.GetString(1);
+                                meeting.locationID = dr.GetInt32(2);
+                                meeting.meetingDay = dr.GetInt32(3);
+                                meeting.isDisabled = dr.GetBoolean(4);
+                                meeting.rate = new Rate() { rateID = dr.GetInt32(5) };
+                                meeting.StartTime = dr.GetTimeSpan(6);
+
+                                meetings.Add(meeting);
+                            }
+
+                            return meetings;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds a new meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <returns></returns>
+        public async Task<bool> AddNewMeetingAsync(Meeting meeting)
+        {
+            string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @RateID, @StartTime)";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@MeetingName", meeting.meetingName));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", meeting.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
 
                         await cmd.ExecuteNonQueryAsync();
 
@@ -1246,10 +1314,14 @@ namespace PayrollCore
             }
         }
 
-
-        public async Task<bool> DeleteShiftAsync(Shift shift)
+        /// <summary>
+        /// Deletes the specified meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteMeetingAsync(Meeting meeting)
         {
-            string Query = "DELETE FROM Shifts WHERE ShiftID=@ShiftID";
+            string Query = "DELETE FROM Meeting WHERE MeetingID=@MeetingID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1258,7 +1330,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@ShiftID", shift.shiftID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meeting.meetingID));
 
                         await cmd.ExecuteNonQueryAsync();
 
@@ -1274,10 +1346,14 @@ namespace PayrollCore
             }
         }
 
-
-        public async Task<bool> UpdateShiftAsync(Shift shift)
+        /// <summary>
+        /// Updates the specified meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateMeetingAsync(Meeting meeting)
         {
-            string Query = "UPDATE Shifts SET ShiftName=@ShiftName AND StartTime=@StartTime AND EndTime=@EndTIme AND LocationID=@LocationID AND RateID=@RateID AND WeekendOnly=@WeekendOnly AND IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
+            string Query = "UPDATE Meeting SET MeetingName=@MeetingName AND LocationID=@LocationID AND MeetingDay=@MeetingDay AND IsDisabled=@IsDisabled AND RateID=@RateID AND StartTime=@StartTime WHERE MeetingID=@MeetingID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1286,13 +1362,13 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@ShiftName", shift.shiftName));
-                        cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
-                        cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
-                        cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
-                        cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
-                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
-                        cmd.Parameters.Add(new SqlParameter("@ShiftID", shift.shiftID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingName", meeting.meetingName));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", meeting.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingDay", meeting.meetingDay));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", meeting.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meeting.meetingID));
 
                         await cmd.ExecuteNonQueryAsync();
 
