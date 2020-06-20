@@ -851,6 +851,194 @@ namespace PayrollCore
             }
         }
 
+        public async Task<Shift> GetShiftById(int ShiftID)
+        {
+            string Query = "SELECT * FROM Shifts WHERE ShiftID=@ShiftID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ShiftID", ShiftID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Shift shift = new Shift();
+                                shift.shiftID = dr.GetInt32(0);
+                                shift.shiftName = dr.GetString(1);
+                                shift.startTime = dr.GetTimeSpan(2);
+                                shift.endTime = dr.GetTimeSpan(3);
+                                shift.locationID = dr.GetInt32(4);
+                                shift.DefaultRate = new Rate() { rateID = dr.GetInt32(5) };
+                                shift.isDisabled = dr.GetBoolean(6);
+                                shift.WeekendOnly = dr.GetBoolean(7);
+
+                                return shift;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+
+        public async Task<ObservableCollection<Shift>> GetAllShiftsAsync(bool GetDisabled)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Shifts";
+
+            if (!GetDisabled)
+            {
+                Query += " WHERE IsDisabled=0";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
+
+                            while (dr.Read())
+                            {
+                                Shift shift = new Shift();
+                                shift.shiftID = dr.GetInt32(0);
+                                shift.shiftName = dr.GetString(1);
+                                shift.startTime = dr.GetTimeSpan(2);
+                                shift.endTime = dr.GetTimeSpan(3);
+                                shift.locationID = dr.GetInt32(4);
+                                shift.DefaultRate = new Rate() { rateID = dr.GetInt32(5) };
+                                shift.isDisabled = dr.GetBoolean(6);
+                                shift.WeekendOnly = dr.GetBoolean(7);
+
+                                shifts.Add(shift);
+                            }
+
+                            return shifts;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+
+        public async Task<bool> AddNewShiftAsync(Shift shift)
+        {
+            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly)";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ShiftName", shift.shiftName));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
+                        cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> DeleteShiftAsync(Shift shift)
+        {
+            string Query = "DELETE FROM Shifts WHERE ShiftID=@ShiftID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ShiftID", shift.shiftID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> UpdateShiftAsync(Shift shift)
+        {
+            string Query = "UPDATE Shifts SET ShiftName=@ShiftName AND StartTime=@StartTime AND EndTime=@EndTIme AND LocationID=@LocationID AND RateID=@RateID AND WeekendOnly=@WeekendOnly AND IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ShiftName", shift.shiftName));
+                        cmd.Parameters.Add(new SqlParameter("@StartTime", shift.startTime));
+                        cmd.Parameters.Add(new SqlParameter("@EndTime", shift.endTime));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+                        cmd.Parameters.Add(new SqlParameter("@ShiftID", shift.shiftID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
 
     }
 }
