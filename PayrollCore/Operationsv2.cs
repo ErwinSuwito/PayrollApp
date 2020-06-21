@@ -256,11 +256,18 @@ namespace PayrollCore
         {
             if (!string.IsNullOrEmpty(meeting.meetingName) && meeting.meetingDay != int.MinValue && meeting.StartTime != TimeSpan.MinValue)
             {
-                // To-Do: Re-do AddNewMeetingAsync() method to return ID of added 
-                //        meeting then loop through MeetingUserGroups to copy that ID
-                //        to each MeetingUserGroup and add them to database.
-                bool IsSuccess = await da.AddNewMeetingAsync(meeting);
+                int meetingID = await da.AddNewMeetingAsync(meeting);
+                bool IsSuccess = false;
                 
+                foreach (MeetingUserGroup meetingGroup in meetingUserGroups)
+                {
+                    meetingGroup.meetingID = meetingID;
+                    IsSuccess = await da.AddNewMeetingGroupAsync(meetingGroup);
+                    if (IsSuccess == false)
+                    {
+                        return false;
+                    }
+                }
             }
             return false;
         }

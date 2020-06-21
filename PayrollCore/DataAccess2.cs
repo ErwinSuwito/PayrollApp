@@ -1310,11 +1310,11 @@ namespace PayrollCore
         /// </summary>
         /// <param name="meeting"></param>
         /// <returns></returns>
-        public async Task<bool> AddNewMeetingAsync(Meeting meeting)
+        public async Task<int> AddNewMeetingAsync(Meeting meeting)
         {
             lastError = null;
 
-            string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @RateID, @StartTime)";
+            string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @RateID, @StartTime) select SCOPE_IDENTITY()";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1329,9 +1329,9 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
 
-                        await cmd.ExecuteNonQueryAsync();
-
-                        return true;
+                        var _meetingID = cmd.ExecuteScalarAsync();
+                        int.TryParse(_meetingID.ToString(), out int meetingID);
+                        return meetingID;
                     }
                 }
             }
@@ -1339,7 +1339,7 @@ namespace PayrollCore
             {
                 lastError = ex;
                 Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
-                return false;
+                return -1;
             }
         }
 
