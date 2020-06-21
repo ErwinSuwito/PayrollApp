@@ -1546,6 +1546,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> DeleteMeetingGroupAsync(MeetingUserGroup meetingGroup)
         {
+            lastError = null;
+
             string Query = "DELETE FROM Meeting_Group WHERE MeetingID=@MeetingID";
             try
             {
@@ -1571,6 +1573,682 @@ namespace PayrollCore
             }
         }
 
+        public async Task<Activity> GetActivityById(int ActivityID)
+        {
+            string Query = "SELECT * FROM Activity WHERE ActivityID=@ActivityID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ActivityID", ActivityID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+                                
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                return activity;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<Activity> GetLatestActivity(string userID)
+        {
+            string Query = "SELECT * FROM Activity WHERE UserID=@UserID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ActivityID", userID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                return activity;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<Activity> GetLatestActivity(string userID, int locationID)
+        {
+            string Query = "SELECT * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                return activity;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<Activity> GetLatestActivity(string userID, int locationID, bool GetWorkItem)
+        {
+            string Query = "SELECT * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID";
+
+            if (GetWorkItem)
+            {
+                Query += " WHERE StartShift IS NOT NULL";
+            }
+            else
+            {
+                Query += " WHERE MeetingID IS NOT NULL";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                return activity;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<ObservableCollection<Activity>> GetAllActivityAsync()
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Activity";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<Activity> activities = new ObservableCollection<Activity>();
+
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                activities.Add(activity);
+                            }
+
+                            return activities;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<ObservableCollection<Activity>> GetAllActivityAsync(int locationID)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Activity WHERE LocationID=@LocationID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<Activity> activities = new ObservableCollection<Activity>();
+
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                activities.Add(activity);
+                            }
+
+                            return activities;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        public async Task<ObservableCollection<Activity>> GetAllActivityAsync(string userID)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Activity WHERE UserID=@UserID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", userID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<Activity> activities = new ObservableCollection<Activity>();
+
+                            while (dr.Read())
+                            {
+                                Activity activity = new Activity();
+                                activity.ActivityID = dr.GetInt32(0);
+                                activity.userID = dr.GetString(1);
+                                activity.locationID = dr.GetInt32(2);
+                                activity.inTime = dr.GetDateTime(3);
+
+                                if (!dr.IsDBNull(4))
+                                {
+                                    activity.outTime = dr.GetDateTime(4);
+                                }
+
+                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+
+                                if (!dr.IsDBNull(6))
+                                {
+                                    activity.EndShift = new Shift() { shiftID = dr.GetInt32(6) };
+                                }
+
+                                if (!dr.IsDBNull(7))
+                                {
+                                    activity.meeting = new Meeting() { meetingID = dr.GetInt32(7) };
+                                }
+
+                                activity.IsSpecialTask = dr.GetBoolean(8);
+
+                                if (!dr.IsDBNull(9))
+                                {
+                                    activity.ApprovedHours = dr.GetDouble(9);
+                                    activity.ClaimableAmount = (float)dr.GetDouble(10);
+                                    activity.ApplicableRate = new Rate() { rateID = dr.GetInt32(11) };
+                                    activity.ClaimDate = dr.GetDateTime(12);
+                                }
+
+                                activities.Add(activity);
+                            }
+
+                            return activities;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+
+        public async Task<bool> AddNewIncompleteActivityAsync(Activity activity)
+        {
+            lastError = null;
+
+            string Query;
+
+            if (activity.meeting != null)
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, meetingID) VALUES(@UserID, @LocationID, @InTime, @MeetingID)";
+            }
+            else
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, inTime, startShift, endShift, SpecialTask) VALUES(@UserID, @LocationID, @InTime, @StartShift, @EndShift, @SpecialTask)";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
+
+                        if (activity.meeting != null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@SpecialTask", activity.IsSpecialTask));
+                        }
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> AddNewCompleteActivityAsync(Activity activity)
+        {
+            lastError = null;
+
+            string Query;
+
+            if (activity.meeting != null)
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, MeetingID, ApprovedHours, ClaimableHours, ApplicableRate, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @MeetingID, @ApprovedHours, @ClaimableHours, @ApplicableRate, @ClaimDate)";
+            }
+            else
+            {
+                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, StartShift, EndShift, SpecialTask, ApprovedHours, ClaimableHours, ApplicableHours, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @SpecialTask, @ApprovedHours, @ClaimableHours, @ApplicableHours)";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
+                        cmd.Parameters.Add(new SqlParameter("@OutTime", activity.outTime));
+                        cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimableHours", activity.ClaimableAmount));
+                        cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
+
+                        if (activity.meeting != null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@SpecialTask", activity.IsSpecialTask));
+                        }
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> DeleteShiftAsync(Activity activity)
+        {
+            string Query = "DELETE FROM Activity WHERE ActivityID=@ActivityID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ActivityID", activity.ActivityID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> UpdateActivityAsync(Activity activity)
+        {
+            string Query;
+
+            if (activity.meeting != null)
+            {
+                Query = "UPDATE Activity SET UserID=@UserID AND LocationID=@LocationID AND InTime=@InTime AND OutTime=@OutTime AND MeetingID=@MeetingID AND ApprovedHours=@ApprovedHours AND ClaimableHours=@ClaimableHours AND ApplicableRate=@ApplicableRate AND ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+            }
+            else
+            {
+                Query = "UPDATE Activity SET UserID=@UserID AND LocationID=@LocationID AND InTime=@InTime AND OutTime=@OutTime AND StartShift=@StartShift AND EndShift=@EndShift AND SpecialTask=@SpecialTask AND ApprovedHours=@ApprovedHours AND ClaimableHours=@ClaimableHours AND ApplicableRate=@ApplicableRate AND ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
+                        cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
+                        cmd.Parameters.Add(new SqlParameter("@OutTime", activity.outTime));
+                        cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimableHours", activity.ClaimableAmount));
+                        cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
+
+                        if (activity.meeting != null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@MeetingID", activity.meeting.meetingID));
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@StartShift", activity.StartShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@EndShift", activity.EndShift.shiftID));
+                            cmd.Parameters.Add(new SqlParameter("@SpecialTask", activity.IsSpecialTask));
+                        }
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
 
     }
 }
