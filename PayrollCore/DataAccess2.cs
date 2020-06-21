@@ -2250,5 +2250,105 @@ namespace PayrollCore
             }
         }
 
+        public async Task<string> GetGlobalSettingsByKeyAsync(string Key)
+        {
+            string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey=@Key";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@Key", Key));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                return dr.GetString(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<bool> UpdateGlobalSettingsAsync(string Key, string Value)
+        {
+            string Query = "UPDATE Global_Settings SET SettingValue=@Value WHERE SettingKey=@Key";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@Key", Key));
+                        cmd.Parameters.Add(new SqlParameter("@Value", Value));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<string> GetUsernameFromCardId(string cardId)
+        {
+            try
+            {
+                lastError = null;
+
+                string Query = "SELECT Name FROM CardDetail WHERE Badgenumber=@BadgeNumber";
+
+                using (SqlConnection conn = new SqlConnection(CardConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@BadgeNumber", cardId));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            string username = string.Empty;
+                            while (dr.Read())
+                            {
+                                username = dr.GetString(0);
+                            }
+
+                            return username;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                lastError = ex;
+            }
+
+            return null;
+        }
+
     }
 }
