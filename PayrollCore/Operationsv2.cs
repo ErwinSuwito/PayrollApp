@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PayrollCore.Entities;
 
 namespace PayrollCore
 {
-    class Operationsv2
+    public class Operationsv2
     {
         /* Methods needed:
          * Generate sign in, sign out shift/meetings (with time overrides)
@@ -113,6 +114,11 @@ namespace PayrollCore
             return IsSuccess;
         }
 
+        /// <summary>
+        /// Adds a user to the database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task<bool> AddUser(User user)
         {
             if (!string.IsNullOrEmpty(user.userID) && !string.IsNullOrEmpty(user.fullName) && user.userGroup != null)
@@ -231,6 +237,7 @@ namespace PayrollCore
             }
             return false;
         }
+
         /// <summary>
         /// Deletes a shift
         /// </summary>
@@ -516,6 +523,32 @@ namespace PayrollCore
         public float CalcPay(double hours, float rate)
         {
             return (float)hours * rate;
+        }
+
+        public async Task<string> GetUserIdFromCard(string cardId)
+        {
+            string username = await da.GetUsernameFromCardId(cardId);
+            string pattern = @"\D\D\d\d\d\d\d";
+
+            if (username != null)
+            {
+                RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
+
+                if (Regex.IsMatch(username, pattern, options))
+                {
+                    username += "@mail.apu.edu.my";
+                }
+                else
+                {
+                    username += "@cloudmails.apu.edu.my";
+                }
+
+                return username;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

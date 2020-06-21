@@ -58,7 +58,7 @@ namespace PayrollApp.Views
                 string _cardId = cardId;
                 cardId = string.Empty;
 
-                string upn = await SettingsHelper.Instance.da.GetUsernameFromCardId(_cardId);
+                string upn = await SettingsHelper.Instance.op2.GetUserIdFromCard(_cardId);
                 
                 if (string.IsNullOrEmpty(upn))
                 {
@@ -67,8 +67,8 @@ namespace PayrollApp.Views
                     {
                         ContentDialog contentDialog = new ContentDialog
                         {
-                            Title = "Unable to scan your card.",
-                            Content = "There is a problem when scanning your card. Please try again later.",
+                            Title = "Unable to scan your card",
+                            Content = "There's a problem when finding your card. Please try again later. Meanwhile, try if your card works in other systems. If it does, contact Supervisor for help.",
                             PrimaryButtonText = "More info",
                             CloseButtonText = "Ok"
                         };
@@ -81,31 +81,8 @@ namespace PayrollApp.Views
                             contentDialog = new ContentDialog
                             {
                                 Title = "More info",
-                                Content = SettingsHelper.Instance.da.lastError.Message,
+                                Content = "upn: " + upn + "\n" +  SettingsHelper.Instance.op2.da.lastError.Message,
                                 CloseButtonText = "Close"
-                            };
-
-                            await contentDialog.ShowAsync();
-                        }
-                    }
-                    else
-                    {
-                        ContentDialog contentDialog = new ContentDialog
-                        {
-                            Title = "Unable to find your card.",
-                            Content = "We're unable to find your card in the database. Do check your card if its usable elsewhere. If it is, please contact Supervisor for help.",
-                            PrimaryButtonText = "More info",
-                            CloseButtonText = "Ok"
-                        };
-
-                        ContentDialogResult result = await contentDialog.ShowAsync();
-                        if (result == ContentDialogResult.Primary)
-                        {
-                            contentDialog = new ContentDialog
-                            {
-                                Title = "More info",
-                                Content = "upn value = " + upn,
-                                CloseButtonText = "Ok"
                             };
 
                             await contentDialog.ShowAsync();

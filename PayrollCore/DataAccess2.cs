@@ -10,7 +10,7 @@ using PayrollCore.Entities;
 
 namespace PayrollCore
 {
-    class DataAccess2
+    public class DataAccess2
     {
         string DbConnString;
         string CardConnString;

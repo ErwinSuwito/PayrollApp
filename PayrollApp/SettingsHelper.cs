@@ -57,6 +57,7 @@ namespace PayrollApp
         public Location appLocation;
         public DataAccess da;
         public Operations op;
+        public Operationsv2 op2;
         public string MinHours;
         public UserGroup defaultStudentGroup;
         public UserGroup defaultOtherGroup;
