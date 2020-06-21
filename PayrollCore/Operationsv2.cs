@@ -18,7 +18,7 @@ namespace PayrollCore
          */
 
         public DataAccess2 da = new DataAccess2();
-        public Operationsv2(string DbConnString, string CardConnString)
+        public void StoreConnString(string DbConnString, string CardConnString)
         {
             da.StoreConnStrings(DbConnString, CardConnString);
         }

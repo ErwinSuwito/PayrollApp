@@ -27,14 +27,14 @@ namespace PayrollCore
         /// </summary>
         /// <param name="connString"></param>
         /// <returns></returns>
-        public bool TestConnString(string connString)
+        public async Task<bool> TestConnString(string connString)
         {
             lastError = null;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connString))
                 {
-                    conn.Open();
+                    await conn.OpenAsync();
                     return true;
                 }
             }

@@ -113,6 +113,78 @@ namespace PayrollApp
             instance = new SettingsHelper();
         }
 
+        public async void Initialize()
+        {
+            InitState = InitStates.InProgress;
+            try
+            {
+                // Initializes required objects and load settings
+                op2 = new Operationsv2();
+                LoadRoamingSettings();
+                Windows.Storage.ApplicationData.Current.DataChanged += RoamingDataChanged;
+
+                // Checks if DbConnString, CardConnString, Shiftless and selectedLocation is stored app settings store
+                if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null 
+                    && localSettings.Values["Shiftless"] != null && localSettings.Values["selectedLocation"] != null)
+                {
+                    // Retrieves connection strings and tests them
+                    DbConnectionString = localSettings.Values["DbConnString"].ToString();
+                    CardConnString = localSettings.Values["CardConnString"].ToString();
+                    bool DbTest = await op2.da.TestConnString(DbConnectionString);
+                    bool CardTest = await op2.da.TestConnString(CardConnString);
+
+                    if (DbTest == true & CardTest == true)
+                    {
+                        // Loads connection strings to DataAccess
+                        op2.StoreConnString(DbConnectionString, CardConnString);
+
+                        // Retrieves app location settings and get info from database
+                        int.TryParse(localSettings.Values["selectedLocation"].ToString(), out int selectedLocation);
+                        appLocation = await op2.da.GetLocationByIdAsync(selectedLocation);
+                        
+                        if (appLocation != null && appLocation.isDisabled != true)
+                        {
+                            // Retrieves global settings from database
+                            MinHours = await op2.da.GetGlobalSettingsByKeyAsync("MinHours");
+                            int.TryParse(await op2.da.GetGlobalSettingsByKeyAsync("DefaultTraineeGroup"), out int studentGroupId);
+                            int.TryParse(await op2.da.GetGlobalSettingsByKeyAsync("DefaultGroup"), out int defaultGroupId);
+                            
+                            if (studentGroupId != int.MinValue && defaultGroupId != int.MinValue)
+                            {
+                                defaultStudentGroup = await op2.da.GetUserGroupByIdAsync(studentGroupId);
+                                defaultOtherGroup = await op2.da.GetUserGroupByIdAsync(defaultGroupId);
+                                
+                                if (defaultStudentGroup != null && defaultOtherGroup != null)
+                                {
+                                    InitState = InitStates.Success;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                InitState = InitStates.Failed;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            InitState = InitStates.Completed;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        InitState = InitStates.Failed;
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InitState = InitStates.Failed;
+            }
+        }
+
         public async void Initializev2()
         {
             InitState = InitStates.InProgress;
@@ -534,11 +606,6 @@ namespace PayrollApp
 
         public async Task<bool> UpdateUserState(User user)
         {
-            //userState = new UserState();
-            //userState.user = user;
-            //userState.LatestActivity = await da.GetLatestActivityByUserId(user.userID, appLocation.locationID);
-            //Instance.userState.ApprovedHours = await da.GetApprovedHours(user.userID);
-
             userState = await op.GetUserState(user, appLocation.locationID);
 
             if (userState.LatestActivity != null)
