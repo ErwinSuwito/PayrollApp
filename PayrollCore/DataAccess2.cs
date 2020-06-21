@@ -46,6 +46,7 @@ namespace PayrollCore
             }
         }
 
+        #region Rate
         /// <summary>
         /// Gets the requested Rate
         /// </summary>
@@ -149,6 +150,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddRateAsync(Rate rate)
         {
+            lastError = null;
+
             string Query = "INSERT INTO rate(rateDesc, rate) VALUES(@RateDesc, @Rate)";
             try
             {
@@ -213,7 +216,9 @@ namespace PayrollCore
         /// <param name="rate">The rate to be updated</param>
         /// <returns></returns>
         public async Task<bool> UpdateRateAsync(Rate rate)
-        {
+        { 
+            lastError = null;
+
             string Query = "UPDATE Rate SET RateDesc=@RateDesc AND Rate=@Rate AND IsDisabled=@IsDisabled WHERE RateID=@RateID";
             try
             {
@@ -241,7 +246,9 @@ namespace PayrollCore
                 return false;
             }
         }
+        #endregion
 
+        #region User Group
         /// <summary>
         /// Gets the requested user group
         /// </summary>
@@ -346,6 +353,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewUserGroupAsync(UserGroup userGroup)
         {
+            lastError = null;
+
             string Query = "INSERT INTO user_group(GroupName, RateID, ShowAdminSettings, EnableFaceRect) VALUES(@GroupID, @GroupName, @RateID, @ShowAdminSettings, @EnableFaceRec)";
             try
             {
@@ -413,6 +422,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateUserGroupAsync(UserGroup userGroup)
         {
+            lastError = null;
+
             string Query = "UPDATE user_group SET GroupName=@GroupName AND RateID=@RateID AND ShowAdminSettings=@ShowAdminSettings AND EnableFaceRec=@EnableFaceRec AND IsDisabled=@IsDisabled WHERE GroupID=@GroupID";
             try
             {
@@ -441,6 +452,10 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        #endregion
+
+        #region User
 
         /// <summary>
         /// Gets the requested user
@@ -546,6 +561,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewUserAsync(User user)
         {
+            lastError = null;
+
             string Query = "INSERT INTO Users(UserID, FullName, FromAD, IsDisabled, GroupID) VALUES(@UserID, @FullName, @FromAD, @IsDisabled, @GroupID)";
             try
             {
@@ -613,6 +630,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateUserAsync(User user)
         {
+            lastError = null;
+
             string Query = "UPDATE Users SET FullName=@FullName AND FromAD=@FromAD AND IsDisabled=@IsDisabled AND GroupID=@GroupID WHERE UserID=@UserID";
             try
             {
@@ -641,6 +660,10 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        #endregion
+
+        #region Location
 
         /// <summary>
         /// Gets the requested by its ID
@@ -746,6 +769,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewLocationAsync(Location location)
         {
+            lastError = null;
+
             string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, @IsDisabled)";
             try
             {
@@ -812,6 +837,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateLocationAsync(Location location)
         {
+            lastError = null;
+
             string Query = "UPDATE Location SET LocationName=@LocationName AND EnableGM=@EnableGM AND IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
             try
             {
@@ -839,6 +866,10 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        #endregion
+
+        #region Shfit
 
         /// <summary>
         /// Get the requested shift
@@ -1008,6 +1039,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewShiftAsync(Shift shift)
         {
+            lastError = null;
+
             string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly)";
             try
             {
@@ -1077,6 +1110,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateShiftAsync(Shift shift)
         {
+            lastError = null;
+
             string Query = "UPDATE Shifts SET ShiftName=@ShiftName AND StartTime=@StartTime AND EndTime=@EndTIme AND LocationID=@LocationID AND RateID=@RateID AND WeekendOnly=@WeekendOnly AND IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
             try
             {
@@ -1108,6 +1143,10 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        #endregion
+
+        #region Meeting
 
         /// <summary>
         /// Gets the requested meeting
@@ -1273,6 +1312,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewMeetingAsync(Meeting meeting)
         {
+            lastError = null;
+
             string Query = "INSERT INTO Meeting(MeetingName, LocationID, MeetingDay, RateID, StartTime) VALUES(@MeetingName, @LocationID, @MeetingDay, @RateID, @StartTime)";
             try
             {
@@ -1341,6 +1382,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateMeetingAsync(Meeting meeting)
         {
+            lastError = null;
+
             string Query = "UPDATE Meeting SET MeetingName=@MeetingName AND LocationID=@LocationID AND MeetingDay=@MeetingDay AND IsDisabled=@IsDisabled AND RateID=@RateID AND StartTime=@StartTime WHERE MeetingID=@MeetingID";
             try
             {
@@ -1371,6 +1414,10 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        #endregion
+
+        #region MeetingGroup
 
         /// <summary>
         /// Gets the requested MeetingUserGroup
@@ -1513,6 +1560,8 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> AddNewMeetingGroupAsync(MeetingUserGroup meetingGroup)
         {
+            lastError = null;
+
             string Query = "INSERT INTO Meeting_Group(MeetingID, UserGroupID) VALUES(@MeetingID, @UserGroupID)";
             try
             {
@@ -1573,6 +1622,15 @@ namespace PayrollCore
             }
         }
 
+        #endregion
+
+        #region Activity
+
+        /// <summary>
+        /// Gets the requested activity
+        /// </summary>
+        /// <param name="ActivityID"></param>
+        /// <returns></returns>
         public async Task<Activity> GetActivityById(int ActivityID)
         {
             string Query = "SELECT * FROM Activity WHERE ActivityID=@ActivityID";
@@ -1639,9 +1697,14 @@ namespace PayrollCore
             return null;
         }
 
+        /// <summary>
+        /// Gets the latest activity by a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public async Task<Activity> GetLatestActivity(string userID)
         {
-            string Query = "SELECT * FROM Activity WHERE UserID=@UserID";
+            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID SORT BY Activity DESC";
 
             try
             {
@@ -1705,9 +1768,15 @@ namespace PayrollCore
             return null;
         }
 
+        /// <summary>
+        /// Gets the latest activity by a user in a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
         public async Task<Activity> GetLatestActivity(string userID, int locationID)
         {
-            string Query = "SELECT * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID";
+            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID SORT BY ActivityID DESC";
 
             try
             {
@@ -1772,6 +1841,13 @@ namespace PayrollCore
             return null;
         }
 
+        /// <summary>
+        /// Gets the latest work or meeting activity of a user in a location
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="locationID"></param>
+        /// <param name="GetWorkItem"></param>
+        /// <returns></returns>
         public async Task<Activity> GetLatestActivity(string userID, int locationID, bool GetWorkItem)
         {
             string Query = "SELECT * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID";
@@ -1848,6 +1924,10 @@ namespace PayrollCore
             return null;
         }
 
+        /// <summary>
+        /// Gets all activity
+        /// </summary>
+        /// <returns></returns>
         public async Task<ObservableCollection<Activity>> GetAllActivityAsync()
         {
             lastError = null;
@@ -1916,6 +1996,11 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Gets all activity in a location
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
         public async Task<ObservableCollection<Activity>> GetAllActivityAsync(int locationID)
         {
             lastError = null;
@@ -1986,6 +2071,11 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Gets all activity by a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public async Task<ObservableCollection<Activity>> GetAllActivityAsync(string userID)
         {
             lastError = null;
@@ -2056,7 +2146,11 @@ namespace PayrollCore
             }
         }
 
-
+        /// <summary>
+        /// Adds an incomplete activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewIncompleteActivityAsync(Activity activity)
         {
             lastError = null;
@@ -2109,6 +2203,11 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Adds a complete activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewCompleteActivityAsync(Activity activity)
         {
             lastError = null;
@@ -2166,8 +2265,12 @@ namespace PayrollCore
             }
         }
 
-
-        public async Task<bool> DeleteShiftAsync(Activity activity)
+        /// <summary>
+        /// Deletes the specified activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteActivityAsync(Activity activity)
         {
             string Query = "DELETE FROM Activity WHERE ActivityID=@ActivityID";
             try
@@ -2194,9 +2297,14 @@ namespace PayrollCore
             }
         }
 
-
+        /// <summary>
+        /// Updates the specified activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateActivityAsync(Activity activity)
         {
+            lastError = null;
             string Query;
 
             if (activity.meeting != null)
@@ -2250,6 +2358,15 @@ namespace PayrollCore
             }
         }
 
+        #endregion
+
+        #region Global Settings
+
+        /// <summary>
+        /// Gets the value of a global settings
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public async Task<string> GetGlobalSettingsByKeyAsync(string Key)
         {
             string Query = "SELECT SettingValue FROM Global_Settings WHERE SettingKey=@Key";
@@ -2283,8 +2400,16 @@ namespace PayrollCore
             return null;
         }
 
+        /// <summary>
+        /// Updates the value of a global settings
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateGlobalSettingsAsync(string Key, string Value)
         {
+            lastError = null;
+
             string Query = "UPDATE Global_Settings SET SettingValue=@Value WHERE SettingKey=@Key";
 
             try
@@ -2312,7 +2437,13 @@ namespace PayrollCore
             }
         }
 
+        #endregion
 
+        /// <summary>
+        /// Gets the owner of a card
+        /// </summary>
+        /// <param name="cardId"></param>
+        /// <returns></returns>
         public async Task<string> GetUsernameFromCardId(string cardId)
         {
             try
