@@ -22,6 +22,11 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
+        /// <summary>
+        /// Adds a new rate
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewRate(Rate rate)
         {
             if ((!float.IsNaN(rate.rate) || rate.rate != float.MinValue) && !string.IsNullOrEmpty(rate.rateDesc))
@@ -33,6 +38,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Updates the specified rate
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateRateAsync(Rate rate)
         {
             if ((float.IsNaN(rate.rate) || rate.rate != float.MinValue) && !string.IsNullOrEmpty(rate.rateDesc))
@@ -43,6 +53,12 @@ namespace PayrollCore
 
             return false;
         }
+
+        /// <summary>
+        /// Delete the specified rate
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteRateAsync(Rate rate)
         {
             if (rate.rateID != int.MinValue)
@@ -54,6 +70,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Add new user group
+        /// </summary>
+        /// <param name="userGroup"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewUserGroup(UserGroup userGroup)
         {
             if (!string.IsNullOrEmpty(userGroup.groupName) && userGroup.DefaultRate != null)
@@ -65,6 +86,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Updates user group
+        /// </summary>
+        /// <param name="userGroup"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateUserGroup(UserGroup userGroup)
         {
             if (!string.IsNullOrEmpty(userGroup.groupName) && userGroup.DefaultRate != null)
@@ -76,12 +102,32 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Delete user group
+        /// </summary>
+        /// <param name="userGroup"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteUserGroup(UserGroup userGroup)
         {
             bool IsSuccess = await da.DeleteUserGroupAsync(userGroup);
             return IsSuccess;
         }
 
+        private async Task<bool> AddUser(User user)
+        {
+            if (!string.IsNullOrEmpty(user.userID) && !string.IsNullOrEmpty(user.fullName) && user.userGroup != null)
+            {
+                bool IsSuccess = await da.AddNewUserAsync(user);
+                return IsSuccess;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Updates a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateUser(User user)
         {
             if (!string.IsNullOrEmpty(user.userID) && !string.IsNullOrEmpty(user.fullName))
@@ -92,6 +138,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Deletes a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteUser(User user)
         {
             if (!string.IsNullOrEmpty(user.userID))
@@ -102,6 +153,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Adds a new location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewLocation(Location location)
         { 
             if (!string.IsNullOrEmpty(location.locationName))
@@ -112,6 +168,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Updates a location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateLocation(Location location)
         {
             if (!string.IsNullOrEmpty(location.locationName) && location.locationID != int.MinValue)
@@ -122,6 +183,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Deletes a location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteLocation(Location location)
         {
             if (location.locationID != int.MinValue)
@@ -132,6 +198,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Adds a new shift
+        /// </summary>
+        /// <param name="shift"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewShift(Shift shift)
         {
             if (!string.IsNullOrEmpty(shift.shiftName) && shift.startTime != TimeSpan.MinValue 
@@ -144,6 +215,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Updates shift info
+        /// </summary>
+        /// <param name="shift"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateShift(Shift shift)
         {
             if (!string.IsNullOrEmpty(shift.shiftName) && shift.startTime != TimeSpan.MinValue
@@ -155,7 +231,11 @@ namespace PayrollCore
             }
             return false;
         }
-
+        /// <summary>
+        /// Deletes a shift
+        /// </summary>
+        /// <param name="shift"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteShift(Shift shift)
         {
             if (shift.shiftID != int.MinValue)
@@ -166,6 +246,12 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Adds a new meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <param name="meetingUserGroups"></param>
+        /// <returns></returns>
         public async Task<bool> AddNewMeeting(Meeting meeting, List<MeetingUserGroup> meetingUserGroups)
         {
             if (!string.IsNullOrEmpty(meeting.meetingName) && meeting.meetingDay != int.MinValue && meeting.StartTime != TimeSpan.MinValue)
@@ -179,6 +265,12 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Updates the specified meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <param name="meetingUserGroups"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateMeeting(Meeting meeting, List<MeetingUserGroup> meetingUserGroups)
         {
             if (meeting.meetingID != int.MinValue && string.IsNullOrEmpty(meeting.meetingName) && meeting.meetingDay != int.MinValue && meeting.StartTime != TimeSpan.MinValue)
@@ -204,6 +296,11 @@ namespace PayrollCore
             return false;
         }
 
+        /// <summary>
+        /// Deletes the specified meeting
+        /// </summary>
+        /// <param name="meeting"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteMeeting(Meeting meeting)
         {
             if (meeting.meetingID != int.MinValue)
@@ -284,6 +381,13 @@ namespace PayrollCore
             return activity;
         }
 
+        /// <summary>
+        /// Takes an activity object and calculates approved work hours, applicable rate and claimable amount (Shift/Special Task/Shiftless)
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="user"></param>
+        /// <param name="OverrideTime"></param>
+        /// <returns></returns>
         public Activity CompleteWorkActivity(Activity activity, User user, bool OverrideTime)
         {
             if (OverrideTime == false)
@@ -343,6 +447,13 @@ namespace PayrollCore
             return activity;
         }
 
+        /// <summary>
+        /// Takes an activity object and calculates approved work hours, applicable rate and claimable amount (Meetings)
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="user"></param>
+        /// <param name="OverrideTime"></param>
+        /// <returns></returns>
         public Activity CompleteMeetingActivity(Activity activity, User user, bool OverrideTime)
         {
             if (OverrideTime == false)
@@ -389,6 +500,12 @@ namespace PayrollCore
             return activity;
         }
 
+        /// <summary>
+        /// Calculates the claimable amount
+        /// </summary>
+        /// <param name="hours"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
         public float CalcPay(double hours, float rate)
         {
             return (float)hours * rate;

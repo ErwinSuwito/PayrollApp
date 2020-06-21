@@ -69,11 +69,13 @@
 
                 <StackPanel Orientation="Horizontal">
                     <ComboBox x:Name="daySelector" Header="Meeting day" Margin="0,8,0,0">
+                        <x:String>Sunday</x:String>
                         <x:String>Monday</x:String>
                         <x:String>Tuesday</x:String>
                         <x:String>Wednesday</x:String>
                         <x:String>Thursday</x:String>
                         <x:String>Friday</x:String>
+                        <x:String>Saturday</x:String>
                     </ComboBox>
 
                     <TimePicker x:Name="startTimePicker" Header="Start Time" Margin="20,8,0,0" />
