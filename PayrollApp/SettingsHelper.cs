@@ -178,6 +178,10 @@ namespace PayrollApp
                         return;
                     }
                 }
+                else
+                {
+                    InitState = InitStates.Failed;
+                }
             }
             catch (Exception ex)
             {

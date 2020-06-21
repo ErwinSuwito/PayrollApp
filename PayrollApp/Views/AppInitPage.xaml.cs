@@ -33,7 +33,7 @@ namespace PayrollApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            loadTimer.Interval = new TimeSpan(0, 0, 2);
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
             loadTimer.Tick += LoadTimer_Tick;
             base.OnNavigatedTo(e);
         }
@@ -42,9 +42,11 @@ namespace PayrollApp.Views
         {
             loadTimer.Stop();
             
-            while (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InProgress)
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InProgress)
             {
-                
+                loadTimer.Interval = new TimeSpan(0, 0, 5);
+                loadTimer.Start();
+                return;
             }
 
             if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.Success)
