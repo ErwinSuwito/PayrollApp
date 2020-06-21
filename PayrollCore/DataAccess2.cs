@@ -16,18 +16,6 @@ namespace PayrollCore
         string CardConnString;
         public Exception lastError;
 
-        /* Tables to do:
-         * Rate (GET ALL, GET ID, INSERT, UPDATE, DELETE)           
-         * user_group (GET ID, GET ALL, INSERT, UPDATE, DELETE)
-         * Users (GET ID, GET ALL, INSERT, UPDATE, DELETE)
-         * Location (GET ID, GET ALL, INSERT, UPDATE, DELETE)
-         * Meeting (GET ID, LOCATION ALL, GET LOCATION ENABLED, 
-         *          GET LOCATION DAY USERGROUP, INSERT, UPDATE, DELETE)
-         * Meeting_Group (GET ALL MEETING ID, INSERT, UPDATE, DELETE)
-         * Activity (GET ID, GET ALL, INSERT, INSERT ALL, UPDATE, DELETE)
-         * Global_Settings (GET ID, UPDATE)
-         */
-
         public void StoreConnStrings(string dbConnString, string cardConnString)
         {
             DbConnString = dbConnString;
@@ -1383,6 +1371,206 @@ namespace PayrollCore
                 return false;
             }
         }
+
+        /// <summary>
+        /// Gets the requested MeetingUserGroup
+        /// </summary>
+        /// <param name="GroupID"></param>
+        /// <returns></returns>
+        public async Task<MeetingUserGroup> GetMeetingGroupById(int GroupID)
+        {
+            string Query = "SELECT * FROM Meeting_Group WHERE meeting_group_id=@GroupID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@GroupID", GroupID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            while (dr.Read())
+                            {
+                                MeetingUserGroup meetingGroup = new MeetingUserGroup();
+                                meetingGroup.meeting_group_id = dr.GetInt32(0);
+                                meetingGroup.meetingID = dr.GetInt32(1);
+                                meetingGroup.usrGroupId = dr.GetInt32(2);
+
+                                return meetingGroup;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all MeetingUserGroup
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ObservableCollection<MeetingUserGroup>> GetAllMeetingGroupAsync()
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Meeting_Group";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<MeetingUserGroup> meetingGroups = new ObservableCollection<MeetingUserGroup>();
+
+                            while (dr.Read())
+                            {
+                                MeetingUserGroup meetingGroup = new MeetingUserGroup();
+                                meetingGroup.meeting_group_id = dr.GetInt32(0);
+                                meetingGroup.meetingID = dr.GetInt32(1);
+                                meetingGroup.usrGroupId = dr.GetInt32(2);
+
+                                meetingGroups.Add(meetingGroup);
+                            }
+
+                            return meetingGroups;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets all MeetingUserGroup of a meeting
+        /// </summary>
+        /// <param name="meetingID"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<MeetingUserGroup>> GetAllMeetingGroupAsync(int meetingID)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Meeting_Group WHERE MeetingID=@MeetingID";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meetingID));
+
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            ObservableCollection<MeetingUserGroup> meetingGroups = new ObservableCollection<MeetingUserGroup>();
+
+                            while (dr.Read())
+                            {
+                                MeetingUserGroup meetingGroup = new MeetingUserGroup();
+                                meetingGroup.meeting_group_id = dr.GetInt32(0);
+                                meetingGroup.meetingID = dr.GetInt32(1);
+                                meetingGroup.usrGroupId = dr.GetInt32(2);
+
+                                meetingGroups.Add(meetingGroup);
+                            }
+
+                            return meetingGroups;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds a new MeetingUserGroup
+        /// </summary>
+        /// <param name="meetingGroup"></param>
+        /// <returns></returns>
+        public async Task<bool> AddNewMeetingGroupAsync(MeetingUserGroup meetingGroup)
+        {
+            string Query = "INSERT INTO Meeting_Group(MeetingID, UserGroupID) VALUES(@MeetingID, @UserGroupID)";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meetingGroup.meetingID));
+                        cmd.Parameters.Add(new SqlParameter("@UserGroupID", meetingGroup.usrGroupId));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Deletes all MeetingUserGroup that belongs to a meeting
+        /// </summary>
+        /// <param name="meetingGroup"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteMeetingGroupAsync(MeetingUserGroup meetingGroup)
+        {
+            string Query = "DELETE FROM Meeting_Group WHERE MeetingID=@MeetingID";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meetingGroup.meetingID));
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return false;
+            }
+        }
+
 
     }
 }
