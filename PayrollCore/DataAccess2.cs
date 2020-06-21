@@ -1593,7 +1593,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="meetingGroup"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteMeetingGroupAsync(MeetingUserGroup meetingGroup)
+        public async Task<bool> DeleteMeetingGroupAsync(int meetingID)
         {
             lastError = null;
 
@@ -1606,7 +1606,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meetingGroup.meetingID));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingID", meetingID));
 
                         await cmd.ExecuteNonQueryAsync();
 
