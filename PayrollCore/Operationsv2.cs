@@ -382,6 +382,45 @@ namespace PayrollCore
         }
 
         /// <summary>
+        /// Gets shifts available to be signed in
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="WeekendOnly"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Shift>> GetShifts(int locationID, bool WeekendOnly)
+        {
+            ObservableCollection<Shift> _shifts = await GetShifts(false, locationID, true);
+            ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
+            foreach (Shift shift in _shifts)
+            {
+                if (shift.WeekendOnly == WeekendOnly)
+                {
+                    shifts.Add(shift);
+                }
+            }
+
+            return shifts;
+        }
+
+
+        public async Task<Shift> GetSpecialTaskShift(int locationID)
+        {
+            Shift shift = new Shift();
+            ObservableCollection<Shift> shifts = await GetShifts(true, locationID, true);
+
+            foreach (Shift _shift in shifts)
+            {
+                if (_shift.shiftName == "Special Task" && _shift.isDisabled == true)
+                {
+                    shift = _shift;
+                }
+            }
+
+            return shift;
+        }
+
+
+        /// <summary>
         /// Adds a new shift
         /// </summary>
         /// <param name="shift"></param>
@@ -1020,7 +1059,7 @@ namespace PayrollCore
 
         public async Task<ObservableCollection<Meeting>> FindMeetings(int usrGroup, int locationID)
         {
-            ObservableCollection<MeetingUserGroup> meetingUserGroups = await da.GetAllMeetingGroupAsync()
+            ObservableCollection<MeetingUserGroup> meetingUserGroups = await da.GetAllMeetingGroupAsync();
         }
     }
 }

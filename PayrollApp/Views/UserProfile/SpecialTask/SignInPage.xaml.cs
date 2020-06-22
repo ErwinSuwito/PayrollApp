@@ -49,13 +49,13 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
         {
             loadTimer.Stop();
 
-            Shift specialTaskShift = await SettingsHelper.Instance.da.GetSpecialTaskShift(SettingsHelper.Instance.appLocation.locationID);
-            var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, specialTaskShift, specialTaskShift);
-            newActivity.IsSpecialTask = true;
+            Shift specialTaskShift = await SettingsHelper.Instance.op2.GetSpecialTaskShift(SettingsHelper.Instance.appLocation.locationID);
+            var activity = SettingsHelper.Instance.op2.GenerateWorkActivity(SettingsHelper.Instance.userState.user.userID, specialTaskShift, specialTaskShift);
+            activity.IsSpecialTask = true;
 
-            if (newActivity != null)
+            if (activity != null)
             {
-                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
+                bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);
 
                 if (IsSuccess == true)
                 {

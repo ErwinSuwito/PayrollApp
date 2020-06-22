@@ -51,9 +51,10 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user, false);
+                Activity activity = SettingsHelper.Instance.op2.CompleteWorkActivity(SettingsHelper.Instance.userState.LatestActivity,
+                    SettingsHelper.Instance.userState.user, false);
 
-                bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
+                bool IsSuccess = await SettingsHelper.Instance.op2.UpdateActivity(activity);
                 if (IsSuccess)
                 {
                     pageContent.Visibility = Visibility.Visible;
