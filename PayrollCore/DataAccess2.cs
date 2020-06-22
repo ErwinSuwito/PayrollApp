@@ -876,7 +876,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="ShiftID"></param>
         /// <returns></returns>
-        public async Task<Shift> GetShiftById(int ShiftID)
+        public async Task<Shift> GetShiftByIdAsync(int ShiftID)
         {
             string Query = "SELECT * FROM Shifts WHERE ShiftID=@ShiftID";
 

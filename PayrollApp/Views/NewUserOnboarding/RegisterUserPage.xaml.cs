@@ -77,7 +77,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
             if (upn != null)
             {
-                user = await SettingsHelper.Instance.da.GetUserFromDbById(upn);
+                user = await SettingsHelper.Instance.op2.da.GetUserByIdAsync(upn);
                 if (user != null)
                 {
                     pageTitle.Text = user.fullName;
@@ -90,7 +90,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                         user.isDisabled = !IsEnabledInAd;
 
                         Debug.WriteLine(user.isDisabled.ToString());
-                        await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                        await SettingsHelper.Instance.op2.UpdateUser(user);
                     }
 
                     progText.Text = "Logging you in...";
@@ -143,7 +143,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                     if (newUser != null)
                     {
                         newUser.IsNewUser = true;
-                        bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(newUser);
+                        bool IsSuccess = await SettingsHelper.Instance.op2.User(newUser);
 
                         if (IsSuccess)
                         {

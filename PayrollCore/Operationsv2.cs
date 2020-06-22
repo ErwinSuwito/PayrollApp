@@ -17,10 +17,45 @@ namespace PayrollCore
          * Get latest sign in activity (shift/special task and meeting)
          */
 
-        public DataAccess2 da = new DataAccess2();
+        private DataAccess2 da = new DataAccess2();
+
+        /// <summary>
+        /// Copies passed connection strings to DataAccess
+        /// </summary>
+        /// <param name="DbConnString"></param>
+        /// <param name="CardConnString"></param>
         public void StoreConnString(string DbConnString, string CardConnString)
         {
             da.StoreConnStrings(DbConnString, CardConnString);
+        }
+
+        /// <summary>
+        /// Gets the last exception in DataAccess
+        /// </summary>
+        /// <returns></returns>
+        public Exception GetLastError()
+        {
+            return da.lastError;
+        }
+
+        /// <summary>
+        /// Gets the requested Rate
+        /// </summary>
+        /// <param name="RateID"></param>
+        /// <returns></returns>
+        public async Task<Rate> GetRateById(int RateID)
+        {
+            return await da.GetRateById(RateID);
+        }
+
+        /// <summary>
+        /// Get all rates on the database and returns it in an ObservableCollection
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Rate>> GetAllRates(bool GetDisabled)
+        {
+            return await da.GetAllRatesAsync(GetDisabled);
         }
 
         /// <summary>
@@ -72,6 +107,39 @@ namespace PayrollCore
         }
 
         /// <summary>
+        /// Gets the requested user group
+        /// </summary>
+        /// <param name="GroupID"></param>
+        /// <returns></returns>
+        public async Task<UserGroup> GetUserGroupById(int GroupID)
+        {
+            UserGroup userGroup = await da.GetUserGroupByIdAsync(GroupID);
+            userGroup.DefaultRate = await da.GetRateById(userGroup.DefaultRate.rateID);
+            return userGroup;
+        }
+
+        /// <summary>
+        /// Gets all user groups and returns in an ObservableCollection
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="GetCompleteData">True to get default rate data instead of its ID only</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<UserGroup>> GetUserGroups(bool GetDisabled, bool GetCompleteData)
+        {
+            ObservableCollection<UserGroup> userGroups =  await da.GetAllUserGroupsAsync(GetDisabled);
+            
+            if (GetCompleteData)
+            {
+                foreach (UserGroup group in userGroups)
+                {
+                    group.DefaultRate = await da.GetRateById(group.DefaultRate.rateID);
+                }
+            }
+
+            return userGroups;
+        }
+
+        /// <summary>
         /// Add new user group
         /// </summary>
         /// <param name="userGroup"></param>
@@ -112,6 +180,41 @@ namespace PayrollCore
         {
             bool IsSuccess = await da.DeleteUserGroupAsync(userGroup);
             return IsSuccess;
+        }
+
+        /// <summary>
+        /// Gets the requested user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<User> GetUserById(string userID)
+        {
+            User user = await da.GetUserByIdAsync(userID);
+            user.userGroup = await da.GetUserGroupByIdAsync(user.userGroup.groupID);
+            user.userGroup.DefaultRate = await da.GetRateById(user.userGroup.DefaultRate.rateID);
+
+            return user;
+        }
+
+        /// <summary>
+        /// Gets all users in the database
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="CompleteData">True to get user's usergroup and default rate data</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<User>> GetAllUsers(bool GetDisabled, bool CompleteData)
+        {
+            ObservableCollection<User> users = await da.GetAllUsersAsync(GetDisabled);
+            if (CompleteData)
+            {
+                foreach (User user in users)
+                {
+                    user.userGroup = await da.GetUserGroupByIdAsync(user.userGroup.groupID);
+                    user.userGroup.DefaultRate = await da.GetRateById(user.userGroup.DefaultRate.rateID);
+                }
+            }
+
+            return users;
         }
 
         /// <summary>
@@ -160,6 +263,26 @@ namespace PayrollCore
         }
 
         /// <summary>
+        /// Gets the requested by its ID
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public async Task<Location> GetLocationById(int locationID)
+        {
+            return await da.GetLocationByIdAsync(locationID);
+        }
+
+        /// <summary>
+        /// Gets all location on the database
+        /// </summary>
+        /// <param name="GetDisabled">True to also get disabled locations</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Location>> GetLocations(bool GetDisabled)
+        {
+            return await da.GetAllLocationAsync(GetDisabled);
+        }
+
+        /// <summary>
         /// Adds a new location
         /// </summary>
         /// <param name="location"></param>
@@ -202,6 +325,60 @@ namespace PayrollCore
                 return IsSuccess;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets the requested shift
+        /// </summary>
+        /// <param name="ShiftID"></param>
+        /// <returns></returns>
+        public async Task<Shift> GetShiftById(int ShiftID)
+        {
+            Shift shift = await da.GetShiftByIdAsync(ShiftID);
+            shift.DefaultRate = await da.GetRateById(shift.DefaultRate.rateID);
+
+            return shift;
+        }
+
+        /// <summary>
+        /// Get all shifts
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="CompleteData">True to get shift's default rate data</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Shift>> GetShifts(bool GetDisabled, bool CompleteData)
+        {
+            ObservableCollection<Shift> shifts = await da.GetAllShiftsAsync(GetDisabled);
+            if (CompleteData)
+            {
+                foreach (Shift shift in shifts)
+                {
+                    shift.DefaultRate = await da.GetRateById(shift.DefaultRate.rateID);
+                }
+            }
+
+            return shifts;
+        }
+
+        /// <summary>
+        /// Gets all shift in a location
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="locationID"></param>
+        /// <param name="CompleteData">True to get shift's default rate data</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Shift>> GetShifts(bool GetDisabled, int locationID, bool CompleteData)
+        {
+            ObservableCollection<Shift> shifts = await da.GetAllShiftsAsync(GetDisabled, locationID);
+            if (CompleteData)
+            {
+                foreach (Shift shift in shifts)
+                {
+                    shift.DefaultRate = await da.GetRateById(shift.DefaultRate.rateID);
+                }
+            }
+
+            return shifts;
         }
 
         /// <summary>
@@ -251,6 +428,15 @@ namespace PayrollCore
                 return IsSuccess;
             }
             return false;
+        }
+
+
+        public async Task<Meeting> GetMeetingById(int MeetingID)
+        {
+            Meeting meeting = await da.GetMeetingByIdAsync(MeetingID);
+            meeting.rate = await da.GetRateById(meeting.rate.rateID);
+
+            return meeting;
         }
 
         /// <summary>
@@ -525,6 +711,11 @@ namespace PayrollCore
             return (float)hours * rate;
         }
 
+        /// <summary>
+        /// Gets the owner of the card
+        /// </summary>
+        /// <param name="cardId"></param>
+        /// <returns></returns>
         public async Task<string> GetUserIdFromCard(string cardId)
         {
             string username = await da.GetUsernameFromCardId(cardId);
