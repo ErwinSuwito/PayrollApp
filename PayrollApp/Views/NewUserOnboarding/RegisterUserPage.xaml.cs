@@ -77,7 +77,7 @@ namespace PayrollApp.Views.NewUserOnboarding
 
             if (upn != null)
             {
-                user = await SettingsHelper.Instance.op2.da.GetUserByIdAsync(upn);
+                user = await SettingsHelper.Instance.op2.GetUserById(upn);
                 if (user != null)
                 {
                     pageTitle.Text = user.fullName;
@@ -143,7 +143,7 @@ namespace PayrollApp.Views.NewUserOnboarding
                     if (newUser != null)
                     {
                         newUser.IsNewUser = true;
-                        bool IsSuccess = await SettingsHelper.Instance.op2.User(newUser);
+                        bool IsSuccess = await SettingsHelper.Instance.op2.AddUser(newUser);
 
                         if (IsSuccess)
                         {

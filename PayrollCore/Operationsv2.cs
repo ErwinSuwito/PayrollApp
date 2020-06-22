@@ -222,7 +222,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        private async Task<bool> AddUser(User user)
+        public async Task<bool> AddUser(User user)
         {
             if (!string.IsNullOrEmpty(user.userID) && !string.IsNullOrEmpty(user.fullName) && user.userGroup != null)
             {
