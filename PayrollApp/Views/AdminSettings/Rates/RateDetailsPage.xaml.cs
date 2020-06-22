@@ -153,11 +153,11 @@ namespace PayrollApp.Views.AdminSettings.Rates
 
             if (IsNewRate == false)
             {
-                IsSuccess = await SettingsHelper.Instance.da.UpdateRateInfo(rate);
+                IsSuccess = await SettingsHelper.Instance.op2.UpdateRateAsync(rate);
             }
             else
             {
-                IsSuccess = await SettingsHelper.Instance.da.AddNewRate(rate);
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewRate(rate);
             }
             
             return IsSuccess;

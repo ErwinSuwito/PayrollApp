@@ -107,7 +107,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
             loadTimer.Stop();
 
             // Gets all available rates and assign it as ItemSource for defaultRateBox
-            ObservableCollection<Rate> rate = await SettingsHelper.Instance.da.GetAllRates(false);
+            ObservableCollection<Rate> rate = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = rate;
 
             if (shift != null)
@@ -200,11 +200,11 @@ namespace PayrollApp.Views.AdminSettings.Shifts
 
             if (IsNewShift == false)
             {
-                IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(shift);
+                IsSuccess = await SettingsHelper.Instance.op2.UpdateShift(shift);
             }
             else
             {
-                IsSuccess = await SettingsHelper.Instance.da.AddNewShift(shift);
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(shift);
             }
             
             return IsSuccess;

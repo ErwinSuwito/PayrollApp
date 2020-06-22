@@ -61,7 +61,7 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<UserGroup> getItem = await SettingsHelper.Instance.da.GetAllUserGroups();
+            ObservableCollection<UserGroup> getItem = await SettingsHelper.Instance.op2.GetUserGroups(true, true);
             groupListView.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;

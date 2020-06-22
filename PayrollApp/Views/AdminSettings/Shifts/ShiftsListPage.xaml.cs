@@ -61,8 +61,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            ObservableCollection<Shift> getItem = await SettingsHelper.Instance.da.GetShiftsFromLocation(localSettings.Values["selectedLocation"].ToString(), true);
+            ObservableCollection<Shift> getItem = await SettingsHelper.Instance.op2.GetShifts(true, SettingsHelper.Instance.appLocation.locationID, true);
             dataGrid.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;

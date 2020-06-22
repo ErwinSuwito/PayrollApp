@@ -61,7 +61,7 @@ namespace PayrollApp.Views.AdminSettings.Rates
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<Rate> getItem = await SettingsHelper.Instance.da.GetAllRates(true);
+            ObservableCollection<Rate> getItem = await SettingsHelper.Instance.op2.GetAllRates(true);
             rateListView.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;

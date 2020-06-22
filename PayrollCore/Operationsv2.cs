@@ -746,6 +746,43 @@ namespace PayrollCore
             return activity;
         }
 
+        /// <summary>
+        /// Generates a complete work activity
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="startShift"></param>
+        /// <param name="endShift"></param>
+        /// <param name="inTime"></param>
+        /// <param name="outTime"></param>
+        /// <returns></returns>
+        public Activity GenerateCompleteWorkActivity(User user, Shift startShift, Shift endShift, DateTime inTime, DateTime outTime)
+        {
+            Activity newActivity = GenerateWorkActivity(user.userID, startShift, endShift);
+            newActivity.inTime = inTime;
+            newActivity.outTime = outTime;
+
+            newActivity = CompleteWorkActivity(newActivity, user, true);
+            return newActivity;
+        }
+
+        /// <summary>
+        /// Generates a complete meeting activity
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="meeting"></param>
+        /// <param name="inTime"></param>
+        /// <param name="outTime"></param>
+        /// <returns></returns>
+        public Activity GenerateCompleteMeetingActivity(User user, Meeting meeting, DateTime inTime, DateTime outTime)
+        {
+            Activity newActivity = GenerateMeetingActivity(user.userID, meeting);
+            newActivity.inTime = inTime;
+            newActivity.outTime = outTime;
+
+            newActivity = CompleteMeetingActivity(newActivity, user, true);
+            return newActivity;
+        }
+
 
         public async Task<Activity> GetActivityById(int activityID)
         {
@@ -857,6 +894,33 @@ namespace PayrollCore
             }
 
             return activity;
+        }
+
+        /// <summary>
+        /// Adds an activity to the database
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public async Task<bool> AddNewActivity(Activity activity)
+        {
+            if (activity.ApplicableRate != null)
+            {
+                return await da.AddNewCompleteActivityAsync(activity);
+            }
+            else
+            {
+                return await da.AddNewIncompleteActivityAsync(activity);
+            }
+        }
+
+        /// <summary>
+        /// Updates an activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateActivity(Activity activity)
+        {
+            return await da.UpdateActivityAsync(activity);
         }
 
         /// <summary>

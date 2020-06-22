@@ -91,15 +91,10 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(user, startShift, endShift);
-                newActivity.inTime = datePicker1.Date.DateTime + inTimeBox.Time;
-                newActivity.outTime = datePicker1.Date.DateTime + outTimeBox.Time;
-                var completedActivity = await SettingsHelper.Instance.op.GenerateSignOut(newActivity, user, true);
+                Activity activity = SettingsHelper.Instance.op2.GenerateCompleteWorkActivity(user, startShift, endShift,
+                    datePicker1.Date.DateTime + inTimeBox.Time, datePicker1.Date.DateTime + outTimeBox.Time);
 
-                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(completedActivity);
-                newActivity = await SettingsHelper.Instance.da.GetLatestSignIn(user.userID, completedActivity.locationID);
-                completedActivity.ActivityID = newActivity.ActivityID;
-                IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(completedActivity);
+                bool IsSuccess = await SettingsHelper.Instance.op2.Activity
                 if (IsSuccess)
                 {
                     ContentDialog contentDialog = new ContentDialog()

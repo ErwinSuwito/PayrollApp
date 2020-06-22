@@ -93,12 +93,12 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             loadTimer.Stop();
 
-            ObservableCollection<Rate> getRates = await SettingsHelper.Instance.da.GetAllRates(false);
+            ObservableCollection<Rate> getRates = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = getRates;
 
             specialTask = await SettingsHelper.Instance.da.GetSpecialTaskShift(location.locationID);
 
-            ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.da.GetMeetings(location);
+            ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.op2.GetMeetings(true, false);
             dataGrid.ItemsSource = getItem;
 
             if (location.isNewLocation == false)
