@@ -128,8 +128,8 @@ namespace PayrollApp
                     // Retrieves connection strings and tests them
                     DbConnectionString = localSettings.Values["DbConnString"].ToString();
                     CardConnString = localSettings.Values["CardConnString"].ToString();
-                    bool DbTest = await op2.da.TestConnString(DbConnectionString);
-                    bool CardTest = await op2.da.TestConnString(CardConnString);
+                    bool DbTest = await op2.TestDbConnection(DbConnectionString);
+                    bool CardTest = await op2.TestDbConnection(CardConnString);
 
                     if (DbTest == true & CardTest == true)
                     {
@@ -138,19 +138,19 @@ namespace PayrollApp
 
                         // Retrieves app location settings and get info from database
                         int.TryParse(localSettings.Values["selectedLocation"].ToString(), out int selectedLocation);
-                        appLocation = await op2.da.GetLocationByIdAsync(selectedLocation);
+                        appLocation = await op2.GetLocationById(selectedLocation);
                         
                         if (appLocation != null && appLocation.isDisabled != true)
                         {
                             // Retrieves global settings from database
-                            MinHours = await op2.da.GetGlobalSettingsByKeyAsync("MinHours");
-                            int.TryParse(await op2.da.GetGlobalSettingsByKeyAsync("DefaultTraineeGroup"), out int studentGroupId);
-                            int.TryParse(await op2.da.GetGlobalSettingsByKeyAsync("DefaultGroup"), out int defaultGroupId);
+                            MinHours = await op2.GetGlobalSetting("MinHours");
+                            int.TryParse(await op2.GetGlobalSetting("DefaultTraineeGroup"), out int studentGroupId);
+                            int.TryParse(await op2.GetGlobalSetting("DefaultGroup"), out int defaultGroupId);
                             
                             if (studentGroupId != int.MinValue && defaultGroupId != int.MinValue)
                             {
-                                defaultStudentGroup = await op2.da.GetUserGroupByIdAsync(studentGroupId);
-                                defaultOtherGroup = await op2.da.GetUserGroupByIdAsync(defaultGroupId);
+                                defaultStudentGroup = await op2.GetUserGroupById(studentGroupId);
+                                defaultOtherGroup = await op2.GetUserGroupById(defaultGroupId);
                                 
                                 if (defaultStudentGroup != null && defaultOtherGroup != null)
                                 {
@@ -187,6 +187,8 @@ namespace PayrollApp
             }
         }
 
+        #region Old Initialize code
+        /*
         public async void Initializev2()
         {
             InitState = InitStates.InProgress;
@@ -246,6 +248,8 @@ namespace PayrollApp
                 InitState = InitStates.Failed;
             }
         }
+        */
+        #endregion
 
         public async Task<bool> LoadRegisteredPeople()
         {

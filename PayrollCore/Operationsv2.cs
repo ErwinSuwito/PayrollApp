@@ -1057,9 +1057,14 @@ namespace PayrollCore
             return await da.UpdateGlobalSettingsAsync(Key, Value);
         }
 
-        public async Task<ObservableCollection<Meeting>> FindMeetings(int usrGroup, int locationID)
+        /// <summary>
+        /// Tests if the passed connection string is connectable
+        /// </summary>
+        /// <param name="connString"></param>
+        /// <returns></returns>
+        public async Task<bool> TestDbConnection(string connString)
         {
-            ObservableCollection<MeetingUserGroup> meetingUserGroups = await da.GetAllMeetingGroupAsync();
+            return await da.TestConnString(connString);
         }
     }
 }
