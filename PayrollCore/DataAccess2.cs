@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -2479,6 +2480,43 @@ namespace PayrollCore
             }
 
             return null;
+        }
+
+        public async Task<double> GetApprovedHours(string upn)
+        {
+            try
+            {
+                lastError = null;
+
+                string Query = "SELECT SUM(ApprovedHours) as 'ApprovedHours' FROM Activity WHERE UserID=@UserID AND ClaimDate >= DATEFROMPARTS(year(GETDATE()),month(GETDATE()),1)";
+
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@UserID", upn));
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            double ApprovedHours = 0;
+                            while (dr.Read())
+                            {
+                                ApprovedHours = dr.GetDouble(0);
+                            }
+
+                            return ApprovedHours;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                lastError = ex;
+            }
+
+            return 0;
         }
 
     }

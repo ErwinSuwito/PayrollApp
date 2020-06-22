@@ -900,5 +900,28 @@ namespace PayrollCore
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets the user state for the requested user
+        /// </summary>
+        /// <param name="_user"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public async Task<UserState> GetUserState(User _user, int locationID)
+        {
+            Activity latestWork = await GetLatestWorkActivity(_user.userID, locationID, true);
+            Activity latestMeeting = await GetLatestWorkActivity(_user.userID, locationID, false);
+            double approvedHours = await da.GetApprovedHours(_user.userID);
+
+            UserState userState = new UserState()
+            {
+                user = _user,
+                LatestActivity = latestWork,
+                LatestMeeting = latestMeeting,
+                ApprovedHours = approvedHours
+            };
+
+            return userState;
+        }
     }
 }

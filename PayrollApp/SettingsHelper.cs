@@ -609,7 +609,7 @@ namespace PayrollApp
 
         public async Task<bool> UpdateUserState(User user)
         {
-            userState = await op.GetUserState(user, appLocation.locationID);
+            userState = await op2.GetUserState(user, appLocation.locationID);
 
             if (userState.LatestActivity != null)
             {
