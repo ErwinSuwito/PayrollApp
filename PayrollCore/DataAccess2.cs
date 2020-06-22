@@ -768,11 +768,11 @@ namespace PayrollCore
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public async Task<bool> AddNewLocationAsync(Location location)
+        public async Task<int> AddNewLocationAsync(Location location)
         {
             lastError = null;
 
-            string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, @IsDisabled)";
+            string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, @IsDisabled) select SCOPE_IDENTITY()";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -785,9 +785,9 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@EnableGM", location.enableGM));
                         cmd.Parameters.Add(new SqlParameter("@IsDisabled", location.isDisabled));
 
-                        await cmd.ExecuteNonQueryAsync();
-
-                        return true;
+                        var _locationID = await cmd.ExecuteScalarAsync();
+                        int.TryParse(_locationID.ToString(), out int locationID);
+                        return locationID;
                     }
                 }
             }
@@ -795,7 +795,7 @@ namespace PayrollCore
             {
                 lastError = ex;
                 Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
-                return false;
+                return -1;
             }
         }
 

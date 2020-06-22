@@ -126,9 +126,7 @@ namespace PayrollApp.Views.AdminSettings.Location
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            location.isDisabled = false;
-
-            bool IsSuccess = await SaveLocationInfo();
+            bool IsSuccess = await SaveLocation();
             if (IsSuccess)
             {
                 this.Frame.GoBack();
@@ -147,7 +145,24 @@ namespace PayrollApp.Views.AdminSettings.Location
         }
 
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            location.isDisabled = true;
+            bool IsSuccess = await SaveLocation();
+            if (IsSuccess)
+            {
+                this.Frame.GoBack();
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Unable to save settings!",
+                    Content = "Something happened that prevents location to be updated. Please try again later.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
         }
 
         private void enableMeetingSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -157,12 +172,75 @@ namespace PayrollApp.Views.AdminSettings.Location
 
         private async void enableButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            location.isDisabled = false;
+            bool IsSuccess = await SaveLocation();
+            if (IsSuccess)
+            {
+                this.Frame.GoBack();
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Unable to save settings!",
+                    Content = "Something happened that prevents location to be updated. Please try again later.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
         }
 
-        private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
+        private async void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
         {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = "Ready to save location?",
+                Content = "You'll need to save your changes first before managing meeting. If not any changes will be discarded.",
+                PrimaryButtonText = "Manage meeting",
+                CloseButtonText = "Cancel"
+            };
 
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                this.Frame.Navigate(typeof(Meetings.MeetingListPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+        }
+
+        private async Task<bool> SaveLocation()
+        {
+            bool IsSuccess;
+            loadGrid.Visibility = Visibility.Visible;
+
+            if (location != null)
+            {
+                location = new PayrollCore.Entities.Location();
+                location.isNewLocation = true;
+                specialTask = new Shift();
+                specialTask.shiftName = "Special Task";
+                specialTask.isDisabled = true;
+            }
+
+            location.locationName = locationName.Text;
+            location.enableGM = enableMeetingSwitch.IsOn;
+
+            if (location.isNewLocation == true)
+            {
+                int locationID = await SettingsHelper.Instance.op2.AddNewLocation(location);
+                specialTask.locationID = locationID;
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(specialTask);
+            }
+            else
+            {
+                IsSuccess = await SettingsHelper.Instance.op2.UpdateLocation(location);
+                if (IsSuccess)
+                {
+                    IsSuccess = await SettingsHelper.Instance.op2.UpdateShift(specialTask);
+                }
+            }
+
+            return IsSuccess;
         }
     }
 }

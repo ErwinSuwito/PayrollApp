@@ -287,14 +287,14 @@ namespace PayrollCore
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public async Task<bool> AddNewLocation(Location location)
-        { 
+        public async Task<int> AddNewLocation(Location location)
+        {
+            int locationID = -1;
             if (!string.IsNullOrEmpty(location.locationName))
             {
-                bool IsSuccess = await da.AddNewLocationAsync(location);
-                return IsSuccess;
+                locationID = await da.AddNewLocationAsync(location);
             }
-            return false;
+            return locationID;
         }
 
         /// <summary>
