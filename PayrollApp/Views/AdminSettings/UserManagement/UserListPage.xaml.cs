@@ -75,7 +75,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         {
             ObservableCollection<GroupedUsers> groups = new ObservableCollection<GroupedUsers>();
             var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToList();
-            var users = await SettingsHelper.Instance.da.GetUsersList();
+            var users = await SettingsHelper.Instance.op2.GetAllUsers(true, true);
 
             var groupByAlpha = from letter in letters
                                select new
@@ -108,7 +108,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         {
             ObservableCollection<GroupedUsers> groups = new ObservableCollection<GroupedUsers>();
 
-            var query = from item in await SettingsHelper.Instance.da.GetUsersList()
+            var query = from item in await SettingsHelper.Instance.op2.GetAllUsers(true, true)
                         group item by item.fullName.Substring(0, 1).ToUpper() into g
                         orderby g.Key
                         select new { GroupName = g.Key, Items = g };

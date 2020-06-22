@@ -159,10 +159,10 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                 loadGrid.Visibility = Visibility.Visible;
                 progText.Text = "Making changes...";
                 user.isDisabled = true;
-                await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                await SettingsHelper.Instance.op2.UpdateUser(user);
 
                 progText.Text = "Just a moment...";
-                var newUser = await SettingsHelper.Instance.da.GetUserFromDbById(user.userID);
+                var newUser = await SettingsHelper.Instance.op2.GetUserById(user.userID);
 
                 while (newUser == null)
                 {
