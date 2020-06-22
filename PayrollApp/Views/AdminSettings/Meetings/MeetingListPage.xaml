@@ -17,6 +17,7 @@
     <Page.Resources>
         <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
         <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
+        <ctl:BooleanToColorConverter x:Key="BooleanToColorConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -75,14 +76,21 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <controls:DataGrid x:Name="dataGrid" Height="420"
-                                   AutoGenerateColumns="True" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
-                                   IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False"
-                                   VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"
-                                   AreRowGroupHeadersFrozen="True" SelectionChanged="dataGrid_SelectionChanged"
-                                   Margin="0,8,0,0">
-                    
-                </controls:DataGrid>
+                <ListView x:Name="meetingListView" ItemClick="meetingListView_ItemClick" SelectionMode="None" 
+                          IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="entity:Meeting">
+                            <StackPanel>
+                                <TextBlock Text="{Binding meetingName}" />
+                                <Grid BorderBrush="{Binding isDisabled, Converter={StaticResource BooleanToColorConverter}}">
+                                    <TextBlock Text="{Binding isDisabled, Converter={StaticResource BooleanToEnabledConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
+                                               Margin="2,2,2,2" FontStretch="Expanded"/>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
             </StackPanel>
         </StackPanel>
 

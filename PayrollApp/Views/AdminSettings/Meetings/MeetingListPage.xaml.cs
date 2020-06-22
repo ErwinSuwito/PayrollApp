@@ -35,7 +35,8 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
-        
+        Location location;
+        int locationID;
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -58,7 +59,7 @@ namespace PayrollApp.Views.AdminSettings.Meetings
         {
             if (e.Parameter != null)
             {
-                
+                location = e.Parameter as Location;
             }
 
             base.OnNavigatedFrom(e);
@@ -72,8 +73,17 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<PayrollCore.Entities.Location> getItem = await SettingsHelper.Instance.op2.GetLocations(true);
-            dataGrid.ItemsSource = getItem;
+            if (location != null)
+            {
+                locationID = location.locationID;
+            }
+            else
+            {
+                locationID = SettingsHelper.Instance.appLocation.locationID;
+            }
+
+            ObservableCollection<Meeting> meetings = await SettingsHelper.Instance.op2.GetMeetings(true, locationID, true);
+            meetingListView.ItemsSource = meetings;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;
         }
@@ -83,57 +93,17 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private void dataGrid_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
-        {
-            if (e.Column.Header.ToString() == "locationName")
-            {
-                e.Column.Header = "Location Name";
-            }
-            else if (e.Column.Header.ToString() == "lv_enableGM")
-            {
-                e.Column.Header = "Allow GM Attendance";
-            }
-            else if (e.Column.Header.ToString() == "lv_isDisabled")
-            {
-                e.Column.Header = "Disabled";
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
-
         private async void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Shows loadGrid and creates a new location in the database with temporary name.
-            loadGrid.Visibility = Visibility.Visible;
-
-            PayrollCore.Entities.Location location = await SettingsHelper.Instance.op.PrepareNewLocation();
-
-            if (location != null)
-            {
-                this.Frame.Navigate(typeof(LocationDetailsPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            else
-            {
-                ContentDialog contentDialog = new ContentDialog()
-                {
-                    Title = "Can't create a new location",
-                    Content = "There is a problem in connecting to the database. Please try again in a while.",
-                    CloseButtonText = "Ok"
-                };
-
-                await contentDialog.ShowAsync();
-            }
+            Meeting meeting = new Meeting();
+            meeting.locationID = locationID;
+            this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void meetingListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (dataGrid.SelectedItem != null)
-            {
-                PayrollCore.Entities.Location selectedLocation = (dataGrid.SelectedItem as PayrollCore.Entities.Location);
-                this.Frame.Navigate(typeof(LocationDetailsPage), selectedLocation, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
+            Meeting meeting = e.ClickedItem as Meeting;
+            this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }
