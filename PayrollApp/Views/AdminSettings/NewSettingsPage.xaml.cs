@@ -119,7 +119,7 @@ namespace PayrollApp.Views.AdminSettings
             loadTimer.Stop();
 
             // Loads the app location settings and get the appropriate index for locationSelector
-            ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.da.GetLocations(false);
+            ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.op2.GetLocations(false);
             locationSelector.ItemsSource = getLocation;
 
             refreshLocationIndex();
@@ -129,7 +129,7 @@ namespace PayrollApp.Views.AdminSettings
             minHoursBox.Text = SettingsHelper.Instance.MinHours;
 
             // Gets all user groups and the default user group for student and all other accounts
-            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
+            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.op2.GetUserGroups(false, false);
             defaultTraineeGroup.ItemsSource = userGroups;
             defaultOtherGroup.ItemsSource = userGroups;
 
@@ -290,7 +290,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private async void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
         {
-            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("MinHours", minHoursBox.Text);
+            bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("MinHours", minHoursBox.Text);
 
             if (IsSuccess == false)
             {
@@ -322,8 +322,8 @@ namespace PayrollApp.Views.AdminSettings
             UserGroup[] groups = new UserGroup[2];
             groups[0] = defaultOtherGroup.SelectedItem as UserGroup;
             groups[1] = defaultTraineeGroup.SelectedItem as UserGroup;
-            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultGroup", groups[0].groupID.ToString()) &&
-                await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultTraineeGroup", groups[1].groupID.ToString());
+            bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("DefaultGroup", groups[0].groupID.ToString()) &&
+                await SettingsHelper.Instance.op2.UpdateGlobalSetting("DefaultTraineeGroup", groups[1].groupID.ToString());
 
             if (IsSuccess)
             {

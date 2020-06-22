@@ -987,5 +987,26 @@ namespace PayrollCore
 
             return userState;
         }
+
+        /// <summary>
+        /// Gets the value of a global setting
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public async Task<string> GetGlobalSetting(string Key)
+        {
+            return await da.GetGlobalSettingsByKeyAsync(Key);
+        }
+
+        /// <summary>
+        /// Updates the value of a global setting
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateGlobalSetting(string Key, string Value)
+        {
+            return await da.UpdateGlobalSettingsAsync(Key, Value);
+        }
     }
 }
