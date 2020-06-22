@@ -43,7 +43,7 @@ namespace PayrollApp.Views.AdminSettings
         int locationIndex = 0;
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");

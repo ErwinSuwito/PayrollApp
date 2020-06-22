@@ -72,7 +72,7 @@ namespace PayrollApp.Views.AdminSettings.Rates
             this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private async void addBtn_Click(object sender, RoutedEventArgs e)
+        private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(RateDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }

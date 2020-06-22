@@ -153,7 +153,7 @@ namespace PayrollApp.Views.AdminSettings.Location
             }
         }
 
-        private async void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dataGrid.SelectedItem != null)
             {

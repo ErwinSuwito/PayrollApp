@@ -52,7 +52,7 @@ namespace PayrollApp.Views.UserProfile
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
-        private async void signButton_Click(object sender, RoutedEventArgs e)
+        private void signButton_Click(object sender, RoutedEventArgs e)
         {
             if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
             {

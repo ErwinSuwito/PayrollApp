@@ -1330,7 +1330,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@RateID", meeting.rate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@StartTime", meeting.StartTime));
 
-                        var _meetingID = cmd.ExecuteScalarAsync();
+                        var _meetingID = await cmd.ExecuteScalarAsync();
                         int.TryParse(_meetingID.ToString(), out int meetingID);
                         return meetingID;
                     }

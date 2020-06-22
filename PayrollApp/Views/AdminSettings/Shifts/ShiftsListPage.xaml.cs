@@ -96,7 +96,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
             }
         }
 
-        private async void addBtn_Click(object sender, RoutedEventArgs e)
+        private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ShiftDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
