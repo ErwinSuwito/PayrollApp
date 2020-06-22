@@ -58,20 +58,6 @@ namespace PayrollApp.Views.AdminSettings.Location
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            if (location.isNewLocation)
-            {
-                pageTitle.Text = "New location";
-                deleteButton.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                location.isNewLocation = false;
-                locationName.Text = location.locationName;
-                enableMeetingSwitch.IsOn = location.enableGM;
-            }
-
-            HideUIParts();
-
             // Make loadGrid to visible when loading location data.
             // Starts timer that will get data on first tick.
             loadTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
@@ -80,7 +66,26 @@ namespace PayrollApp.Views.AdminSettings.Location
 
             loadGrid.Visibility = Visibility.Visible;
 
-            Debug.WriteLine("PageLoaded location.locationID: " + location.locationID);
+
+            if (location == null)
+            {
+                pageTitle.Text = "New location";
+                deleteButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                locationName.Text = location.locationName;
+                if (location.isDisabled == true)
+                {
+                    deleteButton.Visibility = Visibility.Collapsed;
+                    enableButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    deleteButton.Visibility = Visibility.Visible;
+                    enableButton.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -93,31 +98,21 @@ namespace PayrollApp.Views.AdminSettings.Location
         {
             loadTimer.Stop();
 
-            ObservableCollection<Rate> getRates = await SettingsHelper.Instance.op2.GetAllRates(false);
-            defaultRateBox.ItemsSource = getRates;
+            ObservableCollection<Rate> rates = await SettingsHelper.Instance.op2.GetAllRates(false);
+            defaultRateBox.ItemsSource = rates;
 
-            specialTask = await SettingsHelper.Instance.op2.GetSpecialTaskShift(location.locationID);
 
-            ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.op2.GetMeetings(true, false);
-            dataGrid.ItemsSource = getItem;
-
-            if (location.isNewLocation == false)
+            if (location != null)
             {
-                try
+                specialTask = await SettingsHelper.Instance.op2.GetSpecialTaskShift(location.locationID);
+
+                for (int i = 0; i < rates.Count -1; i++)
                 {
-                    for (int i = 0; i < getRates.Count; i++)
+                    if (rates[i].rateID == specialTask.DefaultRate.rateID)
                     {
-                        var item = getRates.ElementAt(i) as Rate;
-                        if (item.rateID == specialTask.DefaultRate.rateID)
-                        {
-                            defaultRateBox.SelectedIndex = i;
-                            break;
-                        }
+                        defaultRateBox.SelectedIndex = i;
+                        break;
                     }
-                }
-                catch (Exception)
-                {
-                    defaultRateBox.SelectedIndex = 0;
                 }
             }
 
@@ -127,52 +122,6 @@ namespace PayrollApp.Views.AdminSettings.Location
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-        }
-
-        private void dataGrid_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
-        {
-            if (e.Column.Header.ToString() == "meetingName")
-            {
-                e.Column.Header = "Meeting Name";
-            }
-            else if (e.Column.Header.ToString() == "meetingDay")
-            {
-                e.Column.Header = "Meeting Day";
-            }
-            else if (e.Column.Header.ToString() == "bmOnly")
-            {
-                e.Column.Header = "BM only";
-            }
-            else if (e.Column.Header.ToString() == "isDisabled")
-            {
-                e.Column.Header = "Meeting Disabled";
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
-
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dataGrid.SelectedItem != null)
-            {
-                Meeting meeting = (dataGrid.SelectedItem as Meeting);
-                this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-        }
-
-        private async void addBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Meeting meeting = new Meeting();
-            meeting.locationID = location.locationID;
-            meeting.meetingName = "New meeting";
-            meeting.newMeeting = true;
-            meeting.rate = new Rate();
-            meeting.rate.rateID = 1;
-            meeting.meetingID = await SettingsHelper.Instance.da.SaveMeetingAndReturnId(meeting);
-
-            this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
@@ -198,30 +147,7 @@ namespace PayrollApp.Views.AdminSettings.Location
         }
 
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            location.isDisabled = true;
-
-            bool IsSuccess = await SaveLocationInfo();
-            if (IsSuccess)
-            {
-                this.Frame.GoBack();
-            }
-            else
-            {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "Unable to save settings!",
-                    Content = "Something happened that prevents location to be updated. Please try again later.",
-                    PrimaryButtonText = "Ok"
-                };
-
-                await contentDialog.ShowAsync();
-            }
-        }
-
-        private void locationName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            location.locationName = locationName.Text;
+        { 
         }
 
         private void enableMeetingSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -229,77 +155,14 @@ namespace PayrollApp.Views.AdminSettings.Location
             location.enableGM = enableMeetingSwitch.IsOn;
         }
 
-        async Task<bool> SaveLocationInfo()
-        {
-            bool IsSuccess = await SettingsHelper.Instance.da.SaveLocationAsync(location);
-
-            if (IsSuccess == true)
-            {
-                if (location.isNewLocation)
-                {
-                    specialTask = new Shift();
-                    specialTask.shiftName = "Special Task";
-                    specialTask.startTime = TimeSpan.MinValue;
-                    specialTask.endTime = TimeSpan.MaxValue;
-                    specialTask.locationID = location.locationID;
-                    specialTask.isDisabled = true;
-                    specialTask.WeekendOnly = false;
-                    specialTask.DefaultRate = defaultRateBox.SelectedItem as Rate;
-
-                    IsSuccess = await SettingsHelper.Instance.da.AddNewShift(specialTask);
-                }
-                else
-                {
-                    specialTask.DefaultRate = defaultRateBox.SelectedItem as Rate;
-                    IsSuccess = await SettingsHelper.Instance.da.UpdateShiftInfo(specialTask);
-                }
-            }
-
-            return IsSuccess;
-        }
-
         private async void enableButton_Click(object sender, RoutedEventArgs e)
         {
-            location.isDisabled = false;
-
-            bool IsSuccess = await SaveLocationInfo();
-            if (IsSuccess)
-            {
-                this.Frame.GoBack();
-            }
-            else
-            {
-                ContentDialog contentDialog = new ContentDialog
-                {
-                    Title = "Unable to save settings!",
-                    Content = "Something happened that prevents location to be updated. Please try again later.",
-                    PrimaryButtonText = "Ok"
-                };
-
-                await contentDialog.ShowAsync();
-            }
+            
         }
 
-        private void HideUIParts()
+        private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (location != null)
-            {
-                if (location.isDisabled)
-                {
-                    enableButton.Visibility = Visibility.Visible;
-                    deleteButton.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    enableButton.Visibility = Visibility.Collapsed;
-                    deleteButton.Visibility = Visibility.Visible;
-                }
-            }
-            else
-            {
-                enableButton.Visibility = Visibility.Collapsed;
-                deleteButton.Visibility = Visibility.Collapsed;
-            }
+
         }
     }
 }

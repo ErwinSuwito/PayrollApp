@@ -11,7 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     HorizontalAlignment="Left"
-    Height="740" Width="620"
+    Height="740" Width="540"
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
