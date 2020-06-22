@@ -1769,7 +1769,7 @@ namespace PayrollCore
         }
 
         /// <summary>
-        /// Gets the latest activity by a user in a user
+        /// Gets the latest activity by a user in a location
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="locationID"></param>

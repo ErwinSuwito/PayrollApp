@@ -430,7 +430,11 @@ namespace PayrollCore
             return false;
         }
 
-
+        /// <summary>
+        /// Gets the requested meeting
+        /// </summary>
+        /// <param name="MeetingID"></param>
+        /// <returns></returns>
         public async Task<Meeting> GetMeetingById(int MeetingID)
         {
             Meeting meeting = await da.GetMeetingByIdAsync(MeetingID);
@@ -438,6 +442,48 @@ namespace PayrollCore
 
             return meeting;
         }
+
+        /// <summary>
+        /// Gets all meetings in the database
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="CompleteData">True to get meeting's default rate data</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Meeting>> GetMeetings(bool GetDisabled, bool CompleteData)
+        {
+            ObservableCollection<Meeting> meetings = await da.GetAllMeetingsAsync(GetDisabled);
+            if (CompleteData)
+            {
+                foreach (Meeting meeting in meetings)
+                {
+                    meeting.rate = await da.GetRateById(meeting.rate.rateID);
+                }
+            }
+
+            return meetings;
+        }
+
+        /// <summary>
+        /// Gets all meetings in a location
+        /// </summary>
+        /// <param name="GetDisabled"></param>
+        /// <param name="locationID"></param>
+        /// <param name="CompleteData">True to get meeting's default rate data</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Meeting>> GetMeetings(bool GetDisabled, int locationID, bool CompleteData)
+        {
+            ObservableCollection<Meeting> meetings = await da.GetAllMeetingsAsync(GetDisabled, locationID);
+            if (CompleteData)
+            {
+                foreach (Meeting meeting in meetings)
+                {
+                    meeting.rate = await da.GetRateById(meeting.rate.rateID);
+                }
+            }
+
+            return meetings;
+        }
+
 
         /// <summary>
         /// Adds a new meeting
@@ -696,6 +742,119 @@ namespace PayrollCore
             activity.ClaimableAmount = CalcPay(workHour.TotalHours, activity.ApplicableRate.rate);
             activity.ApprovedHours = workHour.TotalHours;
             activity.ClaimDate = DateTime.Today;
+
+            return activity;
+        }
+
+
+        public async Task<Activity> GetActivityById(int activityID)
+        {
+            Activity activity = await da.GetActivityById(activityID);
+            if (activity.StartShift != null)
+            {
+                activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
+                activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+            }
+            else
+            {
+                activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+            }
+
+            if (activity.ApplicableRate != null)
+            {
+                activity.ApplicableRate = await GetRateById(activity.ApplicableRate.rateID);
+            }
+
+            return activity;
+        }
+
+        /// <summary>
+        /// Gets the latest activity by the user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<Activity> GetLatestActivity(string userID)
+        {
+            Activity activity = await da.GetLatestActivity(userID);
+            if (activity.StartShift != null)
+            {
+                activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
+                activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+            }
+            else
+            {
+                activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+            }
+
+            if (activity.ApplicableRate != null)
+            {
+                activity.ApplicableRate = await GetRateById(activity.ApplicableRate.rateID);
+            }
+
+            return activity;
+        }
+
+        /// <summary>
+        /// Gets the latest activity of a user in a location
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public async Task<Activity> GetLatestActivity(string userID, int locationID)
+        {
+            Activity activity = await da.GetLatestActivity(userID, locationID);
+            if (activity.StartShift != null)
+            {
+                activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
+                activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+            }
+            else
+            {
+                activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+            }
+
+            if (activity.ApplicableRate != null)
+            {
+                activity.ApplicableRate = await GetRateById(activity.ApplicableRate.rateID);
+            }
+
+            return activity;
+        }
+
+        /// <summary>
+        /// Gets the latest work or meeting activity in a location
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="locationID"></param>
+        /// <param name="GetWorkitem"></param>
+        /// <returns></returns>
+        public async Task<Activity> GetLatestWorkActivity(string userID, int locationID, bool GetWorkitem)
+        {
+            Activity activity;
+
+            if (GetWorkitem)
+            {
+                activity = await da.GetLatestActivity(userID, locationID, true);
+            }
+            else
+            {
+                activity = await da.GetLatestActivity(userID, locationID, false);
+            }
+
+            if (activity.StartShift != null)
+            {
+                activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
+                activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+            }
+            else
+            {
+                activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+            }
+
+            if (activity.ApplicableRate != null)
+            {
+                activity.ApplicableRate = await GetRateById(activity.ApplicableRate.rateID);
+            }
 
             return activity;
         }
