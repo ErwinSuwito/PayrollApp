@@ -174,16 +174,19 @@
     <Compile Include="Views\AdminSettings\FaceSetup\FaceIdentificationSetup.xaml.cs">
       <DependentUpon>FaceIdentificationSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdminSettings\Location\LocationDetailsPage.xaml.cs">
+    <Compile Include="Views\AdminSettings\Locations\LocationDetailsPage.xaml.cs">
       <DependentUpon>LocationDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdminSettings\Location\LocationListPage.xaml.cs">
+    <Compile Include="Views\AdminSettings\Locations\LocationListPage.xaml.cs">
       <DependentUpon>LocationListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdminSettings\Meetings\MeetingListPage.xaml.cs">
+      <DependentUpon>MeetingListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdminSettings\Meetings\MeetingDetailsPage.xaml.cs">
       <DependentUpon>MeetingDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdminSettings\Location\NewLocationPage.xaml.cs">
+    <Compile Include="Views\AdminSettings\Locations\NewLocationPage.xaml.cs">
       <DependentUpon>NewLocationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdminSettings\NewSettingsPage.xaml.cs">
@@ -383,11 +386,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AdminSettings\Location\LocationDetailsPage.xaml">
+    <Page Include="Views\AdminSettings\Locations\LocationDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AdminSettings\Location\LocationListPage.xaml">
+    <Page Include="Views\AdminSettings\Locations\LocationListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AdminSettings\Meetings\MeetingListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -395,7 +402,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AdminSettings\Location\NewLocationPage.xaml">
+    <Page Include="Views\AdminSettings\Locations\NewLocationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
