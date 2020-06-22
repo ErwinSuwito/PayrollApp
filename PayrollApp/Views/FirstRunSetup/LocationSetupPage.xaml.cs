@@ -50,6 +50,7 @@ namespace PayrollApp.Views.FirstRunSetup
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
+
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
             if (locationSelectionView.SelectedItem != null)

@@ -571,6 +571,7 @@ namespace PayrollApp
                 else
                 {
                     localSettings.Values["CardConnString"] = connectionString;
+                    op2.StoreConnString(localSettings.Values["DbConnString"].ToString(), localSettings.Values["CardConnString"].ToString());
                 }
 
                 return true;
