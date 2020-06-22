@@ -61,7 +61,7 @@ namespace PayrollApp.Views.AdminSettings.Location
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<PayrollCore.Entities.Location> getItem = await SettingsHelper.Instance.da.GetLocations(true);
+            ObservableCollection<PayrollCore.Entities.Location> getItem = await SettingsHelper.Instance.op2.GetLocations(true);
             dataGrid.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;

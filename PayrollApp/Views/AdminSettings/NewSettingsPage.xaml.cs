@@ -59,7 +59,7 @@ namespace PayrollApp.Views.AdminSettings
 
             loadGrid.Visibility = Visibility.Visible;
 
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
 
             if (SettingsHelper.Instance.appLocation == null || SettingsHelper.Instance.appLocation.isDisabled == true)
             {
@@ -166,7 +166,7 @@ namespace PayrollApp.Views.AdminSettings
         private void saveLocationBtn_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values["selectedLocation"] = (locationSelector.SelectedItem as PayrollCore.Entities.Location).locationID;
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
 
             if (SettingsHelper.Instance.appLocation != null || SettingsHelper.Instance.appLocation.isDisabled == false)
             {

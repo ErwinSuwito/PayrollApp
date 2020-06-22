@@ -47,7 +47,7 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
             this.Frame.Navigate(typeof(Views.LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }

@@ -78,10 +78,11 @@ namespace PayrollApp.Views
                         // More info button is selected
                         if (result == ContentDialogResult.Primary)
                         {
+                            Exception ex = SettingsHelper.Instance.op2.GetLastError();
                             contentDialog = new ContentDialog
                             {
                                 Title = "More info",
-                                Content = "upn: " + upn + "\n" +  SettingsHelper.Instance.op2.da.lastError.Message,
+                                Content = "upn: " + upn + "\n" +  ex.Message,
                                 CloseButtonText = "Close"
                             };
 

@@ -45,7 +45,7 @@ namespace PayrollApp.Views
             localSettings.Values["CardConnString"] = null;
             SettingsHelper.Instance.FaceApiKey = "";
             SettingsHelper.Instance.CustomFaceApiEndpoint = "";
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
 
             (Window.Current.Content as Frame).Navigate(typeof(MainPage), null);
         }

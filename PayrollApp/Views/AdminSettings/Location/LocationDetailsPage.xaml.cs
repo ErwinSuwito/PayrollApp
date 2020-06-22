@@ -96,7 +96,7 @@ namespace PayrollApp.Views.AdminSettings.Location
             ObservableCollection<Rate> getRates = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = getRates;
 
-            specialTask = await SettingsHelper.Instance.da.GetSpecialTaskShift(location.locationID);
+            specialTask = await SettingsHelper.Instance.op2.GetSpecialTaskShift(location.locationID);
 
             ObservableCollection<Meeting> getItem = await SettingsHelper.Instance.op2.GetMeetings(true, false);
             dataGrid.ItemsSource = getItem;

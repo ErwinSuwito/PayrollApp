@@ -42,7 +42,7 @@ namespace PayrollApp.Views.FirstRunSetup
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            locationSelectionView.ItemsSource = await SettingsHelper.Instance.op2.da.GetAllLocationAsync(false);
+            locationSelectionView.ItemsSource = await SettingsHelper.Instance.op2.GetLocations(false);
         }
 
         private void TimeUpdater_Tick(object sender, object e)
