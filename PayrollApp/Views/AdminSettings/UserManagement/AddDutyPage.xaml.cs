@@ -66,7 +66,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            user = await SettingsHelper.Instance.da.GetUserFromDbById(user.userID);
+            user = await SettingsHelper.Instance.op2.GetUserById(user.userID);
             loadGrid.Visibility = Visibility.Collapsed;
         }
 
@@ -94,7 +94,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                 Activity activity = SettingsHelper.Instance.op2.GenerateCompleteWorkActivity(user, startShift, endShift,
                     datePicker1.Date.DateTime + inTimeBox.Time, datePicker1.Date.DateTime + outTimeBox.Time);
 
-                bool IsSuccess = await SettingsHelper.Instance.op2.Activity
+                bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);
                 if (IsSuccess)
                 {
                     ContentDialog contentDialog = new ContentDialog()
@@ -120,10 +120,11 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
                     var result2 = await contentDialog.ShowAsync();
                     if (result2 == ContentDialogResult.Primary)
                     {
+                        Exception ex = SettingsHelper.Instance.op2.GetLastError();
                         contentDialog = new ContentDialog()
                         {
                             Title = "More info",
-                            Content = SettingsHelper.Instance.da.lastError.Message + "\n" + SettingsHelper.Instance.da.lastError.StackTrace,
+                            Content = ex.Message + "\n" + ex.StackTrace,
                             CloseButtonText = "Ok"
                         };
 
@@ -141,11 +142,11 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
 
             if (datePicker1.SelectedDate.Value.DayOfWeek == DayOfWeek.Saturday || datePicker1.SelectedDate.Value.DayOfWeek == DayOfWeek.Sunday)
             {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), true);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(false, SettingsHelper.Instance.appLocation.locationID, true);
             }
             else
             {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(false, SettingsHelper.Instance.appLocation.locationID, false);
             }
 
             startShiftBox.ItemsSource = shifts;
