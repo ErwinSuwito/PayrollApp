@@ -52,7 +52,8 @@ namespace PayrollApp.Views.UserProfile.Meeting
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            ObservableCollection<MeetingUserGroup> shifts = await SettingsHelper.Instance.da.GetMeetingUserGroupByUserGroup(SettingsHelper.Instance.userState.user.userGroup.groupID, SettingsHelper.Instance.appLocation.locationID, false);
+            ObservableCollection<PayrollCore.Entities.Meeting> shifts = await SettingsHelper.Instance.op2.GetMeetings(SettingsHelper.Instance.appLocation.locationID, 
+                SettingsHelper.Instance.userState.user.userGroup.groupID, (int)DateTime.Today.DayOfWeek);
             shiftSelectionView.ItemsSource = shifts;
 
             if (shifts.Count < 1)
@@ -79,24 +80,24 @@ namespace PayrollApp.Views.UserProfile.Meeting
         {
             loadGrid.Visibility = Visibility.Visible;
 
-            var selectedItem = shiftSelectionView.SelectedItem as MeetingUserGroup;
-            var newActivity = await SettingsHelper.Instance.op.GenerateMeetingAttendance(SettingsHelper.Instance.userState.user, selectedItem.meetingID);
+            var selectedItem = shiftSelectionView.SelectedItem as PayrollCore.Entities.Meeting;
+            var activity = SettingsHelper.Instance.op2.GenerateMeetingActivity(SettingsHelper.Instance.userState.user.userID, selectedItem);
 
-            bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
+            bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);
 
             if (IsSuccess == true)
             {
-                if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
+                if (activity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
                 {
                     string emailContent;
                     emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late for a meeting. Below are the details of the meeting.";
-                    emailContent += "\n Shift: " + newActivity.meeting.meetingName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Meeting start: ";
-                    emailContent += newActivity.inTime.ToShortDateString() + " " + newActivity.meeting.StartTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
+                    emailContent += "\n Shift: " + activity.meeting.meetingName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Meeting start: ";
+                    emailContent += activity.inTime.ToShortDateString() + " " + activity.meeting.StartTime.ToString() + "\n Actual sign in: " + activity.inTime;
                     emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 
                     var message = new Message
                     {
-                        Subject = "[Payroll] Meeting Late Attendance " + newActivity.meeting.meetingName + DateTime.Today.ToShortDateString(),
+                        Subject = "[Payroll] Meeting Late Attendance " + activity.meeting.meetingName + DateTime.Today.ToShortDateString(),
                         Body = new ItemBody
                         {
                             ContentType = BodyType.Text,

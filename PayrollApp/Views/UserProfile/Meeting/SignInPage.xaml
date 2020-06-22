@@ -70,9 +70,11 @@
                           SelectionMode="Single" Width="{Binding ElementName=actualContent, Path=ActualWidth}"
                           MaxHeight="372">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="entity:MeetingUserGroup">
-                            <TextBlock Text="{Binding meetingName}" FontSize="18"
+                        <DataTemplate x:DataType="entity:Meeting">
+                            <StackPanel>
+                                <TextBlock Text="{Binding meetingName}" FontSize="18"
                                        Margin="2,8,4,8" Style="{ThemeResource BaseTextBlockStyle}"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.ItemContainerStyle>

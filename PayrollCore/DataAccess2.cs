@@ -1416,6 +1416,61 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Gets meetings based on the selected location, user group and meeting day
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="userGroupId"></param>
+        /// <param name="meetingDay"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Meeting>> GetMeetingsAsync(int locationID, int userGroupId, int meetingDay)
+        {
+            lastError = null;
+            string Query = "SELECT * FROM Meeting JOIN Meeting_Group ON Meeting_Group.MeetingID = Meeting.MeetingID WHERE LocationID=@LocationID Meeting_Group.UserGroupID=@UserGroupID AND MeetingDay=@MeetingDay";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(DbConnString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = Query;
+                        using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                            cmd.Parameters.Add(new SqlParameter("@UserGroupID", userGroupId));
+                            cmd.Parameters.Add(new SqlParameter("@MeetingDay", meetingDay));
+
+                            ObservableCollection<Meeting> meetings = new ObservableCollection<Meeting>();
+
+                            while (dr.Read())
+                            {
+                                Meeting meeting = new Meeting();
+                                meeting.meetingID = dr.GetInt32(0);
+                                meeting.meetingName = dr.GetString(1);
+                                meeting.locationID = dr.GetInt32(2);
+                                meeting.meetingDay = dr.GetInt32(3);
+                                meeting.isDisabled = dr.GetBoolean(4);
+                                meeting.rate = new Rate() { rateID = dr.GetInt32(5) };
+                                meeting.StartTime = dr.GetTimeSpan(6);
+
+                                meetings.Add(meeting);
+                            }
+
+                            return meetings;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                return null;
+            }
+        }
+
         #endregion
 
         #region MeetingGroup

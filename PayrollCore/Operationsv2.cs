@@ -463,6 +463,12 @@ namespace PayrollCore
             return meetings;
         }
 
+
+        public async Task<ObservableCollection<Meeting>> GetMeetings(int locationID, int userGroupId, int meetingDay)
+        {
+            return await da.GetMeetingsAsync(locationID, userGroupId, meetingDay);
+        }
+
         /// <summary>
         /// Gets all meetings in a location
         /// </summary>
@@ -483,7 +489,6 @@ namespace PayrollCore
 
             return meetings;
         }
-
 
         /// <summary>
         /// Adds a new meeting
@@ -783,7 +788,11 @@ namespace PayrollCore
             return newActivity;
         }
 
-
+        /// <summary>
+        /// Get the requested activity
+        /// </summary>
+        /// <param name="activityID"></param>
+        /// <returns></returns>
         public async Task<Activity> GetActivityById(int activityID)
         {
             Activity activity = await da.GetActivityById(activityID);
@@ -1007,6 +1016,11 @@ namespace PayrollCore
         public async Task<bool> UpdateGlobalSetting(string Key, string Value)
         {
             return await da.UpdateGlobalSettingsAsync(Key, Value);
+        }
+
+        public async Task<ObservableCollection<Meeting>> FindMeetings(int usrGroup, int locationID)
+        {
+            ObservableCollection<MeetingUserGroup> meetingUserGroups = await da.GetAllMeetingGroupAsync()
         }
     }
 }
