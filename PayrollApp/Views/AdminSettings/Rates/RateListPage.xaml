@@ -76,13 +76,13 @@
                           IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:Rate">
-                            <StackPanel Margin="0,4,0,4">
+                            <StackPanel Margin="4,12,0,12">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding rateDesc}" />
                                     <TextBlock Text="{Binding isDisabled, Converter={StaticResource ReverseBoolenToEmojiConverter}}"
-                                               FontFamily="Segoe UI Emoji"/>
+                                               FontFamily="Segoe UI Emoji" Margin="4,0,0,0"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                     <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
                                     <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
                                     <TextBlock Text="per hour" Margin="4,0,0,0"/>
