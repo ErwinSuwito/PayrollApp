@@ -999,6 +999,8 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
                             cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
