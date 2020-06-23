@@ -358,5 +358,10 @@ namespace PayrollApp.Views.AdminSettings
             FaceApiSettingsDialog dialog = new FaceApiSettingsDialog();
             await dialog.ShowAsync();
         }
+
+        private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Meetings.MeetingListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+        }
     }
 }

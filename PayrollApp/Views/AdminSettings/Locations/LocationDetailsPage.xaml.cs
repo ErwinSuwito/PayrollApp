@@ -204,7 +204,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             ContentDialogResult result = await contentDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                this.Frame.Navigate(typeof(Meetings.MeetingListPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                this.Frame.Navigate(typeof(Meetings.MeetingListPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
         }
 
