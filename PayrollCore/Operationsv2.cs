@@ -551,6 +551,8 @@ namespace PayrollCore
                         return false;
                     }
                 }
+
+                return true;
             }
             return false;
         }

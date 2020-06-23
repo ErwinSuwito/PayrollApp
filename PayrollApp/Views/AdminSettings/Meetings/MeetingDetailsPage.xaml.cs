@@ -74,6 +74,7 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             }
             else
             {
+                pageTitle.Text = "New Meeting";
                 disableMeetingBtn.Visibility = Visibility.Collapsed;
             }
         }
