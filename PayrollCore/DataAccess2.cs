@@ -2298,11 +2298,11 @@ namespace PayrollCore
 
             if (activity.meeting != null)
             {
-                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, MeetingID, ApprovedHours, ClaimableHours, ApplicableRate, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @MeetingID, @ApprovedHours, @ClaimableHours, @ApplicableRate, @ClaimDate)";
+                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, MeetingID, ApprovedHours, ClaimableAmount, ApplicableRate, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @MeetingID, @ApprovedHours, @ClaimableAmount, @ApplicableRate, @ClaimDate)";
             }
             else
             {
-                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, StartShift, EndShift, SpecialTask, ApprovedHours, ClaimableHours, ApplicableHours, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @SpecialTask, @ApprovedHours, @ClaimableHours, @ApplicableHours)";
+                Query = "INSERT INTO Activity(UserID, LocationID, InTime, OutTime, StartShift, EndShift, SpecialTask, ApprovedHours, ClaimableAmount, ApplicableHours, ClaimDate) VALUES(@UserID, @LocationID, @InTime, @OutTime, @StartShift, @EndShift, @SpecialTask, @ApprovedHours, @ClaimableAmount, @ApplicableHours)";
             }
 
             try
@@ -2318,7 +2318,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
                         cmd.Parameters.Add(new SqlParameter("@OutTime", activity.outTime));
                         cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
-                        cmd.Parameters.Add(new SqlParameter("@ClaimableHours", activity.ClaimableAmount));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimableAmount", activity.ClaimableAmount));
                         cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
 
@@ -2391,11 +2391,11 @@ namespace PayrollCore
 
             if (activity.meeting != null)
             {
-                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, MeetingID=@MeetingID, ApprovedHours=@ApprovedHours, ClaimableHours=@ClaimableHours, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, MeetingID=@MeetingID, ApprovedHours=@ApprovedHours, ClaimableAmount=@ClaimableAmount, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
             }
             else
             {
-                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, StartShift=@StartShift, EndShift=@EndShift, SpecialTask=@SpecialTask, ApprovedHours=@ApprovedHours, ClaimableHours=@ClaimableHours, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, StartShift=@StartShift, EndShift=@EndShift, SpecialTask=@SpecialTask, ApprovedHours=@ApprovedHours, ClaimableAmount=@ClaimableAmount, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
             }
 
             try
@@ -2412,7 +2412,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
                         cmd.Parameters.Add(new SqlParameter("@OutTime", activity.outTime));
                         cmd.Parameters.Add(new SqlParameter("@ApprovedHours", activity.ApprovedHours));
-                        cmd.Parameters.Add(new SqlParameter("@ClaimableHours", activity.ClaimableAmount));
+                        cmd.Parameters.Add(new SqlParameter("@ClaimableAmount", activity.ClaimableAmount));
                         cmd.Parameters.Add(new SqlParameter("@ApplicableRate", activity.ApplicableRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@ClaimDate", activity.ClaimDate));
 
