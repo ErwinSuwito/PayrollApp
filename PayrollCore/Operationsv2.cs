@@ -932,14 +932,22 @@ namespace PayrollCore
                 activity = await da.GetLatestActivity(userID, locationID, false);
             }
 
-            if (activity.StartShift != null)
+            if (activity != null)
             {
-                activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
-                activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+                if (activity.StartShift != null)
+                {
+                    activity.StartShift = await GetShiftById(activity.StartShift.shiftID);
+                    activity.EndShift = await GetShiftById(activity.EndShift.shiftID);
+                }
+                else
+                {
+                    activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+                }
             }
             else
             {
-                activity.meeting = await GetMeetingById(activity.meeting.meetingID);
+                activity = new Activity();
+                activity.NoActivity = true;
             }
 
             if (activity.ApplicableRate != null)
