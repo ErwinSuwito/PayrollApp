@@ -1910,11 +1910,11 @@ namespace PayrollCore
 
             if (GetWorkItem)
             {
-                Query += " WHERE StartShift IS NOT NULL";
+                Query += " AND StartShift IS NOT NULL";
             }
             else
             {
-                Query += " WHERE MeetingID IS NOT NULL";
+                Query += " AND MeetingID IS NOT NULL";
             }
 
             try

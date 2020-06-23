@@ -121,9 +121,8 @@ namespace PayrollApp
                 LoadRoamingSettings();
                 Windows.Storage.ApplicationData.Current.DataChanged += RoamingDataChanged;
 
-                // Checks if DbConnString, CardConnString, Shiftless and selectedLocation is stored app settings store
-                if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null 
-                    && localSettings.Values["Shiftless"] != null && localSettings.Values["selectedLocation"] != null)
+                // Checks if connection strings has been saved to apps settings store
+                if (localSettings.Values["DbConnString"] != null && localSettings.Values["CardConnString"] != null)
                 {
                     // Retrieves connection strings and tests them
                     DbConnectionString = localSettings.Values["DbConnString"].ToString();
@@ -136,37 +135,45 @@ namespace PayrollApp
                         // Loads connection strings to DataAccess
                         op2.StoreConnString(DbConnectionString, CardConnString);
 
-                        // Retrieves app location settings and get info from database
-                        int.TryParse(localSettings.Values["selectedLocation"].ToString(), out int selectedLocation);
-                        appLocation = await op2.GetLocationById(selectedLocation);
-                        
-                        if (appLocation != null && appLocation.isDisabled != true)
+                        if (localSettings.Values["selectedLocation"] != null)
                         {
-                            // Retrieves global settings from database
-                            MinHours = await op2.GetGlobalSetting("MinHours");
-                            int.TryParse(await op2.GetGlobalSetting("DefaultTraineeGroup"), out int studentGroupId);
-                            int.TryParse(await op2.GetGlobalSetting("DefaultGroup"), out int defaultGroupId);
-                            
-                            if (studentGroupId != int.MinValue && defaultGroupId != int.MinValue)
+                            // Retrieves app location settings and get info from database
+                            int.TryParse(localSettings.Values["selectedLocation"].ToString(), out int selectedLocation);
+                            appLocation = await op2.GetLocationById(selectedLocation);
+
+                            if (appLocation != null && appLocation.isDisabled != true)
                             {
-                                defaultStudentGroup = await op2.GetUserGroupById(studentGroupId);
-                                defaultOtherGroup = await op2.GetUserGroupById(defaultGroupId);
-                                
-                                if (defaultStudentGroup != null && defaultOtherGroup != null)
+                                // Retrieves global settings from database
+                                MinHours = await op2.GetGlobalSetting("MinHours");
+                                int.TryParse(await op2.GetGlobalSetting("DefaultTraineeGroup"), out int studentGroupId);
+                                int.TryParse(await op2.GetGlobalSetting("DefaultGroup"), out int defaultGroupId);
+
+                                if (studentGroupId != int.MinValue && defaultGroupId != int.MinValue)
                                 {
-                                    InitState = InitStates.Success;
+                                    defaultStudentGroup = await op2.GetUserGroupById(studentGroupId);
+                                    defaultOtherGroup = await op2.GetUserGroupById(defaultGroupId);
+
+                                    if (defaultStudentGroup != null && defaultOtherGroup != null)
+                                    {
+                                        InitState = InitStates.Success;
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    InitState = InitStates.Failed;
                                     return;
                                 }
                             }
                             else
                             {
-                                InitState = InitStates.Failed;
+                                InitState = InitStates.Completed;
                                 return;
                             }
                         }
                         else
                         {
-                            InitState = InitStates.Completed;
+                            InitState = InitStates.Failed;
                             return;
                         }
                     }

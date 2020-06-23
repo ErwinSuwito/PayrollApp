@@ -82,6 +82,7 @@ namespace PayrollApp.Views.FirstRunSetup
             if (CanConnect)
             {
                 SettingsHelper.Instance.SaveConnectionString(false, connString);
+                SettingsHelper.Instance.Initialize();
 
                 if (appNameText.Visibility == Visibility.Collapsed)
                 {
@@ -90,7 +91,6 @@ namespace PayrollApp.Views.FirstRunSetup
                 }
                 else
                 {
-                    SettingsHelper.Instance.Initialize();
                     this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
             }
