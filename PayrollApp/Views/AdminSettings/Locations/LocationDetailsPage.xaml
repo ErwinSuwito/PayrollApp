@@ -106,7 +106,7 @@
 
             <AppBarButton x:Name="manageMeetingsBtn" Icon="Calendar" Label="Manage Meetings"
                           Click="manageMeetingsBtn_Click" Style="{ThemeResource AppBarButtonRevealStyle}"
-                          Visibility="{Binding ElementName=enableMeetingSwitch, Converter={StaticResource BooleanToVisibility}}"/>
+                          Visibility="{Binding ElementName=enableMeetingSwitch, Path=IsOn, Converter={StaticResource BooleanToVisibility}}"/>
 
             <AppBarButton x:Name="saveButton" Icon="Save" Label="Save" 
                           Click="saveButton_Click"

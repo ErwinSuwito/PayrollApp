@@ -10,6 +10,7 @@ using PayrollCore.Entities;
 
 namespace PayrollCore
 {
+    [Obsolete("DataAccess is deprecated, please use DataAccess2 instead.", true)]
     public class DataAccess
     {
         string DbConnString;

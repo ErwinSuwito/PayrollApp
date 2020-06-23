@@ -7,6 +7,7 @@ using PayrollCore.Entities;
 
 namespace PayrollCore
 {
+    [Obsolete("Operations is depracated. Use Operationsv2 instead.", true)]
     public class Operations
     {
         DataAccess da = new DataAccess();

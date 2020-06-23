@@ -17,7 +17,7 @@
     <Page.Resources>
         <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
         <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
-        <ctl:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        <ctl:BooleanToEmojiConverter x:Key="BooleanToEmojiConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -80,12 +80,11 @@
                           IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:Meeting">
-                            <StackPanel>
-                                <TextBlock Text="{Binding meetingName}" />
-                                <Grid BorderBrush="{Binding isDisabled, Converter={StaticResource BooleanToColorConverter}}">
-                                    <TextBlock Text="{Binding isDisabled, Converter={StaticResource BooleanToEnabledConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
-                                               Margin="2,2,2,2" FontStretch="Expanded"/>
-                                </Grid>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+                                <TextBlock Text="{Binding meetingName}" FontSize="18" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                <TextBlock Text="{Binding isDisabled, Converter={StaticResource BooleanToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
+                                           FontFamily="Segoe MDL2 Assets" Margin="8,0,0,0" VerticalAlignment="Center"/>
+
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

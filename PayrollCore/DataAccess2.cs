@@ -1206,7 +1206,7 @@ namespace PayrollCore
         public async Task<ObservableCollection<Meeting>> GetAllMeetingsAsync(bool GetDisabled)
         {
             lastError = null;
-            string Query = "SELECT * FROM Meetings";
+            string Query = "SELECT * FROM Meeting";
 
             if (!GetDisabled)
             {
@@ -1261,7 +1261,7 @@ namespace PayrollCore
         public async Task<ObservableCollection<Meeting>> GetAllMeetingsAsync(bool GetDisabled, int locationID)
         {
             lastError = null;
-            string Query = "SELECT * FROM Meetings WHERE LocationID=@LocationID";
+            string Query = "SELECT * FROM Meeting WHERE LocationID=@LocationID";
 
             if (!GetDisabled)
             {
