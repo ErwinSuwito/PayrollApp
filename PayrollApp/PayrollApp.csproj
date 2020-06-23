@@ -156,6 +156,10 @@
     <Compile Include="Controls\RealTimeFaceIdentificationBorder.xaml.cs">
       <DependentUpon>RealTimeFaceIdentificationBorder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TimeControl.xaml.cs">
+      <DependentUpon>TimeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TimeIndicatorHelper.cs" />
     <Compile Include="GroupList\EmptyOrFullSelector.cs" />
     <Compile Include="GroupList\GroupedUsers.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -366,6 +370,10 @@
     <Page Include="Controls\RealTimeFaceIdentificationBorder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TimeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -32,6 +32,7 @@
 // 
 
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using PayrollApp.Controls;
 using PayrollCore;
 using PayrollCore.Entities;
 using ServiceHelpers;
@@ -53,6 +54,7 @@ namespace PayrollApp
         string DbConnectionString;
         string CardConnString;
 
+        public TimeIndicatorHelper timeHelper = new TimeIndicatorHelper();
         public UserState userState;
         public Location appLocation;
         public Operationsv2 op2;
