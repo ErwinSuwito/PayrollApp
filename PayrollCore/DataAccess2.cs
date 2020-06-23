@@ -220,7 +220,7 @@ namespace PayrollCore
         { 
             lastError = null;
 
-            string Query = "UPDATE Rate SET RateDesc=@RateDesc AND Rate=@Rate AND IsDisabled=@IsDisabled WHERE RateID=@RateID";
+            string Query = "UPDATE Rate SET RateDesc=@RateDesc, Rate=@Rate, IsDisabled=@IsDisabled WHERE RateID=@RateID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -425,7 +425,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE user_group SET GroupName=@GroupName AND RateID=@RateID AND ShowAdminSettings=@ShowAdminSettings AND EnableFaceRec=@EnableFaceRec AND IsDisabled=@IsDisabled WHERE GroupID=@GroupID";
+            string Query = "UPDATE user_group SET GroupName=@GroupName, RateID=@RateID, ShowAdminSettings=@ShowAdminSettings, EnableFaceRec=@EnableFaceRec, IsDisabled=@IsDisabled WHERE GroupID=@GroupID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -633,7 +633,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE Users SET FullName=@FullName AND FromAD=@FromAD AND IsDisabled=@IsDisabled AND GroupID=@GroupID WHERE UserID=@UserID";
+            string Query = "UPDATE Users SET FullName=@FullName, FromAD=@FromAD, IsDisabled=@IsDisabled, GroupID=@GroupID WHERE UserID=@UserID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -840,7 +840,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE Location SET LocationName=@LocationName AND EnableGM=@EnableGM AND IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
+            string Query = "UPDATE Location SET LocationName=@LocationName, EnableGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1113,7 +1113,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE Shifts SET ShiftName=@ShiftName AND StartTime=@StartTime AND EndTime=@EndTIme AND LocationID=@LocationID AND RateID=@RateID AND WeekendOnly=@WeekendOnly AND IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
+            string Query = "UPDATE Shifts SET ShiftName=@ShiftName, StartTime=@StartTime, EndTime=@EndTIme, LocationID=@LocationID, RateID=@RateID, WeekendOnly=@WeekendOnly, IsDisabled=@IsDisabled WHERE ShiftID=@ShiftID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1385,7 +1385,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE Meeting SET MeetingName=@MeetingName AND LocationID=@LocationID AND MeetingDay=@MeetingDay AND IsDisabled=@IsDisabled AND RateID=@RateID AND StartTime=@StartTime WHERE MeetingID=@MeetingID";
+            string Query = "UPDATE Meeting SET MeetingName=@MeetingName, LocationID=@LocationID, MeetingDay=@MeetingDay, IsDisabled=@IsDisabled, RateID=@RateID, StartTime=@StartTime WHERE MeetingID=@MeetingID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -2365,11 +2365,11 @@ namespace PayrollCore
 
             if (activity.meeting != null)
             {
-                Query = "UPDATE Activity SET UserID=@UserID AND LocationID=@LocationID AND InTime=@InTime AND OutTime=@OutTime AND MeetingID=@MeetingID AND ApprovedHours=@ApprovedHours AND ClaimableHours=@ClaimableHours AND ApplicableRate=@ApplicableRate AND ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, MeetingID=@MeetingID, ApprovedHours=@ApprovedHours, ClaimableHours=@ClaimableHours, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
             }
             else
             {
-                Query = "UPDATE Activity SET UserID=@UserID AND LocationID=@LocationID AND InTime=@InTime AND OutTime=@OutTime AND StartShift=@StartShift AND EndShift=@EndShift AND SpecialTask=@SpecialTask AND ApprovedHours=@ApprovedHours AND ClaimableHours=@ClaimableHours AND ApplicableRate=@ApplicableRate AND ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
+                Query = "UPDATE Activity SET UserID=@UserID, LocationID=@LocationID, InTime=@InTime, OutTime=@OutTime, StartShift=@StartShift, EndShift=@EndShift, SpecialTask=@SpecialTask, ApprovedHours=@ApprovedHours, ClaimableHours=@ClaimableHours, ApplicableRate=@ApplicableRate, ClaimDate=@ClaimDate WHERE ActivityID=@ActivityID";
             }
 
             try
