@@ -1273,6 +1273,8 @@ namespace PayrollCore
                 using (SqlConnection conn = new SqlConnection(DbConnString))
                 {
                     conn.Open();
+                    cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                    
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
@@ -1438,6 +1440,10 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                        cmd.Parameters.Add(new SqlParameter("@UserGroupID", userGroupId));
+                        cmd.Parameters.Add(new SqlParameter("@MeetingDay", meetingDay));
+
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
                             cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
