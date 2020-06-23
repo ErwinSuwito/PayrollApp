@@ -214,8 +214,8 @@ namespace PayrollApp.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            currentTime.Text = DateTime.Now.ToString("hh:mm tt");
-            currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            //currentTime.Text = DateTime.Now.ToString("hh:mm tt");
+            //currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
@@ -223,8 +223,8 @@ namespace PayrollApp.Views
 
         private void TimeUpdater_Tick(object sender, object e)
         {
-            currentTime.Text = DateTime.Now.ToString("hh:mm tt");
-            currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            //currentTime.Text = DateTime.Now.ToString("hh:mm tt");
+            //currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)

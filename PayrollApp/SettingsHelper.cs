@@ -54,7 +54,7 @@ namespace PayrollApp
         string DbConnectionString;
         string CardConnString;
 
-        public TimeIndicatorHelper timeHelper = new TimeIndicatorHelper();
+        public DateTime dateTime;
         public UserState userState;
         public Location appLocation;
         public Operationsv2 op2;
