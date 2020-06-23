@@ -14,6 +14,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -166,35 +167,32 @@ namespace PayrollApp.Views.AdminSettings.Meetings
                 loadGrid.Visibility = Visibility.Visible;
                 meeting.isDisabled = true;
 
-                // Gets the number of attendance record for the meeting. If there is none, 
-                // delete the meeting from the meetings and meeting_group table. 
-                // If there is, just disable the meeting.
-                int numRows = await SettingsHelper.Instance.op2.GetMeeting.GetMeetingAttendanceRecNum(meeting);
-                bool IsSuccess;
+                bool IsSuccess = await SaveChanges();
 
-                if (numRows == 0 || meeting.newMeeting)
+                if (!IsSuccess)
                 {
-                    IsSuccess = await SettingsHelper.Instance.da.DeleteMeetingUserGroup(meeting.meetingID) && await SettingsHelper.Instance.da.DeleteMeetingAsync(meeting.meetingID);
-                }
-                else
-                {
-                    IsSuccess = await SaveChanges();
-                }
-
-                if (IsSuccess)
-                {
-                    this.Frame.GoBack();
-                }
-                else
-                {
-                    ContentDialog contentDialog2 = new ContentDialog
+                    ContentDialog contentDialog1 = new ContentDialog()
                     {
-                        Title = "Unable to disable meeting",
-                        Content = "There is an error in saving changes. Please try again later.",
-                        PrimaryButtonText = "Ok"
+                        Title = "Unable to save changes",
+                        Content = "There's a problem in saving your changes. Please try again later.",
+                        PrimaryButtonText = "More info",
+                        CloseButtonText = "Ok"
                     };
 
-                    await contentDialog2.ShowAsync();
+                    result = await contentDialog1.ShowAsync();
+
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        Exception ex = SettingsHelper.Instance.op2.GetLastError();
+                        contentDialog1 = new ContentDialog()
+                        {
+                            Title = "More info",
+                            Content = ex.Message,
+                            CloseButtonText = "Ok"
+                        };
+
+                        await contentDialog1.ShowAsync();
+                    }
                 }
 
                 loadGrid.Visibility = Visibility.Collapsed;
@@ -231,22 +229,28 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             meeting.StartTime = startTimePicker.Time;
             meeting.rate = defaultRateBox.SelectedItem as Rate;
 
-            bool IsSuccess = await SettingsHelper.Instance.da.SaveMeetingSettings(meeting) && await SettingsHelper.Instance.da.DeleteMeetingUserGroup(meeting.meetingID);
+            List<MeetingUserGroup> meetingUserGroups = new List<MeetingUserGroup>();
 
-            if (IsSuccess)
+            foreach (UserGroup item in userGroupSelector.SelectedItems)
             {
-                // Loop through selected items and add them to database
-                List<UserGroup> userGroups = new List<UserGroup>();
-
-                foreach(UserGroup item in userGroupSelector.SelectedItems)
+                MeetingUserGroup meetingUserGroup = new MeetingUserGroup()
                 {
-                    IsSuccess = await SettingsHelper.Instance.da.AddMeetingUserGroup(item, meeting);
+                    meetingID = meeting.meetingID,
+                    usrGroupId = item.groupID
+                };
 
-                    if (IsSuccess == false)
-                    {
-                        break;
-                    }
-                }
+                meetingUserGroups.Add(meetingUserGroup);
+            }
+
+            bool IsSuccess;
+
+            if (meeting.newMeeting)
+            {
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewMeeting(meeting, meetingUserGroups);
+            }
+            else
+            {
+                IsSuccess = await SettingsHelper.Instance.op2.UpdateMeeting(meeting, meetingUserGroups);
             }
 
             return IsSuccess;
