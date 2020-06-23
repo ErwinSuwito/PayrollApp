@@ -74,6 +74,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             }
             else
             {
+                enableMeetingSwitch.IsOn = location.isDisabled;
                 locationName.Text = location.locationName;
                 if (location.isDisabled == true)
                 {
@@ -197,7 +198,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             {
                 Title = "Ready to save location?",
                 Content = "You'll need to save your changes first before managing meeting. If not any changes will be discarded.",
-                PrimaryButtonText = "Manage meeting",
+                PrimaryButtonText = "Save and manage meeting",
                 CloseButtonText = "Cancel"
             };
 

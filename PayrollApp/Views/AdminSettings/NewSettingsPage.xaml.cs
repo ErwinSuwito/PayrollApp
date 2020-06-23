@@ -146,16 +146,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            var lastPage = Frame.BackStack.Last();
-
-            if (lastPage != null && lastPage.SourcePageType.Equals(typeof(UserProfile.UserProfilePage)))
-            {
-                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            else
-            {
-                this.Frame.Navigate(typeof(DebugModePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
+            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void manageLocationText_Click(object sender, RoutedEventArgs e)
@@ -361,7 +352,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Meetings.MeetingListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            this.Frame.Navigate(typeof(Meetings.MeetingListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }
