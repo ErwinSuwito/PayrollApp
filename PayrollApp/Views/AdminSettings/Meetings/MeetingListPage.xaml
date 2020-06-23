@@ -17,7 +17,7 @@
     <Page.Resources>
         <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
         <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
-        <ctl:BooleanToEmojiConverter x:Key="BooleanToEmojiConverter" />
+        <ctl:ReverseBoolenToEmojiConverter x:Key="ReverseBoolenToEmojiConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -82,7 +82,7 @@
                         <DataTemplate x:DataType="entity:Meeting">
                             <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
                                 <TextBlock Text="{Binding meetingName}" FontSize="18" Style="{ThemeResource BaseTextBlockStyle}"/>
-                                <TextBlock Text="{Binding isDisabled, Converter={StaticResource BooleanToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
+                                <TextBlock Text="{Binding isDisabled, Converter={StaticResource ReverseBoolenToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
                                            FontFamily="Segoe UI Emoji" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
                             </StackPanel>

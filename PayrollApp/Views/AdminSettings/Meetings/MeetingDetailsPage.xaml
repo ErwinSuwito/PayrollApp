@@ -109,6 +109,13 @@
 
         <CommandBar Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"
                     DefaultLabelPosition="Right" Background="Transparent">
+            <AppBarButton x:Name="enableMeetingBtn" Label="Enable"
+                          Click="enableMeetingBtn_Click" Visibility="Collapsed"
+                          Style="{ThemeResource AppBarButtonRevealStyle}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE0E7;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Name="disableMeetingBtn" Label="Disable" 
                           Click="disableMeetingBtn_Click" Visibility="Collapsed"
                           Style="{ThemeResource AppBarButtonRevealStyle}" >

@@ -99,6 +99,17 @@ namespace PayrollApp.Views.AdminSettings.Meetings
                         break;
                     }
                 }
+
+                if (meeting.isDisabled == true)
+                {
+                    disableMeetingBtn.Visibility = Visibility.Collapsed;
+                    enableMeetingBtn.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    disableMeetingBtn.Visibility = Visibility.Visible;
+                    enableMeetingBtn.Visibility = Visibility.Collapsed;
+                }
             }
 
             loadTimer2.Interval = new TimeSpan(0, 0, 0, 0, 60);
@@ -206,8 +217,6 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
                 loadGrid.Visibility = Visibility.Collapsed;
             }
-
-            
         }
 
         private async void saveMeetingBtn_Click(object sender, RoutedEventArgs e)
@@ -263,6 +272,51 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             }
 
             return IsSuccess;
+        }
+
+        private async void enableMeetingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            loadGrid.Visibility = Visibility.Visible;
+            meeting.isDisabled = false;
+
+            bool IsSuccess = await SaveChanges();
+
+            if (!IsSuccess)
+            {
+                ContentDialog contentDialog1 = new ContentDialog()
+                {
+                    Title = "Unable to save changes",
+                    Content = "There's a problem in saving your changes. Please try again later.",
+                    PrimaryButtonText = "More info",
+                    CloseButtonText = "Ok"
+                };
+
+                ContentDialogResult result = await contentDialog1.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
+                {
+                    Exception ex = SettingsHelper.Instance.op2.GetLastError();
+                    string message;
+                    if (ex == null)
+                    {
+                        message = "No details";
+                    }
+                    else
+                    {
+                        message = ex.Message;
+                    }
+                    contentDialog1 = new ContentDialog()
+                    {
+                        Title = "More info",
+                        Content = message,
+                        CloseButtonText = "Ok"
+                    };
+
+                    await contentDialog1.ShowAsync();
+                }
+            }
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
     }
 }
