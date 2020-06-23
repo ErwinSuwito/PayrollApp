@@ -160,7 +160,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private void manageLocationText_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Location.LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(Locations.LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void saveLocationBtn_Click(object sender, RoutedEventArgs e)

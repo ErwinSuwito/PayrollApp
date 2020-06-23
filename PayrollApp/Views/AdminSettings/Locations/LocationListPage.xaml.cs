@@ -94,26 +94,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
 
         private async void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Shows loadGrid and creates a new location in the database with temporary name.
-            loadGrid.Visibility = Visibility.Visible;
-
-            PayrollCore.Entities.Location location = await SettingsHelper.Instance.op.PrepareNewLocation();
-
-            if (location != null)
-            {
-                this.Frame.Navigate(typeof(LocationDetailsPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            else
-            {
-                ContentDialog contentDialog = new ContentDialog()
-                {
-                    Title = "Can't create a new location",
-                    Content = "There is a problem in connecting to the database. Please try again in a while.",
-                    CloseButtonText = "Ok"
-                };
-
-                await contentDialog.ShowAsync();
-            }
+            this.Frame.Navigate(typeof(LocationDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
