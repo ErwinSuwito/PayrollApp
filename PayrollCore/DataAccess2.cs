@@ -1716,7 +1716,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -1787,7 +1790,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -1860,7 +1866,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -1943,7 +1952,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -2014,7 +2026,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -2089,7 +2104,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
@@ -2164,7 +2182,10 @@ namespace PayrollCore
                                     activity.outTime = dr.GetDateTime(4);
                                 }
 
-                                activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                if (!dr.IsDBNull(5))
+                                {
+                                    activity.StartShift = new Shift() { shiftID = dr.GetInt32(5) };
+                                }
 
                                 if (!dr.IsDBNull(6))
                                 {
