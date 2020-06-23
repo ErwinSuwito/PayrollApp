@@ -184,10 +184,19 @@ namespace PayrollApp.Views.AdminSettings.Meetings
                     if (result == ContentDialogResult.Primary)
                     {
                         Exception ex = SettingsHelper.Instance.op2.GetLastError();
+                        string message;
+                        if (ex == null)
+                        {
+                            message = "No details";
+                        }
+                        else
+                        {
+                            message = ex.Message;
+                        }
                         contentDialog1 = new ContentDialog()
                         {
                             Title = "More info",
-                            Content = ex.Message,
+                            Content = message,
                             CloseButtonText = "Ok"
                         };
 

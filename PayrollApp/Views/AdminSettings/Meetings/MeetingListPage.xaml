@@ -83,7 +83,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
                                 <TextBlock Text="{Binding meetingName}" FontSize="18" Style="{ThemeResource BaseTextBlockStyle}"/>
                                 <TextBlock Text="{Binding isDisabled, Converter={StaticResource BooleanToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
-                                           FontFamily="Segoe MDL2 Assets" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                           FontFamily="Segoe UI Emoji" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
                             </StackPanel>
                         </DataTemplate>

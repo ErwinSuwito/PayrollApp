@@ -563,7 +563,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<bool> UpdateMeeting(Meeting meeting, List<MeetingUserGroup> meetingUserGroups)
         {
-            if (meeting.meetingID != int.MinValue && string.IsNullOrEmpty(meeting.meetingName) && meeting.meetingDay != int.MinValue && meeting.StartTime != TimeSpan.MinValue)
+            if (meeting.meetingID != int.MinValue && !string.IsNullOrEmpty(meeting.meetingName) && meeting.meetingDay != int.MinValue && meeting.StartTime != TimeSpan.MinValue)
             {
                 bool IsSuccess = await da.UpdateMeetingAsync(meeting);
                 if (IsSuccess)
@@ -578,6 +578,15 @@ namespace PayrollCore
                             {
                                 return false;
                             }
+                        }
+
+                        if (IsSuccess)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
                         }
                     }
                 }
