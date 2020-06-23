@@ -15,9 +15,7 @@
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
-        <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
-        <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
-        <ctl:ReverseBooleanToColorConverter x:Key="ReverseBooleanToColorConverter" />
+        <ctl:ReverseBoolenToEmojiConverter x:Key="ReverseBoolenToEmojiConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -78,15 +76,16 @@
                           IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entity:Rate">
-                            <StackPanel Orientation="Horizontal" Margin="0,4,0,4">
-                                <Rectangle Width="3"  Fill="{Binding Converter={StaticResource ReverseBooleanToColorConverter}, Path=isDisabled}" />
-                                <StackPanel Margin="12,8,0,0">
+                            <StackPanel Margin="0,4,0,4">
+                                <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding rateDesc}" />
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
-                                        <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
-                                        <TextBlock Text="per hour" Margin="4,0,0,0"/>
-                                    </StackPanel>
+                                    <TextBlock Text="{Binding isDisabled, Converter={StaticResource ReverseBoolenToEmojiConverter}}"
+                                               FontFamily="Segoe UI Emoji"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <TextBlock Text="per hour" Margin="4,0,0,0"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
