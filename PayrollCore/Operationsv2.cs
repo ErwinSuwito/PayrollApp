@@ -703,12 +703,13 @@ namespace PayrollCore
                         activity.RequireNotification = true;
                         activity.notifyReason = Activity.NotifyReason.EarlySignOut;
                     }
-
-                    if (activity.outTime == DateTime.MinValue)
-                    {
-                        activity.outTime = DateTime.Now;
-                    }
                 }
+
+                if (activity.outTime == DateTime.MinValue)
+                {
+                    activity.outTime = DateTime.Now;
+                }
+
             }
 
             TimeSpan workHour = activity.outTime.Subtract(activity.inTime);
