@@ -605,6 +605,11 @@ namespace PayrollCore
             return false;
         }
 
+        public async Task<List<MeetingUserGroup>> GetMeetingUserGroups(int meetingId)
+        {
+            return await da.GetAllMeetingGroupAsync(meetingId);
+        }
+
         /// <summary>
         /// Generate an object with required information to store activity (Shift/Special Task/Shiftless)
         /// </summary>

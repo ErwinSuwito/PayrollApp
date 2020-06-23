@@ -97,6 +97,7 @@ namespace PayrollApp.Views.AdminSettings.Meetings
         {
             Meeting meeting = new Meeting();
             meeting.locationID = locationID;
+            meeting.newMeeting = true;
             this.Frame.Navigate(typeof(MeetingDetailsPage), meeting, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 

@@ -1567,7 +1567,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="meetingID"></param>
         /// <returns></returns>
-        public async Task<ObservableCollection<MeetingUserGroup>> GetAllMeetingGroupAsync(int meetingID)
+        public async Task<List<MeetingUserGroup>> GetAllMeetingGroupAsync(int meetingID)
         {
             lastError = null;
             string Query = "SELECT * FROM Meeting_Group WHERE MeetingID=@MeetingID";
@@ -1584,7 +1584,7 @@ namespace PayrollCore
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
-                            ObservableCollection<MeetingUserGroup> meetingGroups = new ObservableCollection<MeetingUserGroup>();
+                            List<MeetingUserGroup> meetingGroups = new List<MeetingUserGroup>();
 
                             while (dr.Read())
                             {

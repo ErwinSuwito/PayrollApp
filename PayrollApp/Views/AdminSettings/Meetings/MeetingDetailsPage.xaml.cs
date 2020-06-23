@@ -80,16 +80,15 @@ namespace PayrollApp.Views.AdminSettings.Meetings
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
+            userGroups = await SettingsHelper.Instance.op2.GetUserGroups(false, false);
             userGroupSelector.ItemsSource = userGroups;
-            
-            selectedUserGroup = await SettingsHelper.Instance.da.GetMeetingUserGroupByMeetingId(meeting.meetingID);
 
-            ObservableCollection<Rate> rate = await SettingsHelper.Instance.da.GetAllRates(false);
+            ObservableCollection<Rate> rate = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = rate;
 
             if (!meeting.newMeeting)
             {
+                selectedUserGroup = await SettingsHelper.Instance.op2.GetMeetingUserGroups(meeting.meetingID);
                 for (int i = 0; i < rate.Count; i++)
                 {
                     var item = rate.ElementAt(i) as Rate;
@@ -110,18 +109,21 @@ namespace PayrollApp.Views.AdminSettings.Meetings
         {
             loadTimer2.Stop();
 
-            foreach (var item in selectedUserGroup)
+            if (!meeting.newMeeting)
             {
-                for (int i = 0; i < userGroups.Count; i++)
+                foreach (var item in selectedUserGroup)
                 {
-                    ListViewItem listViewItem = userGroupSelector.ContainerFromIndex(i) as ListViewItem;
-                    Debug.WriteLine("item usrGroupID: " + item.usrGroupId);
-                    Debug.WriteLine("userGroups groupID: " + userGroups[i].groupID);
-
-                    if (item.usrGroupId == userGroups[i].groupID)
+                    for (int i = 0; i < userGroups.Count; i++)
                     {
-                        listViewItem.IsSelected = true;
-                        break;
+                        ListViewItem listViewItem = userGroupSelector.ContainerFromIndex(i) as ListViewItem;
+                        Debug.WriteLine("item usrGroupID: " + item.usrGroupId);
+                        Debug.WriteLine("userGroups groupID: " + userGroups[i].groupID);
+
+                        if (item.usrGroupId == userGroups[i].groupID)
+                        {
+                            listViewItem.IsSelected = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -137,23 +139,14 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
         private async void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (meeting.newMeeting)
+            if (this.Frame.CanGoBack)
             {
-                await SettingsHelper.Instance.da.DeleteMeetingAsync(meeting.meetingID);
                 this.Frame.GoBack();
             }
             else
             {
-                if (this.Frame.CanGoBack)
-                {
-                    this.Frame.GoBack();
-                }
-                else
-                {
-                    this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-                }
+                this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
             }
-            
         }
 
         private async void disableMeetingBtn_Click(object sender, RoutedEventArgs e)
@@ -176,7 +169,7 @@ namespace PayrollApp.Views.AdminSettings.Meetings
                 // Gets the number of attendance record for the meeting. If there is none, 
                 // delete the meeting from the meetings and meeting_group table. 
                 // If there is, just disable the meeting.
-                int numRows = await SettingsHelper.Instance.da.GetMeetingAttendanceRecNum(meeting);
+                int numRows = await SettingsHelper.Instance.op2.GetMeeting.GetMeetingAttendanceRecNum(meeting);
                 bool IsSuccess;
 
                 if (numRows == 0 || meeting.newMeeting)
