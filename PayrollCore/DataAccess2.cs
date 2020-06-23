@@ -365,6 +365,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@GroupID", userGroup.groupID));
                         cmd.Parameters.Add(new SqlParameter("@GroupName", userGroup.groupName));
                         cmd.Parameters.Add(new SqlParameter("@RateID", userGroup.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@ShowAdminSettings", userGroup.ShowAdminSettings));
@@ -439,6 +440,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@ShowAdminSettings", userGroup.ShowAdminSettings));
                         cmd.Parameters.Add(new SqlParameter("@EnableFaceRec", userGroup.EnableFaceRec));
                         cmd.Parameters.Add(new SqlParameter("@IsDisabled", userGroup.IsDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@GroupID", userGroup.groupID));
 
                         await cmd.ExecuteNonQueryAsync();
 
@@ -475,7 +477,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@userID", userID));
+                        cmd.Parameters.Add(new SqlParameter("@UserID", userID));
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
@@ -564,7 +566,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "INSERT INTO Users(UserID, FullName, FromAD, IsDisabled, GroupID) VALUES(@UserID, @FullName, @FromAD, @IsDisabled, @GroupID)";
+            string Query = "INSERT INTO Users(UserID, FullName, FromAD, GroupID) VALUES(@UserID, @FullName, @FromAD, @GroupID)";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1003,8 +1005,6 @@ namespace PayrollCore
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
-                            cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
-
                             ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
 
                             while (dr.Read())
@@ -1273,14 +1273,14 @@ namespace PayrollCore
                 using (SqlConnection conn = new SqlConnection(DbConnString))
                 {
                     conn.Open();
-                    cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
                     
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
+
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
-                            cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
                             ObservableCollection<Meeting> meetings = new ObservableCollection<Meeting>();
 
                             while (dr.Read())
@@ -1446,9 +1446,6 @@ namespace PayrollCore
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
-                            cmd.Parameters.Add(new SqlParameter("@LocationID", locationID));
-                            cmd.Parameters.Add(new SqlParameter("@UserGroupID", userGroupId));
-                            cmd.Parameters.Add(new SqlParameter("@MeetingDay", meetingDay));
 
                             ObservableCollection<Meeting> meetings = new ObservableCollection<Meeting>();
 
@@ -1781,7 +1778,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
-                        cmd.Parameters.Add(new SqlParameter("@ActivityID", userID));
+                        cmd.Parameters.Add(new SqlParameter("@UserID", userID));
 
                         using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
                         {
@@ -2409,6 +2406,7 @@ namespace PayrollCore
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = Query;
+                        cmd.Parameters.Add(new SqlParameter("@ActivityID", activity.ActivityID));
                         cmd.Parameters.Add(new SqlParameter("@UserID", activity.userID));
                         cmd.Parameters.Add(new SqlParameter("@LocationID", activity.locationID));
                         cmd.Parameters.Add(new SqlParameter("@InTime", activity.inTime));
