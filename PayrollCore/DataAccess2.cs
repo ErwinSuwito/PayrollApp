@@ -1765,7 +1765,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Activity> GetLatestActivity(string userID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID SORT BY Activity DESC";
+            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID ORDER BY Activity DESC";
 
             try
             {
@@ -1840,7 +1840,7 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Activity> GetLatestActivity(string userID, int locationID)
         {
-            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID SORT BY ActivityID DESC";
+            string Query = "SELECT TOP 1 * FROM Activity WHERE UserID=@UserID AND LocationID=@LocationID ORDER BY ActivityID DESC";
 
             try
             {
@@ -1921,11 +1921,11 @@ namespace PayrollCore
 
             if (GetWorkItem)
             {
-                Query += " AND StartShift IS NOT NULL";
+                Query += " AND StartShift IS NOT NULL ORDER BY ActivityID DESC";
             }
             else
             {
-                Query += " AND MeetingID IS NOT NULL";
+                Query += " AND MeetingID IS NOT NULL ORDER BY ActivityID DESC";
             }
 
             try
