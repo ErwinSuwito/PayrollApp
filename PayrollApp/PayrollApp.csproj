@@ -186,9 +186,6 @@
     <Compile Include="Views\AdminSettings\Meetings\MeetingDetailsPage.xaml.cs">
       <DependentUpon>MeetingDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdminSettings\Locations\NewLocationPage.xaml.cs">
-      <DependentUpon>NewLocationPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\AdminSettings\NewSettingsPage.xaml.cs">
       <DependentUpon>NewSettingsPage.xaml</DependentUpon>
     </Compile>
@@ -399,10 +396,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AdminSettings\Meetings\MeetingDetailsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AdminSettings\Locations\NewLocationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
