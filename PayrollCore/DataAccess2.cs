@@ -1430,7 +1430,7 @@ namespace PayrollCore
         public async Task<ObservableCollection<Meeting>> GetMeetingsAsync(int locationID, int userGroupId, int meetingDay)
         {
             lastError = null;
-            string Query = "SELECT * FROM Meeting JOIN Meeting_Group ON Meeting_Group.MeetingID = Meeting.MeetingID WHERE LocationID=@LocationID Meeting_Group.UserGroupID=@UserGroupID AND MeetingDay=@MeetingDay";
+            string Query = "SELECT * FROM Meeting JOIN Meeting_Group ON Meeting_Group.MeetingID = Meeting.MeetingID WHERE LocationID=@LocationID AND Meeting_Group.UserGroupID=@UserGroupID AND MeetingDay=@MeetingDay";
 
             try
             {
