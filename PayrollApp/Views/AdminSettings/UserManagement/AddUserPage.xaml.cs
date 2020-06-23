@@ -82,7 +82,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
         private async void LoadTimer_Tick(object sender, object e)
         {
             loadTimer.Stop();
-            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
+            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.op2.GetUserGroups(GetDisabled: false, GetCompleteData: true);
             userGroupBox.ItemsSource = userGroups;
 
             if (user != null)
@@ -134,7 +134,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             if (user.fromAD == true)
             {
                 user.userGroup = userGroupBox.SelectedItem as UserGroup;
-                bool IsSuccess = await SettingsHelper.Instance.da.UpdateUserInfo(user);
+                bool IsSuccess = await SettingsHelper.Instance.op2.UpdateUser(user);
                 if (IsSuccess)
                 {
                     this.Frame.Navigate(typeof(UserListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
@@ -164,7 +164,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             user.fromAD = false;
             user.isDisabled = false;
 
-            bool IsSuccess = await SettingsHelper.Instance.da.AddNewUser(user);
+            bool IsSuccess = await SettingsHelper.Instance.op2.AddUser(user);
             if (IsSuccess)
             {
                 this.Frame.Navigate(typeof(UserListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });

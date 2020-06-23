@@ -43,7 +43,7 @@ namespace PayrollApp.Views.AdminSettings
         int locationIndex = 0;
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
@@ -59,7 +59,7 @@ namespace PayrollApp.Views.AdminSettings
 
             loadGrid.Visibility = Visibility.Visible;
 
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
 
             if (SettingsHelper.Instance.appLocation == null || SettingsHelper.Instance.appLocation.isDisabled == true)
             {
@@ -119,7 +119,7 @@ namespace PayrollApp.Views.AdminSettings
             loadTimer.Stop();
 
             // Loads the app location settings and get the appropriate index for locationSelector
-            ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.da.GetLocations(false);
+            ObservableCollection<PayrollCore.Entities.Location> getLocation = await SettingsHelper.Instance.op2.GetLocations(false);
             locationSelector.ItemsSource = getLocation;
 
             refreshLocationIndex();
@@ -129,7 +129,7 @@ namespace PayrollApp.Views.AdminSettings
             minHoursBox.Text = SettingsHelper.Instance.MinHours;
 
             // Gets all user groups and the default user group for student and all other accounts
-            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.da.GetAllUserGroups();
+            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.op2.GetUserGroups(false, false);
             defaultTraineeGroup.ItemsSource = userGroups;
             defaultOtherGroup.ItemsSource = userGroups;
 
@@ -146,27 +146,18 @@ namespace PayrollApp.Views.AdminSettings
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            var lastPage = Frame.BackStack.Last();
-
-            if (lastPage != null && lastPage.SourcePageType.Equals(typeof(UserProfile.UserProfilePage)))
-            {
-                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
-            else
-            {
-                this.Frame.Navigate(typeof(DebugModePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
-            }
+            this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void manageLocationText_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Location.LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(Locations.LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void saveLocationBtn_Click(object sender, RoutedEventArgs e)
         {
             localSettings.Values["selectedLocation"] = (locationSelector.SelectedItem as PayrollCore.Entities.Location).locationID;
-            SettingsHelper.Instance.Initializev2();
+            SettingsHelper.Instance.Initialize();
 
             if (SettingsHelper.Instance.appLocation != null || SettingsHelper.Instance.appLocation.isDisabled == false)
             {
@@ -290,7 +281,7 @@ namespace PayrollApp.Views.AdminSettings
 
         private async void saveMinHoursBtn_Click(object sender, RoutedEventArgs e)
         {
-            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("MinHours", minHoursBox.Text);
+            bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("MinHours", minHoursBox.Text);
 
             if (IsSuccess == false)
             {
@@ -322,8 +313,8 @@ namespace PayrollApp.Views.AdminSettings
             UserGroup[] groups = new UserGroup[2];
             groups[0] = defaultOtherGroup.SelectedItem as UserGroup;
             groups[1] = defaultTraineeGroup.SelectedItem as UserGroup;
-            bool IsSuccess = await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultGroup", groups[0].groupID.ToString()) &&
-                await SettingsHelper.Instance.da.UpdateGlobalSetting("DefaultTraineeGroup", groups[1].groupID.ToString());
+            bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("DefaultGroup", groups[0].groupID.ToString()) &&
+                await SettingsHelper.Instance.op2.UpdateGlobalSetting("DefaultTraineeGroup", groups[1].groupID.ToString());
 
             if (IsSuccess)
             {
@@ -357,6 +348,11 @@ namespace PayrollApp.Views.AdminSettings
         {
             FaceApiSettingsDialog dialog = new FaceApiSettingsDialog();
             await dialog.ShowAsync();
+        }
+
+        private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Meetings.MeetingListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }

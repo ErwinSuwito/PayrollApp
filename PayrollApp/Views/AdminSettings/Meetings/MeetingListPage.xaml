@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="PayrollApp.Views.AdminSettings.Location.LocationListPage"
+    x:Class="PayrollApp.Views.AdminSettings.Meetings.MeetingListPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
@@ -11,12 +11,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     HorizontalAlignment="Left"
-    Height="740" Width="620"
+    Height="740" Width="540"
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
         <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
         <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
+        <ctl:ReverseBoolenToEmojiConverter x:Key="ReverseBoolenToEmojiConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -56,13 +57,15 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Manage locations" 
+                <TextBlock Text="Manage meetings" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
             </StackPanel>
 
             <StackPanel x:Name="actualContent" Margin="0,12,0,0">
-                <TextBlock Text="Click on the add button to add a new location, select a location to view its info." 
+                <TextBlock Text="Click on the add button to add a new meeting, or select a meeting to view its info." 
                            TextWrapping="Wrap" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock x:Name="warningTextBlock" Text="You are viewing meetings for " Margin="0,4,0,0"
+                           Foreground="Yellow" Visibility="Collapsed" Style="{ThemeResource BaseTextBlockStyle}"/>
                 <Button x:Name="addBtn" HorizontalAlignment="Left" VerticalAlignment="Center"
                                     Height="40" Width="92"  Margin="0,8,36,0" Opacity="1"
                                     Background="Transparent" Click="addBtn_Click">
@@ -73,14 +76,20 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <controls:DataGrid x:Name="dataGrid" Height="420"
-                                   AutoGenerateColumns="True" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
-                                   IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False"
-                                   VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"
-                                   AreRowGroupHeadersFrozen="True" SelectionChanged="dataGrid_SelectionChanged"
-                                   Margin="0,8,0,0">
-                    
-                </controls:DataGrid>
+                <ListView x:Name="meetingListView" ItemClick="meetingListView_ItemClick" SelectionMode="None" 
+                          IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="entity:Meeting">
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+                                <TextBlock Text="{Binding meetingName}" FontSize="18" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                <TextBlock Text="{Binding isDisabled, Converter={StaticResource ReverseBoolenToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
+                                           FontFamily="Segoe UI Emoji" Margin="8,0,0,0" VerticalAlignment="Center"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
             </StackPanel>
         </StackPanel>
 

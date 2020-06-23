@@ -57,11 +57,11 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (DateTime.Today.DayOfWeek == System.DayOfWeek.Saturday || DateTime.Today.DayOfWeek == System.DayOfWeek.Sunday)
             {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), true);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, true);
             }
             else
             {
-                shifts = await SettingsHelper.Instance.da.GetAvailableShifts(SettingsHelper.Instance.appLocation.locationID.ToString(), false);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, false);
             }
 
             shiftSelectionView.ItemsSource = shifts;
@@ -144,23 +144,23 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (AllowSignin)
             {
-                var newActivity = await SettingsHelper.Instance.op.GenerateSignInInfo(SettingsHelper.Instance.userState.user, startShift, endShift);
+                var activity = SettingsHelper.Instance.op2.GenerateWorkActivity(SettingsHelper.Instance.userState.user.userID, startShift, endShift);
 
-                bool IsSuccess = await SettingsHelper.Instance.da.AddNewActivity(newActivity);
+                bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);
 
                 if (IsSuccess)
                 {
-                    if (newActivity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
+                    if (activity.RequireNotification && SettingsHelper.Instance.userState.user.fromAD)
                     {
                         string emailContent;
                         emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed in late. Below are the details of the shift.";
-                        emailContent += "\n Shift: " + newActivity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
-                        emailContent += newActivity.StartShift.startTime.ToString() + "\n Actual sign in: " + newActivity.inTime;
+                        emailContent += "\n Shift: " + activity.StartShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift start: ";
+                        emailContent += activity.StartShift.startTime.ToString() + "\n Actual sign in: " + activity.inTime;
                         emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 
                         var message = new Message
                         {
-                            Subject = "[Payroll] Sign In Late " + newActivity.StartShift.shiftName + " " + DateTime.Today.ToShortDateString(),
+                            Subject = "[Payroll] Sign In Late " + activity.StartShift.shiftName + " " + DateTime.Today.ToShortDateString(),
                             Body = new ItemBody
                             {
                                 ContentType = BodyType.Text,

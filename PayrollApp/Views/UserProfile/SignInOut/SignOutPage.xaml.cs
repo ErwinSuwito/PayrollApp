@@ -58,21 +58,22 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = await SettingsHelper.Instance.op.GenerateSignOutInfo(SettingsHelper.Instance.userState.LatestActivity, SettingsHelper.Instance.userState.user, false);
+                Activity activity = SettingsHelper.Instance.op2.CompleteWorkActivity(SettingsHelper.Instance.userState.LatestActivity,
+                    SettingsHelper.Instance.userState.user, false);
 
-                bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
+                bool IsSuccess = await SettingsHelper.Instance.op2.UpdateActivity(activity);
                 if (IsSuccess)
                 {
-                    if (newActivity.RequireNotification == true)
+                    if (activity.RequireNotification == true)
                     {
                         emailContent = "Dear all, \n " + SettingsHelper.Instance.userState.user.fullName + " has signed out late. Below are the details of the shift.";
-                        emailContent += "\n Shift: " + newActivity.EndShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift ends: ";
-                        emailContent += newActivity.EndShift.endTime.ToString() + "\n Actual sign out: " + newActivity.actualOutTime;
+                        emailContent += "\n Shift: " + activity.EndShift.shiftName + "\n Location: " + SettingsHelper.Instance.appLocation.locationName + "\n Shift ends: ";
+                        emailContent += activity.EndShift.endTime.ToString() + "\n Actual sign out: " + activity.actualOutTime;
                         emailContent += "\n Thank You. \n This is an auto-generated email. Please do not reply to this email.";
 
                         var message = new Message
                         {
-                            Subject = "[Payroll] Sign Out Late " + newActivity.EndShift.shiftName + DateTime.Today.ToShortDateString(),
+                            Subject = "[Payroll] Sign Out Late " + activity.EndShift.shiftName + DateTime.Today.ToShortDateString(),
                             Body = new ItemBody
                             {
                                 ContentType = BodyType.Text,

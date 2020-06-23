@@ -85,7 +85,7 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
             loadTimer.Stop();
 
             // Gets all available rates and assign it as ItemSource for defaultRateBox
-            ObservableCollection<Rate> rate = await SettingsHelper.Instance.da.GetAllRates(false);
+            ObservableCollection<Rate> rate = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = rate;
 
             if (IsNewGroup == false)
@@ -143,7 +143,7 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
 
-            bool IsSuccess = await SettingsHelper.Instance.da.DeleteUserGroup(userGroup);
+            bool IsSuccess = await SettingsHelper.Instance.op2.DeleteUserGroup(userGroup);
             if (IsSuccess)
             {
                 this.Frame.GoBack();
@@ -173,11 +173,11 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
 
             if (IsNewGroup == false)
             {
-                IsSuccess = await SettingsHelper.Instance.da.UpdateUserGroupInfo(userGroup);
+                IsSuccess = await SettingsHelper.Instance.op2.UpdateUserGroup(userGroup);
             }
             else
             {
-                IsSuccess = await SettingsHelper.Instance.da.AddNewUserGroup(userGroup);
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewUserGroup(userGroup);
             }
             
             return IsSuccess;

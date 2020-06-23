@@ -51,9 +51,10 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity newActivity = SettingsHelper.Instance.op.CompleteMeetingAttendance(SettingsHelper.Instance.userState.LatestMeeting, SettingsHelper.Instance.userState.user, false);
+                Activity activity = SettingsHelper.Instance.op2.CompleteMeetingActivity(SettingsHelper.Instance.userState.LatestMeeting,
+                    SettingsHelper.Instance.userState.user, false);
+                bool IsSuccess = await SettingsHelper.Instance.op2.UpdateActivity(activity);
 
-                bool IsSuccess = await SettingsHelper.Instance.da.UpdateActivityInfo(newActivity);
                 if (IsSuccess)
                 {
                     pageContent.Visibility = Visibility.Visible;

@@ -94,10 +94,10 @@
             <AppBarButton Label="Help" Icon="Help">
                 <AppBarButton.Flyout>
                     <Flyout>
-                        <StackPanel>
+                        <StackPanel Width="320">
                             <TextBlock Text="Something missing?" Style="{ThemeResource BaseTextBlockStyle}" FontSize="18"/>
                             <TextBlock Text="Contact Chiefs or HR Functional Unit to check if the shift has been added to this location." 
-                       TextWrapping="Wrap"/>
+                                       TextWrapping="Wrap"/>
                         </StackPanel>
                     </Flyout>
                 </AppBarButton.Flyout>

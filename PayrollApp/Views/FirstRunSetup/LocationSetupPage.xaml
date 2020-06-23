@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
     xmlns:entity="using:PayrollCore.Entities"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -63,5 +64,20 @@
                 </StackPanel>
             </Button.Content>
         </Button>
+
+        <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
+              Background="{ThemeResource loadBackground}" Visibility="Visible">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressRing IsActive="True" />
+                <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Page>

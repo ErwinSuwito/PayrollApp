@@ -33,6 +33,7 @@ namespace PayrollApp.Views.FirstRunSetup
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
+        DispatcherTimer loadTimer = new DispatcherTimer();
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -42,7 +43,25 @@ namespace PayrollApp.Views.FirstRunSetup
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
-            locationSelectionView.ItemsSource = await SettingsHelper.Instance.da.GetLocations(false);
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InProgress)
+            {
+                loadTimer.Start();
+            }
+            else
+            {
+                locationSelectionView.ItemsSource = await SettingsHelper.Instance.op2.GetLocations(false);
+                loadGrid.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -50,6 +69,7 @@ namespace PayrollApp.Views.FirstRunSetup
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
+
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
             if (locationSelectionView.SelectedItem != null)

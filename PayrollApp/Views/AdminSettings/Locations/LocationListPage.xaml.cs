@@ -21,14 +21,14 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace PayrollApp.Views.AdminSettings.Rates
+namespace PayrollApp.Views.AdminSettings.Locations
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class RateListPage : Page
+    public sealed partial class LocationListPage : Page
     {
-        public RateListPage()
+        public LocationListPage()
         {
             this.InitializeComponent();
         }
@@ -61,8 +61,8 @@ namespace PayrollApp.Views.AdminSettings.Rates
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<Rate> getItem = await SettingsHelper.Instance.op2.GetAllRates(true);
-            rateListView.ItemsSource = getItem;
+            ObservableCollection<PayrollCore.Entities.Location> getItem = await SettingsHelper.Instance.op2.GetLocations(true);
+            dataGrid.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;
         }
@@ -72,15 +72,38 @@ namespace PayrollApp.Views.AdminSettings.Rates
             this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private void addBtn_Click(object sender, RoutedEventArgs e)
+        private void dataGrid_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
         {
-            this.Frame.Navigate(typeof(RateDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            if (e.Column.Header.ToString() == "locationName")
+            {
+                e.Column.Header = "Location Name";
+            }
+            else if (e.Column.Header.ToString() == "lv_enableGM")
+            {
+                e.Column.Header = "Allow GM Attendance";
+            }
+            else if (e.Column.Header.ToString() == "lv_isDisabled")
+            {
+                e.Column.Header = "Disabled";
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
-        private void rateListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            Rate rate = e.ClickedItem as Rate;
-            this.Frame.Navigate(typeof(RateDetailsPage), rate, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(LocationDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
+
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dataGrid.SelectedItem != null)
+            {
+                PayrollCore.Entities.Location selectedLocation = (dataGrid.SelectedItem as PayrollCore.Entities.Location);
+                this.Frame.Navigate(typeof(LocationDetailsPage), selectedLocation, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }

@@ -39,11 +39,11 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Shifts" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="Shiftless mode" Style="{ThemeResource HeaderTextBlockStyle}"/>
                 <TextBlock Text="Toggle the swith below to enable or disable shifts." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
-                <ToggleSwitch x:Name="shiftToggleBtn" IsOn="{Binding AllowShift, Mode=TwoWay}" Margin="0,8,0,0" 
-                              OnContent="Shifts enabled" OffContent="Shifts disabled" />
+                <ToggleSwitch x:Name="shiftToggleBtn" IsOn="{Binding AllowShift, Mode=TwoWay}" Margin="0,8,0,0"
+                              Header="Shiftless mode" OnContent="On" OffContent="Off" />
             </StackPanel>
         </StackPanel>
 

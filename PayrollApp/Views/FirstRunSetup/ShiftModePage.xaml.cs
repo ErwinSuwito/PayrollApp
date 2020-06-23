@@ -48,18 +48,9 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            CameraTestDialog testDialog = new CameraTestDialog();
-            ContentDialogResult result = await testDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                CameraTipsDialog tipsDialog = new CameraTipsDialog();
-                await tipsDialog.ShowAsync();
-            }
-            else if (result == ContentDialogResult.Secondary)
-            {
-                this.Frame.Navigate(typeof(GraphSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values["Shiftless"] = shiftToggleBtn.IsOn;
+            this.Frame.Navigate(typeof(SetupFinishedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }

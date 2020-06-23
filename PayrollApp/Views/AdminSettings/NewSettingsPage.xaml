@@ -90,11 +90,19 @@
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">
-                                <TextBlock Text="Locations and Meetings" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Locations" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="View, edit and create new locations. Manage meetings that are available at each locations." 
                                            TextWrapping="Wrap"/>
                                 <Button x:Name="manageLocationBtn" Content="Manage locations" 
                                         Click="manageLocationText_Click" Margin="0,8,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Meetings" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="View, edit and create new meetings on this location." 
+                                           TextWrapping="Wrap"/>
+                                <Button x:Name="manageMeetingsBtn" Content="Manage meetings" 
+                                        Click="manageMeetingsBtn_Click" Margin="0,8,0,0"/>
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">

@@ -78,7 +78,9 @@ namespace PayrollApp.Views.FirstRunSetup
                 }
             }
 
-            if (SettingsHelper.Instance.da.TestConnString(connString))
+            bool CanConnect = await SettingsHelper.Instance.op2.TestDbConnection(connString);
+
+            if (CanConnect)
             {
                 SettingsHelper.Instance.SaveConnectionString(true, connString);
 
@@ -106,10 +108,11 @@ namespace PayrollApp.Views.FirstRunSetup
 
                 if (result == ContentDialogResult.Primary)
                 {
+                    Exception ex = SettingsHelper.Instance.op2.GetLastError();
                     contentDialog = new ContentDialog
                     {
                         Title = "More info",
-                        Content = SettingsHelper.Instance.da.lastError,
+                        Content = ex.Message,
                         CloseButtonText = "Close"
                     };
 

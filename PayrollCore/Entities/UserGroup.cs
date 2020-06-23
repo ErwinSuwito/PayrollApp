@@ -14,6 +14,7 @@ namespace PayrollCore.Entities
         public Rate DefaultRate { get; set; }
         public bool ShowAdminSettings { get; set; }
         public bool EnableFaceRec { get; set; }
+        public bool IsDisabled { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyEventChanged(string propertyName)

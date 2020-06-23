@@ -111,7 +111,7 @@
             </StackPanel>
         </Grid>
         <ContentDialog x:Name="confirmDialog" Title="Add duty?" Grid.RowSpan="4" Grid.ColumnSpan="3"
-                       PrimaryButtonText="Add" CloseButtonText="Cancel" d:IsHidden="True">
+                       PrimaryButtonText="Add" CloseButtonText="Cancel" d:IsHidden="False">
             <StackPanel>
                 <TextBlock Text="Make sure that the following information is correct." />
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -120,8 +120,7 @@
                         <TextBlock Text="Duty date:" />
                         <TextBlock Text="Sign in time:" />
                         <TextBlock Text="Sign out time:" />
-                        <TextBlock Text="Start shift:" />
-                        <TextBlock Text="End shift:" />
+                        <TextBlock Text="Meeting name:" />
                     </StackPanel>
                     <StackPanel Margin="16,0,0,0">
                         <TextBlock Text="{Binding ElementName=nameTextBlock, Path=Text}"/>

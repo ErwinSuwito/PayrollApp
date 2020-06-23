@@ -61,7 +61,7 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<UserGroup> getItem = await SettingsHelper.Instance.da.GetAllUserGroups();
+            ObservableCollection<UserGroup> getItem = await SettingsHelper.Instance.op2.GetUserGroups(true, true);
             groupListView.ItemsSource = getItem;
             loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;
@@ -72,7 +72,7 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
             this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private async void addBtn_Click(object sender, RoutedEventArgs e)
+        private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(UserGroupDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }

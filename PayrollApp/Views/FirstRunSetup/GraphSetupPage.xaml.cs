@@ -112,6 +112,5 @@ namespace PayrollApp.Views.FirstRunSetup
         {
             this.Frame.Navigate(typeof(DbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
-
     }
 }

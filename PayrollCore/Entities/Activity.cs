@@ -33,6 +33,15 @@ namespace PayrollCore.Entities
         /// </summary>
         public int NotificationReason { get; set; }
 
+        public NotifyReason notifyReason { get; set; }
+
+        public enum NotifyReason
+        {
+            LateSignIn,
+            LateSignOut,
+            EarlySignOut
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyEventChanged(string propertyName)
         {

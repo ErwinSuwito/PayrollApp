@@ -77,9 +77,12 @@ namespace PayrollApp.Views.FirstRunSetup
                 }
             }
 
-            if (SettingsHelper.Instance.da.TestConnString(connString))
+            bool CanConnect = await SettingsHelper.Instance.op2.TestDbConnection(connString);
+
+            if (CanConnect)
             {
                 SettingsHelper.Instance.SaveConnectionString(false, connString);
+                SettingsHelper.Instance.Initialize();
 
                 if (appNameText.Visibility == Visibility.Collapsed)
                 {
@@ -88,7 +91,6 @@ namespace PayrollApp.Views.FirstRunSetup
                 }
                 else
                 {
-                    SettingsHelper.Instance.Initializev2();
                     this.Frame.Navigate(typeof(LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
             }
@@ -106,10 +108,11 @@ namespace PayrollApp.Views.FirstRunSetup
 
                 if (result == ContentDialogResult.Primary)
                 {
+                    Exception ex = SettingsHelper.Instance.op2.GetLastError();
                     contentDialog = new ContentDialog
                     {
                         Title = "More info",
-                        Content = SettingsHelper.Instance.da.lastError,
+                        Content = ex.Message,
                         CloseButtonText = "Close"
                     };
 

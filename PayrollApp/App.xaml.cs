@@ -101,7 +101,7 @@ namespace PayrollApp
                     CoreUtil.MinDetectableFaceCoveragePercentage = SettingsHelper.Instance.MinDetectableFaceCoveragePercentage;
                 };
 
-                SettingsHelper.Instance.Initializev2();
+                SettingsHelper.Instance.Initialize();
 
                 //Extend view to title bar
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
