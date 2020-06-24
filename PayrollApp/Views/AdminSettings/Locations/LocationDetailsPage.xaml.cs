@@ -75,7 +75,10 @@ namespace PayrollApp.Views.AdminSettings.Locations
             }
             else
             {
-                enableMeetingSwitch.IsOn = location.isDisabled;
+                if (location.enableGM)
+                {
+                    enableMeetingSwitch.IsOn = true;
+                }
                 locationName.Text = location.locationName;
                 if (location.isDisabled == true)
                 {
@@ -230,7 +233,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             bool IsSuccess;
             loadGrid.Visibility = Visibility.Visible;
 
-            if (location != null)
+            if (location == null)
             {
                 location = new PayrollCore.Entities.Location();
                 location.isNewLocation = true;
@@ -246,6 +249,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             {
                 int locationID = await SettingsHelper.Instance.op2.AddNewLocation(location);
                 specialTask.locationID = locationID;
+                //location.locationID = locationID;
                 IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(specialTask);
             }
             else
@@ -258,6 +262,11 @@ namespace PayrollApp.Views.AdminSettings.Locations
             }
 
             return IsSuccess;
+        }
+
+        private void enableMeetingSwitch_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Debug.WriteLine("switch clicked");
         }
     }
 }

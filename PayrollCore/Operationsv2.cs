@@ -419,6 +419,24 @@ namespace PayrollCore
             return shift;
         }
 
+        /// <summary>
+        /// Adds a special task shift to the location
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="defaultRate"></param>
+        /// <returns></returns>
+        public async Task<bool> AddSpecialTask(int locationID, Rate defaultRate)
+        {
+            Shift specialTask = new Shift();
+            specialTask.shiftName = "Special Task";
+            specialTask.locationID = locationID;
+            specialTask.startTime = new TimeSpan(0, 0, 0);
+            specialTask.endTime = new TimeSpan(23, 59, 59);
+            specialTask.DefaultRate = defaultRate;
+
+            bool IsSuccess = await AddNewShift(specialTask);
+            return IsSuccess;
+        }
 
         /// <summary>
         /// Adds a new shift
