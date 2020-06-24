@@ -53,7 +53,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
         {
             loadTimer.Stop();
             ObservableCollection<PayrollCore.Entities.Meeting> shifts = await SettingsHelper.Instance.op2.GetMeetings(SettingsHelper.Instance.appLocation.locationID, 
-                SettingsHelper.Instance.userState.user.userGroup.groupID, (int)DateTime.Today.DayOfWeek);
+                SettingsHelper.Instance.userState.user.userGroup.groupID, (int)DateTime.Today.DayOfWeek, false);
             shiftSelectionView.ItemsSource = shifts;
 
             if (shifts.Count < 1)

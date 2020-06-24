@@ -1427,10 +1427,15 @@ namespace PayrollCore
         /// <param name="userGroupId"></param>
         /// <param name="meetingDay"></param>
         /// <returns></returns>
-        public async Task<ObservableCollection<Meeting>> GetMeetingsAsync(int locationID, int userGroupId, int meetingDay)
+        public async Task<ObservableCollection<Meeting>> GetMeetingsAsync(int locationID, int userGroupId, int meetingDay, bool GetDisabled)
         {
             lastError = null;
             string Query = "SELECT * FROM Meeting JOIN Meeting_Group ON Meeting_Group.MeetingID = Meeting.MeetingID WHERE LocationID=@LocationID AND Meeting_Group.UserGroupID=@UserGroupID AND MeetingDay=@MeetingDay";
+
+            if (!GetDisabled)
+            {
+                Query += " AND IsDisabled=0";
+            }
 
             try
             {

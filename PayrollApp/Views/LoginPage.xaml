@@ -57,7 +57,7 @@
         <ContentDialog x:Name="newAccountDialog" Grid.RowSpan="4" Grid.ColumnSpan="3"
                        Title="Create new account"
                        PrimaryButtonText="Next"
-                       CloseButtonText="Cancel">
+                       CloseButtonText="Cancel" d:IsHidden="True">
             <StackPanel>
                 <TextBlock Text="Enter your email below (in AD) and select Next. This lets you login without face authentication or card."
                            TextWrapping="Wrap"/>

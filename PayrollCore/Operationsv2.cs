@@ -503,9 +503,9 @@ namespace PayrollCore
         }
 
 
-        public async Task<ObservableCollection<Meeting>> GetMeetings(int locationID, int userGroupId, int meetingDay)
+        public async Task<ObservableCollection<Meeting>> GetMeetings(int locationID, int userGroupId, int meetingDay, bool GetDisabled)
         {
-            return await da.GetMeetingsAsync(locationID, userGroupId, meetingDay);
+            return await da.GetMeetingsAsync(locationID, userGroupId, meetingDay, GetDisabled);
         }
 
         /// <summary>
