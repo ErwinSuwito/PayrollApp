@@ -70,6 +70,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             if (location == null)
             {
                 pageTitle.Text = "New location";
+                enableButton.Visibility = Visibility.Collapsed;
                 deleteButton.Visibility = Visibility.Collapsed;
             }
             else
@@ -197,15 +198,30 @@ namespace PayrollApp.Views.AdminSettings.Locations
             ContentDialog contentDialog = new ContentDialog
             {
                 Title = "Ready to save location?",
-                Content = "You'll need to save your changes first before managing meeting. If not any changes will be discarded.",
-                PrimaryButtonText = "Save and manage meeting",
+                Content = "Any changes will be saved and then we'll bring you to manage meetings in this location. Tap on Cancel to not make any changes.",
+                PrimaryButtonText = "Save and manage meetings",
                 CloseButtonText = "Cancel"
             };
 
             ContentDialogResult result = await contentDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                this.Frame.Navigate(typeof(Meetings.MeetingListPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                bool IsSuccess = await SaveLocation();
+                if (IsSuccess)
+                {
+                    this.Frame.Navigate(typeof(Meetings.MeetingListPage), location, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    contentDialog = new ContentDialog()
+                    {
+                        Title = "Unable to save location",
+                        Content = "There is a problem in saving the location. Please try again later.",
+                        CloseButtonText = "Ok"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
             }
         }
 
