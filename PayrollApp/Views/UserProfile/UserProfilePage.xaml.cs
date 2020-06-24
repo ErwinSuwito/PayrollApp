@@ -177,14 +177,14 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
-                signButton.Content = "Sign in";
-                if (userState.LatestMeeting.outTime != DateTime.MinValue || userState.LatestMeeting.NoActivity != true)
+                if (userState.LatestMeeting != null)
                 {
                     greeting = "Your attendance for the meeting has been recorded.";
                 }
                 else
                 {
                     greeting = "You are not signed in.";
+                    signButton.Content = "Sign in";
                 }
             }
 
