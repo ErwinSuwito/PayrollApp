@@ -28,7 +28,13 @@
               Grid.Column="1" Grid.Row="1">
             <TextBlock Text="Payroll" Style="{ThemeResource TitleTextBlockStyle}"
                            VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <ctl:TimeControl HorizontalAlignment="Right"/>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock x:Name="currentTime" TextAlignment="Right" 
+                               FontWeight="SemiBold" Text="12:30 PM"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock x:Name="currentDate" TextAlignment="Right"
+                               Text="2/4/2019"/>
+            </StackPanel>
         </Grid>
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
@@ -51,7 +57,7 @@
         <ContentDialog x:Name="newAccountDialog" Grid.RowSpan="4" Grid.ColumnSpan="3"
                        Title="Create new account"
                        PrimaryButtonText="Next"
-                       CloseButtonText="Cancel" d:IsHidden="True">
+                       CloseButtonText="Cancel">
             <StackPanel>
                 <TextBlock Text="Enter your email below (in AD) and select Next. This lets you login without face authentication or card."
                            TextWrapping="Wrap"/>
