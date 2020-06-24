@@ -387,9 +387,9 @@ namespace PayrollCore
         /// <param name="locationID"></param>
         /// <param name="WeekendOnly"></param>
         /// <returns></returns>
-        public async Task<ObservableCollection<Shift>> GetShifts(int locationID, bool WeekendOnly)
+        public async Task<ObservableCollection<Shift>> GetShifts(int locationID, bool WeekendOnly, bool GetDisabled)
         {
-            ObservableCollection<Shift> _shifts = await GetShifts(false, locationID, true);
+            ObservableCollection<Shift> _shifts = await GetShifts(GetDisabled, locationID, true);
             ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
             foreach (Shift shift in _shifts)
             {

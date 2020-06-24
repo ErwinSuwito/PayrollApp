@@ -721,11 +721,11 @@ namespace PayrollCore
         public async Task<ObservableCollection<Location>> GetAllLocationAsync(bool GetDisabled)
         {
             lastError = null;
-            string Query = "SELECT * FROM Location";
+            string Query = "SELECT * FROM Location WHERE LocationName!='new-sys'";
 
             if (!GetDisabled)
             {
-                Query += " WHERE IsDisabled=0";
+                Query += " AND IsDisabled=0";
             }
 
             try

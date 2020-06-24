@@ -57,11 +57,11 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
             if (DateTime.Today.DayOfWeek == System.DayOfWeek.Saturday || DateTime.Today.DayOfWeek == System.DayOfWeek.Sunday)
             {
-                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, true);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, true, false);
             }
             else
             {
-                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, false);
+                shifts = await SettingsHelper.Instance.op2.GetShifts(SettingsHelper.Instance.appLocation.locationID, false, false);
             }
 
             shiftSelectionView.ItemsSource = shifts;

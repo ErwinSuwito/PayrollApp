@@ -55,14 +55,13 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             loadGrid.Visibility = Visibility.Visible;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null)
             {
                 location = e.Parameter as Location;
             }
-
-            base.OnNavigatedFrom(e);
+            base.OnNavigatedTo(e);
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -73,6 +72,7 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
         private async void LoadTimer_Tick(object sender, object e)
         {
+            loadTimer.Stop();
             if (location != null)
             {
                 locationID = location.locationID;
@@ -84,7 +84,6 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
             ObservableCollection<Meeting> meetings = await SettingsHelper.Instance.op2.GetMeetings(true, locationID, true);
             meetingListView.ItemsSource = meetings;
-            loadTimer.Stop();
             loadGrid.Visibility = Visibility.Collapsed;
         }
 
