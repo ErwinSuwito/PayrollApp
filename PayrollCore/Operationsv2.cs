@@ -190,10 +190,13 @@ namespace PayrollCore
         public async Task<User> GetUserById(string userID)
         {
             User user = await da.GetUserByIdAsync(userID);
-            user.userGroup = await da.GetUserGroupByIdAsync(user.userGroup.groupID);
-            user.userGroup.DefaultRate = await da.GetRateById(user.userGroup.DefaultRate.rateID);
-
-            return user;
+            if (user != null)
+            {
+                user.userGroup = await da.GetUserGroupByIdAsync(user.userGroup.groupID);
+                user.userGroup.DefaultRate = await da.GetRateById(user.userGroup.DefaultRate.rateID);
+                return user;
+            }
+            return null;
         }
 
         /// <summary>

@@ -8,10 +8,10 @@
 
   <Identity
     Name="29437ErwinSuwitoandojo.TAPayroll"
-    Publisher="CN=EB87CADD-5C4D-4A02-8C6B-C25705F9A969"
-    Version="1.0.2.0" />
+    Publisher="CN=Erwin"
+    Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="dc1a9379-ad46-4f59-a4ba-07888b46ed08" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="0f730817-b1ef-450e-99fe-e136302bcfe8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>TA Payroll</DisplayName>
