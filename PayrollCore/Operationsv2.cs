@@ -405,6 +405,32 @@ namespace PayrollCore
             return shifts;
         }
 
+        /// <summary>
+        /// Gets upcoming shifts that is available to be signed in
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="WeekendOnly"></param>
+        /// <param name="GetDisabled"></param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Shift>> GetUpcomingShifts(int locationID, bool WeekendOnly, bool GetDisabled)
+        {
+            ObservableCollection<Shift> _shifts = await GetShifts(GetDisabled, locationID, true);
+            ObservableCollection<Shift> shifts = new ObservableCollection<Shift>();
+            foreach (Shift shift in _shifts)
+            {
+                if (shift.WeekendOnly == WeekendOnly)
+                {
+                    if (shift.startTime >= DateTime.Now.TimeOfDay)
+                    {
+                        shifts.Add(shift);
+                    }
+                }
+            }
+
+            return shifts;
+        }
+
+
 
         public async Task<Shift> GetSpecialTaskShift(int locationID)
         {
