@@ -135,11 +135,24 @@ namespace PayrollApp.Views.UserProfile.SignInOut
                     }
                 }
             }
-            else
+            else if (shiftSelectionView.SelectedItems.Count == 1)
             {
                 AllowSignin = true;
                 startShift = shiftSelectionView.SelectedItem as PayrollCore.Entities.Shift;
                 endShift = startShift;
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Please select a shift",
+                    Content = "You haven't selected any shift. Please select at least one and try again.",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+                return;
+
             }
 
             if (AllowSignin)

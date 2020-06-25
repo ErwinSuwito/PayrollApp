@@ -81,6 +81,20 @@ namespace PayrollApp.Views.UserProfile.Meeting
             loadGrid.Visibility = Visibility.Visible;
 
             var selectedItem = shiftSelectionView.SelectedItem as PayrollCore.Entities.Meeting;
+
+            if (selectedItem == null)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Please select a meeting",
+                    Content = "You haven't selected any meeting. Please select one and try again.",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+                return;
+            }
+
             var activity = SettingsHelper.Instance.op2.GenerateMeetingActivity(SettingsHelper.Instance.userState.user.userID, selectedItem);
 
             bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);
