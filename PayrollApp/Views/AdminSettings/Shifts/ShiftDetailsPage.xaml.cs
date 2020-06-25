@@ -31,6 +31,7 @@ namespace PayrollApp.Views.AdminSettings.Shifts
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        Shift shiftless;
         Shift shift;
         bool IsNewShift = false;
 
@@ -106,16 +107,28 @@ namespace PayrollApp.Views.AdminSettings.Shifts
         {
             loadTimer.Stop();
 
+            shiftless = await SettingsHelper.Instance.op2.GetSpecialShift(SettingsHelper.Instance.appLocation.locationID, "Normal sign in");
+
             // Gets all available rates and assign it as ItemSource for defaultRateBox
             ObservableCollection<Rate> rate = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = rate;
 
             if (shift != null)
             {
-                for (int i = 0; i < rate.Count; i++)
+                for (int i = 0; i < rate.Count -1; i++)
                 {
-                    var item = rate.ElementAt(i) as Rate;
-                    if (item.rateID == shift.DefaultRate.rateID)
+                    if (rate[i].rateID == shift.DefaultRate.rateID)
+                    {
+                        defaultRateBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < rate.Count - 1; i++)
+                {
+                    if (rate[i].rateID == shiftless.DefaultRate.rateID)
                     {
                         defaultRateBox.SelectedIndex = i;
                         break;

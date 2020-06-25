@@ -112,8 +112,19 @@ namespace PayrollApp.Views.AdminSettings.Locations
             if (location != null)
             {
                 specialTask = await SettingsHelper.Instance.op2.GetSpecialShift(location.locationID, "Special Task");
-                specialTask = await SettingsHelper.Instance.op2.GetSpecialShift(location.locationID, "Normal sign in");
+                shiftless = await SettingsHelper.Instance.op2.GetSpecialShift(location.locationID, "Normal sign in");
 
+                // Assigns the default rate for shiftless task
+                for (int i = 0; i < rates.Count - 1; i++)
+                {
+                    if (rates[i].rateID == shiftless.DefaultRate.rateID)
+                    {
+                        defaultRateBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                // Assigns the default rate for special task
                 for (int i = 0; i < rates.Count -1; i++)
                 {
                     if (rates[i].rateID == specialTask.DefaultRate.rateID)

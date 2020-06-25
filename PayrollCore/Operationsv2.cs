@@ -436,7 +436,7 @@ namespace PayrollCore
         /// </summary>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        [Obsolete("Please use GetSpecialShift instead", true)]
+        [Obsolete("Please use GetSpecialShift() instead", true)]
         public async Task<Shift> GetSpecialTaskShift(int locationID)
         {
             Shift shift = new Shift();
