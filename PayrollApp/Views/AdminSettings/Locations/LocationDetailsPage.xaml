@@ -67,6 +67,20 @@
                     <TextBox x:Name="locationName" Header="Location name" Margin="0,8,0,0" />
                     <ToggleSwitch x:Name="enableMeetingSwitch" Header="Enable Meetings" Margin="0,8,0,0"
                                   OnContent="Yes" OffContent="No" Tapped="enableMeetingSwitch_Tapped"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleSwitch x:Name="enableShiftlessMode" Header="Sign in mode" Margin="0,8,0,0"
+                                  OnContent="No shift" OffContent="Shift" />
+                        <Button Content="&#xE946;" FontSize="12" FontFamily="Segoe MDL2 Assets"
+                                Margin="-60,6,0,0" VerticalAlignment="Top" Width="32"
+                                Style="{StaticResource ButtonRevealStyle}" Background="Transparent">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <TextBlock Text="Sign in mode affects how users sign in to Payroll. When shift is selected, users will login by selecting shifts. While No shift will only record user's sign in and sign out time."
+                                               TextWrapping="Wrap" MaxWidth="240"/>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
                     <ComboBox x:Name="defaultRateBox" Header="Default shift rate" MinWidth="242" Margin="0,8,0,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entity:Rate">

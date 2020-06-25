@@ -133,6 +133,8 @@ namespace PayrollApp.Views.AdminSettings.Locations
                         break;
                     }
                 }
+
+                enableShiftlessMode.IsOn = location.Shiftless;
             }
 
             loadGrid.Visibility = Visibility.Collapsed;
@@ -263,6 +265,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
             location.enableGM = enableMeetingSwitch.IsOn;
             specialTask.DefaultRate = defaultSpecialTaskRateBox.SelectedItem as Rate;
             shiftless.DefaultRate = defaultRateBox.SelectedItem as Rate;
+            location.Shiftless = enableShiftlessMode.IsOn;
 
             if (location.isNewLocation == true)
             {
