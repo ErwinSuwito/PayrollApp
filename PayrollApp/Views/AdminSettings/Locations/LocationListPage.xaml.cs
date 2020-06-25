@@ -79,7 +79,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
 
         private void locationListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Location selectedLocation = (locationListView.SelectedItem as Location);
+            Location selectedLocation = (e.ClickedItem as Location);
             this.Frame.Navigate(typeof(LocationDetailsPage), selectedLocation, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
