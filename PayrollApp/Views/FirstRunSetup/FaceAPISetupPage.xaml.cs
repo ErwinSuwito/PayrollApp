@@ -50,7 +50,7 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ShiftModePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(SetupFinishedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void useDefaultFaceApi_Click(object sender, RoutedEventArgs e)
@@ -58,7 +58,7 @@ namespace PayrollApp.Views.FirstRunSetup
             faceApiEndpointTextBox.Text = ClientSecret.FaceApiEndpoint;
             faceApiKeyTextBox.Password = ClientSecret.FaceApiKey;
 
-            this.Frame.Navigate(typeof(ShiftModePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(SetupFinishedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }
