@@ -335,7 +335,7 @@ namespace PayrollApp.Controls
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             TimeSpan ts = (TimeSpan)value;
-            return ts.ToString(@"hh\:mm");
+            return ts.ToString(@"h\:mm");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
