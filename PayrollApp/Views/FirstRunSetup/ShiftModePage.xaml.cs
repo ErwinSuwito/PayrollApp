@@ -26,7 +26,6 @@ namespace PayrollApp.Views.FirstRunSetup
         public ShiftModePage()
         {
             this.InitializeComponent();
-            this.DataContext = SettingsHelper.Instance;
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
