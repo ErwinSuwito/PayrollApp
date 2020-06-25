@@ -61,6 +61,8 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             loadTimer.Interval = new TimeSpan(0, 0, 1);
             loadTimer.Tick += LoadTimer_Tick;
             loadTimer.Start();
+
+            datePicker1.SelectedDate = DateTime.Now;
         }
 
         private async void LoadTimer_Tick(object sender, object e)

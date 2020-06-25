@@ -72,7 +72,7 @@
                         <TextBlock Text="Fill in the details below and tap on the Add meeting button to continue." 
                                    Style="{ThemeResource BaseTextBlockStyle}"/>
                         <DatePicker x:Name="datePicker1" Header="Meeting date" Margin="0,8,0,0"
-                                    DateChanged="datePicker1_DateChanged"/>
+                                    DateChanged="datePicker1_DateChanged" Visibility="Collapsed"/>
                         <TimePicker x:Name="inTimeBox" Header="Sign in time" Margin="0,4,0,0"/>
                         <TimePicker x:Name="outTimeBox" Header="Sign out time" Margin="0,4,0,0"/>
                         <ComboBox x:Name="meetingBox" Header="Meeting name" Margin="0,4,0,0">
@@ -117,14 +117,12 @@
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                     <StackPanel>
                         <TextBlock Text="User:" />
-                        <TextBlock Text="Duty date:" />
                         <TextBlock Text="Sign in time:" />
                         <TextBlock Text="Sign out time:" />
                         <TextBlock Text="Meeting name:" />
                     </StackPanel>
                     <StackPanel Margin="16,0,0,0">
                         <TextBlock Text="{Binding ElementName=nameTextBlock, Path=Text}"/>
-                        <TextBlock Text="{Binding ElementName=datePicker1, Path=SelectedDate, Converter={StaticResource DateTimeOffsetToStringConverter}}"/>
                         <TextBlock Text="{Binding ElementName=inTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
                         <TextBlock Text="{Binding ElementName=outTimeBox, Path=SelectedTime, Converter={StaticResource TimeSpanToStringConverter}}"/>
                         <TextBlock x:Name="confirmMeetingText"/>
