@@ -66,8 +66,8 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
         private void TimeUpdater_Tick(object sender, object e)
         {
-            currentTime.Text = DateTime.Now.ToString("hh:mm tt");
-            currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            SettingsHelper.Instance.userState = null;
+            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
 

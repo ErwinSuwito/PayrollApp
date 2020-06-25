@@ -38,7 +38,7 @@ namespace PayrollApp.Views.UserProfile
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            timeUpdater.Interval = new TimeSpan(0, 0, 30);
+            timeUpdater.Interval = new TimeSpan(0, 0, 10);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
 
@@ -48,8 +48,8 @@ namespace PayrollApp.Views.UserProfile
 
         private void TimeUpdater_Tick(object sender, object e)
         {
-            currentTime.Text = DateTime.Now.ToString("hh:mm tt");
-            currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            SettingsHelper.Instance.userState = null;
+            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void signButton_Click(object sender, RoutedEventArgs e)
