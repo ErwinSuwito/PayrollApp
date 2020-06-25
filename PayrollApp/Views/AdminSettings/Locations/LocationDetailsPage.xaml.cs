@@ -277,6 +277,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
                 int locationID = await SettingsHelper.Instance.op2.AddNewLocation(location);
                 specialTask.locationID = locationID;
                 shiftless.locationID = locationID;
+                location.locationID = locationID;
                 IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(specialTask);
                 IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(shiftless);
             }
