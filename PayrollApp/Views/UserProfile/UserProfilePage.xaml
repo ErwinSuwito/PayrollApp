@@ -25,13 +25,13 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="pageTopBar" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1">
             <Button x:Name="logoutButton" HorizontalAlignment="Left" VerticalAlignment="Center"
-                    Height="40" Width="92"  Margin="-12,0,0,0" Opacity="1"
+                    Height="40" Width="120"  Margin="-12,0,0,0" Opacity="1"
                     Background="Transparent" Click="logoutButton_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE72B;" 
                                           FontSize="18"/>
-                        <TextBlock Text="Back" FontSize="16" 
+                        <TextBlock Text="Logout" FontSize="16" 
                                            Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button.Content>
