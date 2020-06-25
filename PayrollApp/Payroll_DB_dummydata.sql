@@ -37,6 +37,7 @@ CREATE TABLE Location(
 	LocationName nvarchar(36) UNIQUE,
 	EnableGM BIT DEFAULT 0,
 	IsDisabled BIT DEFAULT 0,
+	Shiftless BIT DEFAULT 0
 );
 
 CREATE TABLE Shifts(
