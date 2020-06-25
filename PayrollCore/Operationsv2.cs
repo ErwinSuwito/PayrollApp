@@ -778,7 +778,7 @@ namespace PayrollCore
         {
             if (OverrideTime == false)
             {
-                if (activity.StartShift.shiftName != "Special Task")
+                if (activity.StartShift.shiftName != "Special Task" && activity.StartShift.shiftName != "Normal sign in")
                 {
                     if (activity.inTime.DayOfYear < DateTime.Now.DayOfYear)
                     {
