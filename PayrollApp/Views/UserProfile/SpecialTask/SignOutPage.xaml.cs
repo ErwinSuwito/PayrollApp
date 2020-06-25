@@ -31,6 +31,16 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        bool IsSpecialTask = true;
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                IsSpecialTask = (bool)e.Parameter;
+            }
+            base.OnNavigatedTo(e);
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

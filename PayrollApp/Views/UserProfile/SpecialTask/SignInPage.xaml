@@ -57,9 +57,9 @@
             </animations:Implicit.HideAnimations>
             
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Special Task" 
+                <TextBlock x:Name="pageHeaderText" Text="Special Task" 
                            FontWeight="SemiBold" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                <TextBlock Text="Your special task has been recorded. Tap the back button above to go back." 
+                <TextBlock x:Name="pageSubheaderText" Text="Your special task has been recorded. Tap the back button above to go back." 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
             <StackPanel x:Name="actualContent" Margin="0,16,0,0">
@@ -71,7 +71,7 @@
 
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
               Background="{ThemeResource loadBackground}" Visibility="Visible"
-              d:IsHidden="true">
+              d:IsHidden="True">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>

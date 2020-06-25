@@ -31,9 +31,25 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
+        bool IsSpecialTask = true;
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                IsSpecialTask = (bool)e.Parameter;
+            }
+            base.OnNavigatedTo(e);
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (IsSpecialTask == false)
+            {
+                actualContent.Visibility = Visibility.Collapsed;
+                pageHeaderText.Text = "You're signed in";
+                pageSubheaderText.Text = "You have been signed in.";
+            }
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
@@ -49,8 +65,17 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
         {
             loadTimer.Stop();
 
-            Shift specialTaskShift = await SettingsHelper.Instance.op2.GetSpecialTaskShift(SettingsHelper.Instance.appLocation.locationID);
-            var activity = SettingsHelper.Instance.op2.GenerateWorkActivity(SettingsHelper.Instance.userState.user.userID, specialTaskShift, specialTaskShift);
+            Shift shift;
+            if (IsSpecialTask == true)
+            {
+                shift = await SettingsHelper.Instance.op2.GetSpecialShift(SettingsHelper.Instance.appLocation.locationID, "Special Task");
+            }
+            else
+            {
+                shift = await SettingsHelper.Instance.op2.GetSpecialShift(SettingsHelper.Instance.appLocation.locationID, "Normal sign in");
+            }
+
+            var activity = SettingsHelper.Instance.op2.GenerateWorkActivity(SettingsHelper.Instance.userState.user.userID, shift, shift);
             activity.IsSpecialTask = true;
 
             if (activity != null)
@@ -67,7 +92,7 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
                 ContentDialog warningDialog = new ContentDialog
                 {
                     Title = "Unable to sign in",
-                    Content = "There's a problem preventing us to sign you in for special task. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you sign in.",
+                    Content = "There's a problem preventing us to sign you in. Please try again later. If the problem persists, please contact Chiefs or HR Functional Unit to help you sign in.",
                     PrimaryButtonText = "Ok"
                 };
 

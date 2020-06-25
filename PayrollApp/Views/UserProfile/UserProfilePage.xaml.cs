@@ -54,19 +54,40 @@ namespace PayrollApp.Views.UserProfile
 
         private void signButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
+            if (SettingsHelper.Instance.appLocation.Shiftless == true)
             {
-                this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            else
-            {
-                if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false)
+                if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
                 {
-                    this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    this.Frame.Navigate(typeof(SpecialTask.SignInPage), false, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
                 else
                 {
+                    if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false)
+                    {
+                        this.Frame.Navigate(typeof(SpecialTask.SignOutPage), false, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
+                    else
+                    {
+                        this.Frame.Navigate(typeof(SpecialTask.SignInPage), false, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
+                }
+            }
+            else
+            {
+                if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
+                {
                     this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false)
+                    {
+                        this.Frame.Navigate(typeof(SignInOut.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
+                    else
+                    {
+                        this.Frame.Navigate(typeof(SignInOut.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
                 }
             }
         }
@@ -214,17 +235,17 @@ namespace PayrollApp.Views.UserProfile
         {
             if (SettingsHelper.Instance.userState.LatestActivity.NoActivity == true)
             {
-                this.Frame.Navigate(typeof(SpecialTask.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                this.Frame.Navigate(typeof(SpecialTask.SignInPage), true, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
                 if (userState.LatestActivity.outTime == DateTime.MinValue && userState.LatestActivity.IsSpecialTask)
                 {
-                    this.Frame.Navigate(typeof(SpecialTask.SignOutPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    this.Frame.Navigate(typeof(SpecialTask.SignOutPage), true, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
                 else
                 {
-                    this.Frame.Navigate(typeof(SpecialTask.SignInPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    this.Frame.Navigate(typeof(SpecialTask.SignInPage), true, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 }
             }
         }
