@@ -62,7 +62,7 @@ namespace PayrollApp.Views.UserProfile
                 }
                 else
                 {
-                    if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue && SettingsHelper.Instance.userState.LatestActivity.IsSpecialTask == false)
+                    if (SettingsHelper.Instance.userState.LatestActivity.outTime == DateTime.MinValue)
                     {
                         this.Frame.Navigate(typeof(SpecialTask.SignOutPage), false, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                     }
@@ -129,7 +129,7 @@ namespace PayrollApp.Views.UserProfile
             {
                 if (userState.LatestActivity.outTime == DateTime.MinValue)
                 {
-                    if (userState.LatestActivity.IsSpecialTask == true)
+                    if (userState.LatestActivity.StartShift.shiftName == "Special Task")
                     {
                         signButton.Visibility = Visibility.Collapsed;
                         if (userState.LatestMeeting != null && userState.LatestMeeting.outTime == DateTime.MinValue)
