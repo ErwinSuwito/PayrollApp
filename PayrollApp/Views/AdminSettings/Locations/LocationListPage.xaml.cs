@@ -61,9 +61,9 @@ namespace PayrollApp.Views.AdminSettings.Locations
 
         private async void LoadTimer_Tick(object sender, object e)
         {
-            ObservableCollection<PayrollCore.Entities.Location> getItem = await SettingsHelper.Instance.op2.GetLocations(true);
-            dataGrid.ItemsSource = getItem;
             loadTimer.Stop();
+            ObservableCollection<Location> getItem = await SettingsHelper.Instance.op2.GetLocations(true);
+            locationListView.ItemsSource = getItem;
             loadGrid.Visibility = Visibility.Collapsed;
         }
 
@@ -72,38 +72,15 @@ namespace PayrollApp.Views.AdminSettings.Locations
             this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
-        private void dataGrid_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
-        {
-            if (e.Column.Header.ToString() == "locationName")
-            {
-                e.Column.Header = "Location Name";
-            }
-            else if (e.Column.Header.ToString() == "lv_enableGM")
-            {
-                e.Column.Header = "Allow GM Attendance";
-            }
-            else if (e.Column.Header.ToString() == "lv_isDisabled")
-            {
-                e.Column.Header = "Disabled";
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
-
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(LocationDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void locationListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (dataGrid.SelectedItem != null)
-            {
-                PayrollCore.Entities.Location selectedLocation = (dataGrid.SelectedItem as PayrollCore.Entities.Location);
-                this.Frame.Navigate(typeof(LocationDetailsPage), selectedLocation, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
+            Location selectedLocation = (locationListView.SelectedItem as Location);
+            this.Frame.Navigate(typeof(LocationDetailsPage), selectedLocation, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }

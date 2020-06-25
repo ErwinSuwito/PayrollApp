@@ -15,8 +15,7 @@
     Background="{ThemeResource SystemControlAcrylicElementBrush}"
     Loaded="Page_Loaded">
     <Page.Resources>
-        <ctl:BooleanToEnabledConverter x:Key="BooleanToEnabledConverter" />
-        <ctl:ReverseBooleanToEnabledConverter x:Key="ReverseBooleanToEnabledConverter" />
+        <ctl:ReverseBoolenToEmojiConverter x:Key="ReverseBoolenToEmojiConverter" />
     </Page.Resources>
 
     <Grid x:Name="rootGrid">
@@ -73,14 +72,18 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <controls:DataGrid x:Name="dataGrid" Height="420"
-                                   AutoGenerateColumns="True" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"
-                                   IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False"
-                                   VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"
-                                   AreRowGroupHeadersFrozen="True" SelectionChanged="dataGrid_SelectionChanged"
-                                   Margin="0,8,0,0">
-                    
-                </controls:DataGrid>
+                <ListView x:Name="locationListView" ItemClick="locationListView_ItemClick" SelectionMode="None" 
+                          IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="entity:Location">
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+                                <TextBlock Text="{Binding locationName}" FontSize="18" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                <TextBlock Text="{Binding isDisabled, Converter={StaticResource ReverseBoolenToEmojiConverter}}" Style="{ThemeResource BaseTextBlockStyle}" 
+                                            Margin="8,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </StackPanel>
 
