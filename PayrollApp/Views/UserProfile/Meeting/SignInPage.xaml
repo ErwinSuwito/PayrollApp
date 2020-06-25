@@ -106,7 +106,8 @@
         </CommandBar>
 
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
-              Background="{ThemeResource loadBackground}" Visibility="Visible">
+              Background="{ThemeResource loadBackground}" Visibility="Visible"
+              d:IsHidden="true">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>

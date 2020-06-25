@@ -64,12 +64,13 @@
             <StackPanel x:Name="actualContent" Margin="0,16,0,0">
                 <TextBlock Text="next steps" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <TextBlock Text="Don't forget to submit your special task form on HR Portal." 
-                           FontSize="16"/>
+                           FontSize="16" Foreground="Red"/>
             </StackPanel>
         </StackPanel>
 
         <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
-              Background="{ThemeResource loadBackground}" Visibility="Visible">
+              Background="{ThemeResource loadBackground}" Visibility="Visible"
+              d:IsHidden="true">
             <animations:Implicit.ShowAnimations>
                 <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
             </animations:Implicit.ShowAnimations>
