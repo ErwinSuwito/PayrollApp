@@ -188,6 +188,11 @@ namespace PayrollApp.Views.UserProfile
                 }
             }
 
+            if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
+            {
+                greeting = "You are signed in.";
+            }
+
             greetingTextBlock.Text = greeting;
 
             int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
