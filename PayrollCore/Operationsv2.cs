@@ -746,6 +746,11 @@ namespace PayrollCore
 
             TimeSpan workHour = activity.outTime.Subtract(activity.inTime);
 
+            if (workHour.TotalHours < 0)
+            {
+                workHour = new TimeSpan(0, 0, 0);
+            }
+
             var d = workHour.TotalHours / 6;
             int removeTimes = Convert.ToInt32(Math.Floor(d));
             if (removeTimes > 0)
@@ -800,6 +805,11 @@ namespace PayrollCore
             TimeSpan workHour = activity.outTime.Subtract(activity.inTime);
 
             var d = workHour.TotalHours / 6;
+            if (workHour.TotalHours < 0)
+            {
+                workHour = new TimeSpan(0, 0, 0);
+            }
+
             int removeTimes = Convert.ToInt32(Math.Floor(d));
             if (removeTimes > 0)
             {
