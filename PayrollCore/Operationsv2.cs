@@ -420,7 +420,7 @@ namespace PayrollCore
             {
                 if (shift.WeekendOnly == WeekendOnly)
                 {
-                    if (shift.startTime >= DateTime.Now.TimeOfDay)
+                    if (shift.endTime <= DateTime.Now.TimeOfDay)
                     {
                         shifts.Add(shift);
                     }
