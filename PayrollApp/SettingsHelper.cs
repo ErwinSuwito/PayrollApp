@@ -72,7 +72,8 @@ namespace PayrollApp
             InProgress,
             Failed,
             Success,
-            Completed
+            Completed,
+            Setup
         }
 
 

@@ -90,5 +90,11 @@ namespace PayrollApp.Views.FirstRunSetup
                 await testDialog.ShowAsync();
             }
         }
+
+        private void addBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsHelper.Instance.InitState = SettingsHelper.InitStates.Setup;
+            this.Frame.Navigate(typeof(AdminSettings.Locations.LocationDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
     }
 }

@@ -89,7 +89,14 @@ namespace PayrollApp.Views.AdminSettings.Meetings
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.Setup)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
         }
 
         private async void addBtn_Click(object sender, RoutedEventArgs e)
