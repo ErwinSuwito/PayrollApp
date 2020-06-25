@@ -1063,7 +1063,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
-                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.WeekendOnly));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.isDisabled));
 
                         await cmd.ExecuteNonQueryAsync();
 
