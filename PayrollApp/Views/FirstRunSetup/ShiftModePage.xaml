@@ -43,7 +43,7 @@
                 <TextBlock Text="Toggle the swith below to enable or disable shifts." 
                        Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
                 <ToggleSwitch x:Name="shiftToggleBtn" Margin="0,8,0,0"
-                              Header="Sign in mode" OnContent="Normal sign in" OffContent="Shifts" />
+                              Header="Sign in mode" OnContent="No shifts" OffContent="Shifts" />
             </StackPanel>
         </StackPanel>
 

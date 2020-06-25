@@ -14,6 +14,7 @@ namespace PayrollCore.Entities
         public string locationName { get; set; }
         public bool enableGM { get; set; }
         public bool isDisabled { get; set; }
+        public bool Shiftless { get; set; }
         public bool isNewLocation { get; set; }
         public string lv_isDisabled { get; set; }
         public string lv_enableGM { get; set; }

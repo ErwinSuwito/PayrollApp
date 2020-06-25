@@ -696,6 +696,7 @@ namespace PayrollCore
                                 location.locationName = dr.GetString(1);
                                 location.enableGM = dr.GetBoolean(2);
                                 location.isDisabled = dr.GetBoolean(3);
+                                location.Shiftless = dr.GetBoolean(4);
                                 location.updateLvString();
 
                                 return location;
@@ -747,6 +748,7 @@ namespace PayrollCore
                                 location.locationName = dr.GetString(1);
                                 location.enableGM = dr.GetBoolean(2);
                                 location.isDisabled = dr.GetBoolean(3);
+                                location.Shiftless = dr.GetBoolean(4);
                                 location.updateLvString();
 
                                 locations.Add(location);
@@ -774,7 +776,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled) VALUES(@LocationName, @EnableGM, @IsDisabled) select SCOPE_IDENTITY()";
+            string Query = "INSERT INTO Location(LocationName, EnableGM, IsDisabled, Shiftless) VALUES(@LocationName, @EnableGM, @IsDisabled, @Shiftless) select SCOPE_IDENTITY()";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -786,6 +788,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationName", location.locationName));
                         cmd.Parameters.Add(new SqlParameter("@EnableGM", location.enableGM));
                         cmd.Parameters.Add(new SqlParameter("@IsDisabled", location.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@Shiftless", location.Shiftless));
 
                         var _locationID = await cmd.ExecuteScalarAsync();
                         int.TryParse(_locationID.ToString(), out int locationID);
@@ -842,7 +845,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "UPDATE Location SET LocationName=@LocationName, EnableGM=@EnableGM, IsDisabled=@IsDisabled WHERE LocationID=@LocationID";
+            string Query = "UPDATE Location SET LocationName=@LocationName, EnableGM=@EnableGM, IsDisabled=@IsDisabled, Shiftless=@Shiftless WHERE LocationID=@LocationID";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -855,6 +858,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationName", location.locationName));
                         cmd.Parameters.Add(new SqlParameter("@EnableGM", location.enableGM));
                         cmd.Parameters.Add(new SqlParameter("@IsDisabled", location.isDisabled));
+                        cmd.Parameters.Add(new SqlParameter("@Shiftless", location.Shiftless));
 
                         await cmd.ExecuteNonQueryAsync();
 
