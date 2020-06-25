@@ -431,7 +431,12 @@ namespace PayrollCore
         }
 
 
-
+        /// <summary>
+        /// Gets the special task shift of the passed location
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        [Obsolete("Please use GetSpecialShift instead", true)]
         public async Task<Shift> GetSpecialTaskShift(int locationID)
         {
             Shift shift = new Shift();
@@ -447,6 +452,29 @@ namespace PayrollCore
 
             return shift;
         }
+
+        /// <summary>
+        /// Get the shift which is generated when adding a location. 
+        /// </summary>
+        /// <param name="locationID"></param>
+        /// <param name="shiftName">The name of the shift</param>
+        /// <returns></returns>
+        public async Task<Shift> GetSpecialShift(int locationID, string shiftName)
+        {
+            Shift shift = new Shift();
+            ObservableCollection<Shift> shifts = await GetShifts(true, locationID, true);
+
+            foreach (Shift _shift in shifts)
+            {
+                if (_shift.shiftName == shiftName && _shift.isDisabled == true)
+                {
+                    shift = _shift;
+                }
+            }
+
+            return shift;
+        }
+
 
         /// <summary>
         /// Adds a special task shift to the location

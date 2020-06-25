@@ -67,7 +67,7 @@
                     <TextBox x:Name="locationName" Header="Location name" Margin="0,8,0,0" />
                     <ToggleSwitch x:Name="enableMeetingSwitch" Header="Enable Meetings" Margin="0,8,0,0"
                                   OnContent="Yes" OffContent="No" Tapped="enableMeetingSwitch_Tapped"/>
-                    <ComboBox x:Name="defaultRateBox" Header="Special Task rate" MinWidth="242" Margin="0,8,0,0">
+                    <ComboBox x:Name="defaultRateBox" Header="Default shift rate" MinWidth="242" Margin="0,8,0,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="entity:Rate">
                                 <StackPanel>
@@ -81,6 +81,21 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <ComboBox x:Name="defaultSpecialTaskRateBox" Header="Special Task rate" MinWidth="242" Margin="0,8,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="entity:Rate">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding rateDesc}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Rate: RM" Margin="0,0,4,0"/>
+                                        <TextBlock Text="{Binding rate}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                        <TextBlock Text="per hour" Margin="4,0,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
                 </StackPanel>
             </ScrollViewer>
 

@@ -33,6 +33,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
         DispatcherTimer loadTimer = new DispatcherTimer();
         PayrollCore.Entities.Location location;
         Shift specialTask;
+        Shift shiftless;
 
         public LocationDetailsPage()
         {
@@ -105,17 +106,19 @@ namespace PayrollApp.Views.AdminSettings.Locations
 
             ObservableCollection<Rate> rates = await SettingsHelper.Instance.op2.GetAllRates(false);
             defaultRateBox.ItemsSource = rates;
+            defaultSpecialTaskRateBox.ItemsSource = rates;
 
 
             if (location != null)
             {
-                specialTask = await SettingsHelper.Instance.op2.GetSpecialTaskShift(location.locationID);
+                specialTask = await SettingsHelper.Instance.op2.GetSpecialShift(location.locationID, "Special Task");
+                specialTask = await SettingsHelper.Instance.op2.GetSpecialShift(location.locationID, "Normal sign in");
 
                 for (int i = 0; i < rates.Count -1; i++)
                 {
                     if (rates[i].rateID == specialTask.DefaultRate.rateID)
                     {
-                        defaultRateBox.SelectedIndex = i;
+                        defaultSpecialTaskRateBox.SelectedIndex = i;
                         break;
                     }
                 }
@@ -240,17 +243,23 @@ namespace PayrollApp.Views.AdminSettings.Locations
                 specialTask = new Shift();
                 specialTask.shiftName = "Special Task";
                 specialTask.isDisabled = true;
+
+                shiftless = specialTask;
+                shiftless.shiftName = "Normal sign in";
             }
 
             location.locationName = locationName.Text;
             location.enableGM = enableMeetingSwitch.IsOn;
+            specialTask.DefaultRate = defaultSpecialTaskRateBox.SelectedItem as Rate;
+            shiftless.DefaultRate = defaultRateBox.SelectedItem as Rate;
 
             if (location.isNewLocation == true)
             {
                 int locationID = await SettingsHelper.Instance.op2.AddNewLocation(location);
                 specialTask.locationID = locationID;
-                //location.locationID = locationID;
+                shiftless.locationID = locationID;
                 IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(specialTask);
+                IsSuccess = await SettingsHelper.Instance.op2.AddNewShift(shiftless);
             }
             else
             {
@@ -258,6 +267,7 @@ namespace PayrollApp.Views.AdminSettings.Locations
                 if (IsSuccess)
                 {
                     IsSuccess = await SettingsHelper.Instance.op2.UpdateShift(specialTask);
+                    IsSuccess = await SettingsHelper.Instance.op2.UpdateShift(shiftless);
                 }
             }
 
