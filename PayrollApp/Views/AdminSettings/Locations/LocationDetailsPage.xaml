@@ -71,12 +71,12 @@
                         <ToggleSwitch x:Name="enableShiftlessMode" Header="Sign in mode" Margin="0,8,0,0"
                                   OnContent="No shift" OffContent="Shift" />
                         <Button Content="&#xE946;" FontSize="12" FontFamily="Segoe MDL2 Assets"
-                                Margin="-60,6,0,0" VerticalAlignment="Top" Width="32"
-                                Style="{StaticResource ButtonRevealStyle}" Background="Transparent">
+                                Margin="-68,10,0,0" VerticalAlignment="Top" Width="32"
+                                BorderThickness="0" Background="Transparent" ToolTipService.ToolTip="What's this?">
                             <Button.Flyout>
                                 <Flyout>
                                     <TextBlock Text="Sign in mode affects how users sign in to Payroll. When shift is selected, users will login by selecting shifts. While No shift will only record user's sign in and sign out time."
-                                               TextWrapping="Wrap" MaxWidth="240"/>
+                                               TextWrapping="Wrap" MaxWidth="320"/>
                                 </Flyout>
                             </Button.Flyout>
                         </Button>

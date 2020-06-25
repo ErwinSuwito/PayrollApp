@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -461,18 +462,22 @@ namespace PayrollCore
         /// <returns></returns>
         public async Task<Shift> GetSpecialShift(int locationID, string shiftName)
         {
-            Shift shift = new Shift();
             ObservableCollection<Shift> shifts = await GetShifts(true, locationID, true);
 
             foreach (Shift _shift in shifts)
             {
                 if (_shift.shiftName == shiftName && _shift.isDisabled == true)
                 {
-                    shift = _shift;
+                    return _shift;
+                }
+                else
+                {
+                    Debug.WriteLine("passed shiftName value: " + shiftName);
+                    Debug.WriteLine("shift shiftName value: " + _shift.shiftName);
                 }
             }
 
-            return shift;
+            return null;
         }
 
 

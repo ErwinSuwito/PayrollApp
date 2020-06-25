@@ -1048,7 +1048,7 @@ namespace PayrollCore
         {
             lastError = null;
 
-            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly)";
+            string Query = "INSERT INTO Shifts(ShiftName, StartTime, EndTime, LocationID, RateID, WeekendOnly, IsDisabled) VALUES(@ShiftName, @StartTime, @EndTime, @LocationID, @RateID, @WeekendOnly, @IsDisabled)";
             try
             {
                 using (SqlConnection conn = new SqlConnection(DbConnString))
@@ -1063,6 +1063,7 @@ namespace PayrollCore
                         cmd.Parameters.Add(new SqlParameter("@LocationID", shift.locationID));
                         cmd.Parameters.Add(new SqlParameter("@RateID", shift.DefaultRate.rateID));
                         cmd.Parameters.Add(new SqlParameter("@WeekendOnly", shift.WeekendOnly));
+                        cmd.Parameters.Add(new SqlParameter("@IsDisabled", shift.WeekendOnly));
 
                         await cmd.ExecuteNonQueryAsync();
 

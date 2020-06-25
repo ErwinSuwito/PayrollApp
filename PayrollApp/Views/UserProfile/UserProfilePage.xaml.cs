@@ -188,9 +188,12 @@ namespace PayrollApp.Views.UserProfile
                 }
             }
 
-            if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
+            if (userState.LatestActivity.StartShift != null)
             {
-                greeting = "You are signed in.";
+                if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
+                {
+                    greeting = "You are signed in.";
+                }
             }
 
             greetingTextBlock.Text = greeting;
