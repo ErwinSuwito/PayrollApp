@@ -184,7 +184,7 @@ namespace PayrollApp.Views.UserProfile.Meeting
 
                 PayrollCore.Entities.User user = SettingsHelper.Instance.userState.user;
                 await SettingsHelper.Instance.UpdateUserState(user);
-                this.Frame.Navigate(typeof(AttendanceRecodedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                this.Frame.Navigate(typeof(AttendanceRecodedPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
