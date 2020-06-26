@@ -1,4 +1,5 @@
-﻿using PayrollCore;
+﻿using Microsoft.Graph;
+using PayrollCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,7 +50,7 @@ namespace PayrollApp.Views.UserProfile
             timeUpdater.Start();
 
             // Make changes to the UI according to settings and user state
-            ModifyUI();
+            ModifyUiV2();
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -235,6 +236,101 @@ namespace PayrollApp.Views.UserProfile
             { 
                 totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString("0.##") + " hours out " + minHours.ToString() + " hours minimum.";
             }
+        }
+
+        private void ModifyUiV2()
+        {
+            fullNameTextBlock.Text = userState.user.fullName;
+            string greeting = string.Empty;
+
+            // Starts modifying UI
+            if (SettingsHelper.Instance.appLocation.enableGM == false)
+            {
+                meetingButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                meetingButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.user.userGroup.ShowAdminSettings == true)
+            {
+                adminSettingsButton.Visibility = Visibility.Visible;
+            }
+
+            if (userState.LatestActivity != null)
+            {
+                if (userState.LatestActivity.outTime == DateTime.MinValue)
+                {
+                    if (userState.LatestActivity.StartShift.shiftName == "Special Task")
+                    {
+                        greeting = "You are signed in for special task";
+                        signButton.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        signButton.Visibility = Visibility.Visible;
+                        signButton.Content = "Sign out";
+                        specialTaskButton.Visibility = Visibility.Collapsed;
+                        if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
+                        {
+                            greeting = "You are signed in";
+                        }
+                        else
+                        {
+                            if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                            {
+                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName;
+                            }
+                            else
+                            {
+                                greeting = "You are signed in from " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    signButton.Visibility = Visibility.Visible;
+                    signButton.Content = "Sign in";
+                }
+            }
+            else
+            {
+                signButton.Visibility = Visibility.Visible;
+                signButton.Content = "Sign in";
+            }
+
+            if (userState.LatestMeeting != null)
+            {
+                if (userState.LatestMeeting.outTime == DateTime.MinValue)
+                {
+                    if (string.IsNullOrEmpty(greeting))
+                    {
+                        greeting = "Your meeting attendance has been recorded";
+                    }
+                    else
+                    {
+                        greeting += " and for an meeting";
+                    }
+                }
+            }
+
+            greeting += ".";
+
+            greetingTextBlock.Text = greeting;
+
+            int.TryParse(SettingsHelper.Instance.MinHours, out int minHours);
+
+            if (minHours == 0 || minHours < userState.ApprovedHours)
+            {
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString("0.##") + " hours.";
+            }
+            else
+            {
+                totalHoursTextBlock.Text = "You have completed " + userState.ApprovedHours.ToString("0.##") + " hours out " + minHours.ToString() + " hours minimum.";
+            }
+
         }
 
         private void specialTaskButton_Click(object sender, RoutedEventArgs e)
