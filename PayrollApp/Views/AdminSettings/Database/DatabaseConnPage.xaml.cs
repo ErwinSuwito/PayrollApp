@@ -47,6 +47,11 @@ namespace PayrollApp.Views.AdminSettings.Database
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            payrollDbConn.Text = localSettings.Values["DbConnString"].ToString();
+            cardsDbConn.Text = localSettings.Values["CardConnString"].ToString();
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
