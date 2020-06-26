@@ -179,8 +179,8 @@ namespace PayrollApp.Views.UserProfile.SignInOut
 
         private void TimeUpdater_Tick(object sender, object e)
         {
-            SettingsHelper.Instance.userState = null;
-            this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            //SettingsHelper.Instance.userState = null;
+            //this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
