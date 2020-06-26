@@ -76,6 +76,17 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                <StackPanel x:Name="noItemsPanel" Visibility="Collapsed" HorizontalAlignment="Left"
+                            Margin="12,8,0,0">
+                    <animations:Implicit.ShowAnimations>
+                        <animations:TranslationAnimation Duration="0:0:0.8" From="0, 20, 0" To="0" />
+                        <animations:OpacityAnimation Duration="0:0:0.8" From="0" To="1.0"/>
+                    </animations:Implicit.ShowAnimations>
+                    <FontIcon Glyph="&#xE110;" FontFamily="Segoe MDL2 Assets" FontSize="24" HorizontalAlignment="Left"/>
+                    <TextBlock Text="No meetings found." TextAlignment="Center" Margin="0,12,0,0"
+                               FontSize="20" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Click on the Add button to add one." Margin="0,2,0,0"/>
+                </StackPanel>
                 <ListView x:Name="meetingListView" ItemClick="meetingListView_ItemClick" SelectionMode="None" 
                           IsItemClickEnabled="True" Height="400" Margin="0,8,0,0">
                     <ListView.ItemTemplate>

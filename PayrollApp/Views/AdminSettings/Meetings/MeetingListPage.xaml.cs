@@ -85,6 +85,11 @@ namespace PayrollApp.Views.AdminSettings.Meetings
             ObservableCollection<Meeting> meetings = await SettingsHelper.Instance.op2.GetMeetings(true, locationID, true);
             meetingListView.ItemsSource = meetings;
             loadGrid.Visibility = Visibility.Collapsed;
+
+            if (meetings.Count == 0)
+            {
+                noItemsPanel.Visibility = Visibility.Visible;
+            }
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
