@@ -29,6 +29,12 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            timeUpdater.Stop();
+            base.OnNavigatedFrom(e);
+        }
+
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
         bool IsSpecialTask = true;

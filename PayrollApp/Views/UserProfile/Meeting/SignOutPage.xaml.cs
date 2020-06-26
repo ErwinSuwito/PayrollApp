@@ -32,6 +32,12 @@ namespace PayrollApp.Views.UserProfile.Meeting
         DispatcherTimer timeUpdater = new DispatcherTimer();
         DispatcherTimer loadTimer = new DispatcherTimer();
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            timeUpdater.Stop();
+            base.OnNavigatedFrom(e);
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             currentTime.Text = DateTime.Now.ToString("hh:mm tt");

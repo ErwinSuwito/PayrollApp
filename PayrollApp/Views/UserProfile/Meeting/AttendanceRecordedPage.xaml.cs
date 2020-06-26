@@ -28,6 +28,12 @@ namespace PayrollApp.Views.UserProfile.Meeting
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            timeUpdater.Stop();
+            base.OnNavigatedFrom(e);
+        }
+
         DispatcherTimer timeUpdater = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
