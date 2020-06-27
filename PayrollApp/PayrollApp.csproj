@@ -254,8 +254,8 @@
     <Compile Include="Views\FirstRunSetup\SetupFinishedPage.xaml.cs">
       <DependentUpon>SetupFinishedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRunSetup\ReviewGlobalSettingsPage.xaml.cs">
-      <DependentUpon>ReviewGlobalSettingsPage.xaml</DependentUpon>
+    <Compile Include="Views\FirstRunSetup\PersonalizationPage.xaml.cs">
+      <DependentUpon>PersonalizationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FirstRunSetup\PermissionsPage.xaml.cs">
       <DependentUpon>PermissionsPage.xaml</DependentUpon>
@@ -487,7 +487,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\FirstRunSetup\ReviewGlobalSettingsPage.xaml">
+    <Page Include="Views\FirstRunSetup\PersonalizationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

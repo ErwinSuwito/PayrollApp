@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="PayrollApp.Views.FirstRunSetup.ReviewGlobalSettingsPage"
+    x:Class="PayrollApp.Views.FirstRunSetup.PersonalizationPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PayrollApp"
@@ -38,21 +38,21 @@
 
         <StackPanel x:Name="pageContent" Grid.Row="2" Grid.Column="1">
             <StackPanel x:Name="pageHeader">
-                <TextBlock Text="Global settings" Style="{ThemeResource HeaderTextBlockStyle}"/>
-                <TextBlock Text="These are the settings that are applied everywhere. Please review them." 
+                <TextBlock Text="Personalize" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                <TextBlock Text="Pick a background. You'll be able to change it later." 
                            Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
-            <StackPanel x:Name="actualContent">
+            <GridView x:Name="backgroundGrid" Margin="0,8,0,0" SelectionMode="Single">
                 
-            </StackPanel>
+            </GridView>
         </StackPanel>
 
         <Button x:Name="nextBtn" Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                 Grid.Row="2" Grid.Column="1" Padding="20,0,20,0" Height="40" Click="nextBtn_Click">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Save and Continue." FontSize="16" Margin="0,0,0,0"/>
+                    <TextBlock Text="Continue" FontSize="16" Margin="0,0,0,0"/>
                     <FontIcon Glyph="&#xE72A;" FontSize="18" Margin="12,0,0,0"/>
                 </StackPanel>
             </Button.Content>
