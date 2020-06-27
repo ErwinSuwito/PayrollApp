@@ -297,6 +297,7 @@ namespace PayrollApp.Views.UserProfile
             }
             else
             {
+                greeting = "You are not signed in";
                 signButton.Visibility = Visibility.Visible;
                 signButton.Content = "Sign in";
             }
@@ -311,7 +312,14 @@ namespace PayrollApp.Views.UserProfile
                     }
                     else
                     {
-                        greeting += " and for an meeting";
+                        if (greeting == "You are not signed in")
+                        {
+                            greeting = "Your meeting attendance has been recorded";
+                        }
+                        else
+                        {
+                            greeting += " and for a meeting";
+                        }
                     }
                 }
             }

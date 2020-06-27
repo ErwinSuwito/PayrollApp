@@ -9,7 +9,7 @@
   <Identity
     Name="29437ErwinSuwitoandojo.TAPayroll"
     Publisher="CN=Erwin"
-    Version="1.0.0.0" />
+    Version="1.1.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="0f730817-b1ef-450e-99fe-e136302bcfe8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
