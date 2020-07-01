@@ -110,7 +110,7 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private async void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(DbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            this.Frame.Navigate(typeof(CalendarSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
     }
 }
