@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="PayrollApp.Views.LoginPagev2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp"
+    xmlns:ctl="using:PayrollApp.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    HorizontalAlignment="Left"
+    Height="740" Width="540"
+    Background="Transparent"
+    Loaded="Page_Loaded">
+
+    <Grid x:Name="rootGrid" CornerRadius="3">
+
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock x:Name="currentTime" TextAlignment="Left"
+                       FontWeight="Bold" Text="12:30" FontSize="56"
+                       Style="{ThemeResource HeaderTextBlockStyle}" Opacity="0.9"/>
+            <TextBlock x:Name="currentDate" TextAlignment="Left" Opacity="0.85" FontSize="52"
+                       Text="July 29" FontWeight="Bold" Style="{ThemeResource HeaderTextBlockStyle}"/>
+            <TextBlock x:Name="currentDay" Text="Monday" TextAlignment="Left"
+                       FontWeight="Bold" Opacity="0.75"
+                       Style="{ThemeResource SubheaderTextBlockStyle}"/>
+        </StackPanel>
+
+        <TextBlock x:Name="brandingTextBlock" Text="Payroll" FontWeight="Medium" 
+                   Style="{ThemeResource TitleTextBlockStyle}"
+                   VerticalAlignment="Top" HorizontalAlignment="Left">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+        </TextBlock>
+
+        <TextBlock x:Name="greetingTextBlock" Visibility="Collapsed"
+                   Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"
+                   HorizontalAlignment="Left" Margin="0,0,0,0">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+        </TextBlock>
+
+        <ctl:CameraControl x:Name="cameraControl" Height="240" VerticalAlignment="Bottom" HorizontalAlignment="Left" Visibility="Collapsed"/>
+
+
+        <StackPanel x:Name="footerContent" Margin="0,0,0,0" VerticalAlignment="Bottom"
+                    DoubleTapped="footerContent_DoubleTapped" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Assets/calendar.png" Height="24"/>
+                <TextBlock Text="Event title" FontSize="16" FontWeight="SemiBold"
+                           Margin="12,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ContentDialog x:Name="newAccountDialog" Grid.RowSpan="4" Grid.ColumnSpan="3"
+                       Title="Create new account"
+                       PrimaryButtonText="Next"
+                       CloseButtonText="Cancel" d:IsHidden="True">
+            <StackPanel>
+                <TextBlock Text="Enter your email below (in AD) and select Next. This lets you login without face authentication or card."
+                           TextWrapping="Wrap"/>
+                <TextBox x:Name="emailBox" Header="Email" Margin="0,4,0,0" />
+            </StackPanel>
+        </ContentDialog>
+    </Grid>
+</Page>

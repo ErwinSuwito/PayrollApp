@@ -266,6 +266,9 @@
     <Compile Include="Views\FirstRunSetup\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginPagev2.xaml.cs">
+      <DependentUpon>LoginPagev2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UnhandledExceptionPage.xaml.cs">
       <DependentUpon>UnhandledExceptionPage.xaml</DependentUpon>
     </Compile>
@@ -312,6 +315,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\calendar.png" />
     <Content Include="Assets\wave1.mp4" />
     <Content Include="Assets\wave.jpg" />
     <None Include="Package.StoreAssociation.xml" />
@@ -500,6 +504,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FirstRunSetup\WelcomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginPagev2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -51,7 +51,7 @@ namespace PayrollApp.Views
 
             if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.Success)
             {
-                this.Frame.Navigate(typeof(LoginPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                this.Frame.Navigate(typeof(LoginPagev2), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
             }
             else
             {
