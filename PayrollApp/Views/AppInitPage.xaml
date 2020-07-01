@@ -12,7 +12,7 @@
     Background="{ThemeResource SystemControlAcrylicElementBrush}">
 
     <Grid x:Name="rootGrid" CornerRadius="3">
-        <TextBlock Text="Payroll" Style="{ThemeResource HeaderTextBlockStyle}" 
+        <TextBlock Text="apSHA" Style="{ThemeResource HeaderTextBlockStyle}" 
                        Margin="0,192,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,120">

@@ -26,7 +26,7 @@
                        Style="{ThemeResource SubheaderTextBlockStyle}"/>
         </StackPanel>
 
-        <TextBlock x:Name="brandingTextBlock" Text="Payroll" FontWeight="Medium" 
+        <TextBlock x:Name="brandingTextBlock" Text="apSHA" FontWeight="Medium" 
                    Style="{ThemeResource TitleTextBlockStyle}"
                    VerticalAlignment="Top" HorizontalAlignment="Left">
             <animations:Implicit.ShowAnimations>

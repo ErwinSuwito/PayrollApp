@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
         <Grid x:Name="pageTopBar" VerticalAlignment="Top" 
               Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Payroll" Style="{ThemeResource TitleTextBlockStyle}"
+            <TextBlock Text="apSHA" Style="{ThemeResource TitleTextBlockStyle}"
                            VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                 <TextBlock x:Name="currentTime" TextAlignment="Right" 

@@ -224,8 +224,11 @@
 
                             <StackPanel Margin="0,16,0,0">
                                 <TextBlock Text="About" Style="{ThemeResource TitleTextBlockStyle}" />
-                                <TextBlock Text="Payroll" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                                <TextBlock Text="Preview 1.0" Margin="0,4,0,0"/>
+                                <TextBlock Text="apSHA" Style="{ThemeResource SubheaderTextBlockStyle}" 
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="APU Student Helper Attendance System"
+                                           Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Preview 2" Margin="0,4,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
