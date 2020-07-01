@@ -161,7 +161,9 @@ namespace PayrollApp.Views
 
                     if (e.DetectedFaces.Count() > e.IdentifiedPersons.Count())
                     {
-                        greetingTextBlock.Text = "Hi! One person at a time please...";
+                        brandingTextBlock.Visibility = Visibility.Collapsed;
+                        greetingTextBlock.Text = "One person at a time.";
+                        greetingTextBlock.Visibility = Visibility.Visible;
                     }
                     else
                     {
@@ -172,11 +174,15 @@ namespace PayrollApp.Views
                 {
                     if (e.DetectedFaces.Count() > 1)
                     {
-                        greetingTextBlock.Text = "Hi! One person at a time please...";
+                        brandingTextBlock.Visibility = Visibility.Collapsed;
+                        greetingTextBlock.Text = "One person at a time.";
+                        greetingTextBlock.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        greetingTextBlock.Text = "Nice to meet you! Scan your card to get started.";
+                        brandingTextBlock.Visibility = Visibility.Collapsed;
+                        greetingTextBlock.Text = "Scan your card to get started.";
+                        greetingTextBlock.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -194,8 +200,8 @@ namespace PayrollApp.Views
 
         private void UpdateUIForNoFacesDetected()
         {
-            this.greetingTextBlock.Text = "Step in front of the camera or tap your card to get started.";
-            this.greetingTextBlock.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
+            brandingTextBlock.Visibility = Visibility.Visible;
+            greetingTextBlock.Visibility = Visibility.Collapsed;
         }
 
         private async void CurrentWindowActivationStateChanged(object sender, Windows.UI.Core.WindowActivatedEventArgs e)
@@ -243,8 +249,8 @@ namespace PayrollApp.Views
         {
             base.OnNavigatedTo(e);
 
-            //await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: true);
-            //this.StartProcessingLoop();
+            await this.cameraControl.StartStreamAsync(isForRealTimeProcessing: true);
+            this.StartProcessingLoop();
         }
 
         private async void footerContent_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
