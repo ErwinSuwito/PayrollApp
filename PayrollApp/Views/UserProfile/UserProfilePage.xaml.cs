@@ -291,6 +291,7 @@ namespace PayrollApp.Views.UserProfile
                 }
                 else
                 {
+                    greeting = "You are not signed in";
                     signButton.Visibility = Visibility.Visible;
                     signButton.Content = "Sign in";
                 }
