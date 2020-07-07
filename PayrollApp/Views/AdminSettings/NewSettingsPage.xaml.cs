@@ -150,6 +150,8 @@ namespace PayrollApp.Views.AdminSettings
             breakDurationPicker.SelectedTime = breakDuration;
             breakEveryPicker.SelectedTime = breakAtEvery;
 
+            DeptNameText.Text = await SettingsHelper.Instance.op2.GetGlobalSetting("DeptName");
+
             loadGrid.Visibility = Visibility.Collapsed;
         }
 

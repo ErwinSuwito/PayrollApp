@@ -107,6 +107,7 @@ INSERT INTO global_settings VALUES('DefaultTraineeGroup', '1');
 INSERT INTO global_settings VALUES('DefaultGroup', '2');
 INSERT INTO global_settings VALUES('BreakDuration', '0:30');
 INSERT INTO global_settings VALUES('NeedBreakDuration', '6:00');
+INSERT INTO global_settings VALUES('DeptName', 'Technical Assistant');
 
 INSERT INTO rate(rateDesc, rate) VALUES('Default Duty', 5);
 INSERT INTO rate(rateDesc, rate) VALUES('Sunday Special Task', 10);

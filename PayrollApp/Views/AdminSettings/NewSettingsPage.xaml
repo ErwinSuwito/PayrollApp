@@ -241,6 +241,7 @@
                                 <TextBlock Text="APU Student Helper Attendance System"
                                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                 <TextBlock Text="Preview 2" Margin="0,4,0,0"/>
+                                <TextBlock x:Name="DeptNameText" Margin="0,4,0,0" />
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
