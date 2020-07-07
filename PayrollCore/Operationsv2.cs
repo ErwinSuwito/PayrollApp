@@ -774,7 +774,7 @@ namespace PayrollCore
         /// <param name="user"></param>
         /// <param name="OverrideTime"></param>
         /// <returns></returns>
-        public Activity CompleteWorkActivity(Activity activity, User user, bool OverrideTime)
+        public async Task<Activity> CompleteWorkActivity(Activity activity, User user, bool OverrideTime)
         {
             if (OverrideTime == false)
             {
@@ -803,6 +803,14 @@ namespace PayrollCore
 
             }
 
+            // Loads the break settings
+            string _breakDuration = await GetGlobalSetting("BreakDuration");
+            string _breakAtEvery = await GetGlobalSetting("NeedBreakDuration");
+
+            TimeSpan.TryParse(_breakDuration, out TimeSpan breakDuration);
+
+            int.TryParse(_breakAtEvery, out int _breakAtEveryInt);
+
             TimeSpan workHour = activity.outTime.Subtract(activity.inTime);
 
             if (workHour.TotalHours < 0)
@@ -810,13 +818,13 @@ namespace PayrollCore
                 workHour = new TimeSpan(0, 0, 0);
             }
 
-            var d = workHour.TotalHours / 6;
+            var d = workHour.TotalHours / _breakAtEveryInt;
             int removeTimes = Convert.ToInt32(Math.Floor(d));
             if (removeTimes > 0)
             {
                 for (int i = 0; i <= removeTimes; i++)
                 {
-                    workHour = workHour.Subtract(new TimeSpan(0, 30, 0));
+                    workHour = workHour.Subtract(breakDuration);
                 }
             }
 
@@ -846,7 +854,7 @@ namespace PayrollCore
         /// <param name="user"></param>
         /// <param name="OverrideTime"></param>
         /// <returns></returns>
-        public Activity CompleteMeetingActivity(Activity activity, User user, bool OverrideTime)
+        public async Task<Activity> CompleteMeetingActivity(Activity activity, User user, bool OverrideTime)
         {
             if (OverrideTime == false)
             {
@@ -861,12 +869,20 @@ namespace PayrollCore
                 activity.outTime = DateTime.Now;
             }
 
+            // Loads the break settings
+            string _breakDuration = await GetGlobalSetting("BreakDuration");
+            string _breakAtEvery = await GetGlobalSetting("NeedBreakDuration");
+
+            TimeSpan.TryParse(_breakDuration, out TimeSpan breakDuration);
+
+            int.TryParse(_breakAtEvery, out int _breakAtEveryInt);
+
             TimeSpan workHour = activity.outTime.Subtract(activity.inTime);
 
-            var d = workHour.TotalHours / 6;
+            var d = workHour.TotalHours / _breakAtEveryInt;
             if (workHour.TotalHours < 0)
             {
-                workHour = new TimeSpan(0, 0, 0);
+                workHour = new TimeSpan(0, 0,0);
             }
 
             int removeTimes = Convert.ToInt32(Math.Floor(d));
@@ -874,7 +890,7 @@ namespace PayrollCore
             {
                 for (int i = 0; i <= removeTimes; i++)
                 {
-                    workHour = workHour.Subtract(new TimeSpan(0, 30, 0));
+                    workHour = workHour.Subtract(breakDuration);
                 }
             }
 
@@ -906,13 +922,13 @@ namespace PayrollCore
         /// <param name="inTime"></param>
         /// <param name="outTime"></param>
         /// <returns></returns>
-        public Activity GenerateCompleteWorkActivity(User user, Shift startShift, Shift endShift, DateTime inTime, DateTime outTime)
+        public async Task<Activity> GenerateCompleteWorkActivity(User user, Shift startShift, Shift endShift, DateTime inTime, DateTime outTime)
         {
             Activity newActivity = GenerateWorkActivity(user.userID, startShift, endShift);
             newActivity.inTime = inTime;
             newActivity.outTime = outTime;
 
-            newActivity = CompleteWorkActivity(newActivity, user, true);
+            newActivity = await CompleteWorkActivity(newActivity, user, true);
             return newActivity;
         }
 
@@ -924,13 +940,13 @@ namespace PayrollCore
         /// <param name="inTime"></param>
         /// <param name="outTime"></param>
         /// <returns></returns>
-        public Activity GenerateCompleteMeetingActivity(User user, Meeting meeting, DateTime inTime, DateTime outTime)
+        public async Task<Activity> GenerateCompleteMeetingActivity(User user, Meeting meeting, DateTime inTime, DateTime outTime)
         {
             Activity newActivity = GenerateMeetingActivity(user.userID, meeting);
             newActivity.inTime = inTime;
             newActivity.outTime = outTime;
 
-            newActivity = CompleteMeetingActivity(newActivity, user, true);
+            newActivity = await CompleteMeetingActivity(newActivity, user, true);
             return newActivity;
         }
 

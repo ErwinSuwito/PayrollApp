@@ -129,6 +129,18 @@
                             </StackPanel>
 
                             <StackPanel Margin="0,16,0,0">
+                                <TextBlock Text="Break durations" Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Text="Set the break duration and the duration to be subtracted from total work hours." 
+                                           TextWrapping="Wrap"/>
+                                <TimePicker x:Name="breakEveryPicker" Header="Break starts at every" Margin="0,8,0,0"
+                                            ClockIdentifier="24HourClock"/>
+                                <TimePicker x:Name="breakDurationPicker" Header="for this duration" Margin="0,8,0,0" 
+                                            ClockIdentifier="24HourClock"/>
+                                <Button x:Name="saveBreakBtn" Content="Save" Margin="0,8,0,0" Click="saveBreakBtn_Click" />
+                            </StackPanel>
+
+
+                            <StackPanel Margin="0,16,0,0">
                                 <TextBlock Text="Manage users" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="View existing users, add or remove users, and register face data." 
                                            TextWrapping="Wrap"/>

@@ -141,6 +141,15 @@ namespace PayrollApp.Views.AdminSettings
             //Debug.WriteLine("Others index: " + index.ToString());
             defaultOtherGroup.SelectedIndex = index;
 
+            string _breakDuration = await SettingsHelper.Instance.op2.GetGlobalSetting("BreakDuration");
+            string _breakAtEvery = await SettingsHelper.Instance.op2.GetGlobalSetting("NeedBreakDuration");
+
+            TimeSpan.TryParse(_breakDuration, out TimeSpan breakDuration);
+            TimeSpan.TryParse(_breakAtEvery, out TimeSpan breakAtEvery);
+
+            breakDurationPicker.SelectedTime = breakDuration;
+            breakEveryPicker.SelectedTime = breakAtEvery;
+
             loadGrid.Visibility = Visibility.Collapsed;
         }
 
@@ -353,6 +362,27 @@ namespace PayrollApp.Views.AdminSettings
         private void manageMeetingsBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Meetings.MeetingListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
+
+        private async void saveBreakBtn_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan breakDuration = breakDurationPicker.SelectedTime.Value;
+            TimeSpan breakAtEvery = breakEveryPicker.SelectedTime.Value;
+
+            bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("BreakDuration", breakDuration.ToString());
+            IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("NeedBreakDuration", breakAtEvery.ToString());
+
+            if (IsSuccess == false)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Unable to save settings",
+                    Content = "There is a problem in saving this setting. Please try again later.",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
         }
     }
 }
