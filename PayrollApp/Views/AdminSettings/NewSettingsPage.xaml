@@ -242,6 +242,8 @@
                                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                 <TextBlock Text="Preview 2" Margin="0,4,0,0"/>
                                 <TextBlock x:Name="DeptNameText" Margin="0,4,0,0" />
+                                <HyperlinkButton x:Name="changeDeptBtn" Content="Change department name" 
+                                                 Click="changeDeptBtn_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -262,5 +264,15 @@
                 <TextBlock Text="Just a moment..." Margin="4,0,0,0"/>
             </StackPanel>
         </Grid>
+
+        <ContentDialog x:Name="deptNameChngDiag" Title="Change department name"
+                       PrimaryButtonText="Change" CloseButtonText="Cancel"
+                       Grid.RowSpan="4" Grid.ColumnSpan="3">
+            <StackPanel>
+                <TextBlock Text="Current department name:" />
+                <TextBlock Text="{Binding ElementName=DeptNameText, Path=Text}" />
+                <TextBox x:Name="newDeptNameBox" Header="New department name" Margin="0,8,0,0"/>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>

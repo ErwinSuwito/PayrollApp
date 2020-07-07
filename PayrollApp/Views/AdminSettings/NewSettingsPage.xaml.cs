@@ -386,5 +386,27 @@ namespace PayrollApp.Views.AdminSettings
                 await contentDialog.ShowAsync();
             }
         }
+
+        private async void changeDeptBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialogResult result = await deptNameChngDiag.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                bool IsSuccess = await SettingsHelper.Instance.op2.UpdateGlobalSetting("DeptName", newDeptNameBox.Text);
+
+                if (!IsSuccess)
+                {
+                    ContentDialog contentDialog = new ContentDialog()
+                    {
+                        Title = "Unable to save settings",
+                        Content = "There is a problem in saving new department name. Please try again later.",
+                        CloseButtonText = "Close"
+                    };
+
+                    await contentDialog.ShowAsync();
+                }
+            }
+        }
     }
 }
