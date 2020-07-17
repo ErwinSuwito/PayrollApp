@@ -12,12 +12,7 @@
         <ScrollViewer>
             <StackPanel Margin="16,20,0,0">
                 <TextBlock Text="Debug Mode" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                
-                <StackPanel Margin="0,16,0,0">
-                    <TextBlock Text="Force unhandled exception" Style="{ThemeResource TitleTextBlockStyle}" />
-                    <Button Content="Shifts" Margin="0,8,0,0" Click="Button_Click"/>
-                </StackPanel>
-                
+
                 <StackPanel Margin="0,8,0,0">
                     <TextBlock Text="Check account status" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -35,10 +30,9 @@
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
-                    <TextBlock Text="Admin Settings page" Style="{ThemeResource TitleTextBlockStyle}" />
-                    <TextBlock Text="Open admin settings." TextWrapping="Wrap"/>
-                    <Button x:Name="adminSettingsBtn" Content="Admin Settings" Margin="0,8,0,0"  
-                        Click="adminSettingsBtn_Click"/>
+                    <TextBlock Text="Calendars" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="View user calendars and events." TextWrapping="Wrap"/>
+                    <Button x:Name="calendarsBtn" Content="Admin Settings" Margin="0,8,0,0" Click="calendarsBtn_Click"/>
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
@@ -55,6 +49,11 @@
                                TextWrapping="Wrap"/>
                     <Button x:Name="shiftsBtn" Content="Shifts" Margin="0,8,0,0"
                             Click="shiftsBtn_Click"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Force unhandled exception" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <Button Content="Shifts" Margin="0,8,0,0" Click="Button_Click"/>
                 </StackPanel>
 
 
