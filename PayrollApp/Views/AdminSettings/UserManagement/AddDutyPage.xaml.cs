@@ -93,7 +93,7 @@ namespace PayrollApp.Views.AdminSettings.UserManagement
             var result = await confirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                Activity activity = SettingsHelper.Instance.op2.GenerateCompleteWorkActivity(user, startShift, endShift,
+                Activity activity = await SettingsHelper.Instance.op2.GenerateCompleteWorkActivity(user, startShift, endShift,
                     datePicker1.Date.DateTime + inTimeBox.Time, datePicker1.Date.DateTime + outTimeBox.Time);
 
                 bool IsSuccess = await SettingsHelper.Instance.op2.AddNewActivity(activity);

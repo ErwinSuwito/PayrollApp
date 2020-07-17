@@ -71,7 +71,7 @@ namespace PayrollApp.Views.UserProfile.SpecialTask
 
             if (SettingsHelper.Instance.userState != null)
             {
-                Activity activity = SettingsHelper.Instance.op2.CompleteWorkActivity(SettingsHelper.Instance.userState.LatestActivity,
+                Activity activity = await SettingsHelper.Instance.op2.CompleteWorkActivity(SettingsHelper.Instance.userState.LatestActivity,
                     SettingsHelper.Instance.userState.user, false);
 
                 bool IsSuccess = await SettingsHelper.Instance.op2.UpdateActivity(activity);

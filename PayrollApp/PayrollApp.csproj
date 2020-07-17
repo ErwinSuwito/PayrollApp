@@ -230,6 +230,9 @@
     <Compile Include="Views\DebugModePage.xaml.cs">
       <DependentUpon>DebugModePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Experiments\CalendarExperimentPage.xaml.cs">
+      <DependentUpon>CalendarExperimentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Experiments\ViewShiftsPage.xaml.cs">
       <DependentUpon>ViewShiftsPage.xaml</DependentUpon>
     </Compile>
@@ -461,6 +464,10 @@
     <Page Include="Views\DebugModePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Experiments\CalendarExperimentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Experiments\ViewShiftsPage.xaml">
       <SubType>Designer</SubType>

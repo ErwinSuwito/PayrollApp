@@ -16,7 +16,7 @@
         <CommandBar VerticalAlignment="Center">
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" 
+                    <Button x:Name="backBtn" Style="{ThemeResource NavigationBackButtonNormalStyle}" 
                             HorizontalAlignment="Left" />
                     <TextBlock Text="Shifts" VerticalAlignment="Center" Margin="8,0,0,0"
                                Style="{ThemeResource BaseTextBlockStyle}"/>
