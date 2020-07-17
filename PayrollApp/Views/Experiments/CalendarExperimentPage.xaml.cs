@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Graph.Providers;
+﻿using Microsoft.Graph;
+using Microsoft.Toolkit.Graph.Providers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,12 +33,26 @@ namespace PayrollApp.Views.Experiments
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.GoBack();
         }
 
-        private void calendarSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void calendarSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var selectedCalendar = calendarSelector.SelectedItem as Calendar;
+            TimeSpan timeSpan = new TimeSpan(23, 59, 59);
+            DateTime endOfDay = DateTime.Today + timeSpan;
 
+            var queryOptions = new List<QueryOption>()
+                {
+                    new QueryOption("startdatetime", DateTime.Now.ToUniversalTime().ToString()),
+                    new QueryOption("enddatetime", endOfDay.ToUniversalTime().ToString())
+                };
+
+
+            var eventList = await provider.Graph.Me.Calendars[selectedCalendar.Id].CalendarView.Request(queryOptions).GetAsync();
+
+
+            eventView.ItemsSource = eventList;
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -46,6 +61,20 @@ namespace PayrollApp.Views.Experiments
             {
                 var calendarList = await provider.Graph.Me.Calendars.Request().GetAsync();
                 calendarSelector.ItemsSource = calendarList;
+
+                TimeSpan timeSpan = new TimeSpan(23, 59, 59);
+                DateTime endOfDay = DateTime.Today + timeSpan;
+
+                var queryOptions = new List<QueryOption>()
+                {
+                    new QueryOption("startdatetime", DateTime.Now.ToUniversalTime().ToString()),
+                    new QueryOption("enddatetime", endOfDay.ToUniversalTime().ToString())
+                };
+
+                var eventList = await provider.Graph.Me.CalendarView.Request(queryOptions).GetAsync();
+
+                eventView.ItemsSource = eventList;
+
             }
         }
     }
