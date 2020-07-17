@@ -45,7 +45,7 @@ namespace PayrollApp.Views.Experiments
             if (provider != null && provider.State == ProviderState.SignedIn)
             {
                 var calendarList = await provider.Graph.Me.Calendars.Request().GetAsync();
-                calendarSelector.ItemsSource = calendarList.ToList();
+                calendarSelector.ItemsSource = calendarList;
             }
         }
     }

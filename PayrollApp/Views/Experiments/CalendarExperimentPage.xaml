@@ -26,14 +26,15 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Select a calendar and view the events in it." 
-                       TextWrapping="Wrap" Margin="0,4,0,0"/>
+        <StackPanel Grid.Row="1" Margin="12,4,0,0">
+            <TextBlock Text="Select a calendar and view the events in it." TextWrapping="Wrap"/>
             <ComboBox x:Name="calendarSelector" Header="Calendar" Margin="0,8,0,0"
                       SelectionChanged="calendarSelector_SelectionChanged">
-                <DataTemplate x:DataType="graph:Calendar">
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="graph:Calendar">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ListView x:Name="eventView" Header="Events" Margin="0,8,0,0" Height="400">
                 <ListView.ItemTemplate>
