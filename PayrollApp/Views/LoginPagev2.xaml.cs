@@ -110,7 +110,7 @@ namespace PayrollApp.Views
         {
             this.isProcessingLoopInProgress = true;
 
-            if (this.processingLoopTask == null || this.processingLoopTask.Status != TaskStatus.Running)
+            if (this.processingLoopTask == null || this.processingLoopTask.Status != System.Threading.Tasks.TaskStatus.Running)
             {
                 this.processingLoopTask = Task.Run(() => this.ProcessingLoop());
             }
