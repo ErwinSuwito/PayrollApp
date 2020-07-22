@@ -53,9 +53,16 @@
 
         <StackPanel x:Name="footerContent" Margin="0,0,0,0" VerticalAlignment="Bottom"
                     DoubleTapped="footerContent_DoubleTapped" Orientation="Horizontal">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel x:Name="calendarPanel" Visibility="Collapsed" Orientation="Horizontal">
+                <animations:Implicit.ShowAnimations>
+                    <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+                </animations:Implicit.HideAnimations>
+
                 <Image Source="/Assets/calendar.png" Height="24"/>
-                <TextBlock Text="Event title" FontSize="16" FontWeight="SemiBold"
+                <TextBlock x:Name="eventTitle" Text="Event title" FontSize="16" FontWeight="SemiBold"
                            Margin="12,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </StackPanel>

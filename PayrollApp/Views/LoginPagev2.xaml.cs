@@ -19,6 +19,7 @@ using Windows.System;
 using PayrollCore.Entities;
 using ServiceHelpers;
 using System.Diagnostics;
+using Microsoft.Graph;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,6 +35,7 @@ namespace PayrollApp.Views
         private bool isProcessingPhoto;
         private bool isLogginIn = false;
         private string cardId = string.Empty;
+        IProvider provider = ProviderManager.Instance.GlobalProvider;
 
         public LoginPagev2()
         {
@@ -226,10 +228,44 @@ namespace PayrollApp.Views
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+            CalendarUpdate();
+        }
+
+        private async void CalendarUpdate()
+        {
+            if (SettingsHelper.Instance.enableCalendar)
+            {
+                if (provider != null && provider.State == ProviderState.SignedIn)
+                {
+                    TimeSpan timeSpan = new TimeSpan(23, 59, 59);
+                    DateTime endOfDay = DateTime.Today.AddDays(1) + timeSpan;
+
+                    var queryOptions = new List<QueryOption>()
+                    {
+                        new QueryOption("startdatetime", DateTime.Now.ToUniversalTime().ToString()),
+                        new QueryOption("enddatetime", endOfDay.ToUniversalTime().ToString())
+                    };
+
+                    var eventList = await provider.Graph.Me.Calendars[SettingsHelper.Instance.calendarId].CalendarView.Request(queryOptions).GetAsync();
+
+                    if (eventList != null)
+                    {
+                        Event firstEvent = eventList.FirstOrDefault();
+                        eventTitle.Text = firstEvent.Subject;
+                        calendarPanel.Visibility = Visibility.Visible;
+
+                        return;
+                    }
+                }
+            }
+
+            calendarPanel.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
         {
+            CalendarUpdate();
+
             currentTime.Text = DateTime.Now.ToString("H:mm");
             currentDate.Text = DateTime.Now.ToString("MMMM dd");
             currentDay.Text = DateTime.Now.ToString("dddd");
