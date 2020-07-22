@@ -40,13 +40,13 @@ namespace PayrollApp.Views.Experiments
         {
             var selectedCalendar = calendarSelector.SelectedItem as Calendar;
             TimeSpan timeSpan = new TimeSpan(23, 59, 59);
-            DateTime endOfDay = DateTime.Today + timeSpan;
+            DateTime endOfDay = DateTime.Today.AddDays(1) + timeSpan;
 
             var queryOptions = new List<QueryOption>()
-                {
-                    new QueryOption("startdatetime", DateTime.Now.ToUniversalTime().ToString()),
-                    new QueryOption("enddatetime", endOfDay.ToUniversalTime().ToString())
-                };
+            {
+                new QueryOption("startdatetime", DateTime.Now.ToUniversalTime().ToString()),
+                new QueryOption("enddatetime", endOfDay.ToUniversalTime().ToString())
+            };
 
 
             var eventList = await provider.Graph.Me.Calendars[selectedCalendar.Id].CalendarView.Request(queryOptions).GetAsync();
@@ -63,7 +63,7 @@ namespace PayrollApp.Views.Experiments
                 calendarSelector.ItemsSource = calendarList;
 
                 TimeSpan timeSpan = new TimeSpan(23, 59, 59);
-                DateTime endOfDay = DateTime.Today + timeSpan;
+                DateTime endOfDay = DateTime.Today.AddDays(1) + timeSpan;
 
                 var queryOptions = new List<QueryOption>()
                 {
