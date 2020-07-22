@@ -53,6 +53,8 @@ namespace PayrollApp
         string DbConnectionString;
         string CardConnString;
 
+        public bool enableCalendar;
+        public string calendarId;
         public UserState userState;
         public Location appLocation;
         public Operationsv2 op2;
@@ -130,6 +132,13 @@ namespace PayrollApp
                     CardConnString = localSettings.Values["CardConnString"].ToString();
                     bool DbTest = await op2.TestDbConnection(DbConnectionString);
                     bool CardTest = await op2.TestDbConnection(CardConnString);
+
+                    // Retrieves calendar Id to be shown in the login screen
+                    bool.TryParse(localSettings.Values["EnableCalendar"].ToString(), out enableCalendar);
+                    if (enableCalendar)
+                    {
+                        calendarId = localSettings.Values["CalendarID"].ToString();
+                    }
 
                     if (DbTest == true & CardTest == true)
                     {

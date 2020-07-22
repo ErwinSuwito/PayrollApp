@@ -45,7 +45,7 @@
 
             <StackPanel x:Name="actualContent" Margin="0,8,0,0">
                 <ToggleSwitch x:Name="enableCalendar" Header="Enable calendar" />
-                <ComboBox x:Name="calendarSwitcher" Header="Calendar" Margin="0,8,0,0"/>
+                <ComboBox x:Name="calendarSelector" Header="Calendar" Margin="0,8,0,0"/>
             </StackPanel>
         </StackPanel>
 
