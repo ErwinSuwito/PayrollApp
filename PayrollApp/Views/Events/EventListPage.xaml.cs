@@ -52,41 +52,5 @@ namespace PayrollApp.Views.Events
             currentDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
-        private async void skipBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ContentDialog contentDialog = new ContentDialog
-            {
-                Title = "Are you sure?",
-                Content = "Enabling facial recognition will make your login faster and easier. All you'll need to do is stand in front of the machine and you're logged in.",
-                PrimaryButtonText = "Set up now",
-                SecondaryButtonText = "Skip"
-            };
-
-            ContentDialogResult result = await contentDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                this.Frame.Navigate(typeof(FaceRecSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-            }
-            else
-            {
-                ContentDialog contentDialog2 = new ContentDialog
-                {
-                    Title = "Just in case",
-                    Content = "To enable facial recognition, just login to the system and tap or click on the Enable facial recognition button.",
-                    PrimaryButtonText = "Ok"
-                };
-
-                await contentDialog2.ShowAsync();
-
-                this.Frame.Navigate(typeof(UserProfile.UserProfilePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-
-            }
-        }
-
-        private void nextBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(FaceRecSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
-        }
     }
 }
