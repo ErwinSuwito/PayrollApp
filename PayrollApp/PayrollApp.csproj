@@ -233,6 +233,9 @@
     <Compile Include="Views\Events\EventListPage.xaml.cs">
       <DependentUpon>EventListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Experiments\PurgePayrollDbPage.xaml.cs">
+      <DependentUpon>PurgePayrollDbPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Experiments\CalendarExperimentPage.xaml.cs">
       <DependentUpon>CalendarExperimentPage.xaml</DependentUpon>
     </Compile>
@@ -469,6 +472,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Events\EventListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Experiments\PurgePayrollDbPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

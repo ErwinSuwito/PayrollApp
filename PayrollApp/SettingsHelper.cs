@@ -50,7 +50,7 @@ namespace PayrollApp
     internal class SettingsHelper : INotifyPropertyChanged
     {
 
-        string DbConnectionString;
+        public string DbConnectionString;
         string CardConnString;
 
         public bool enableCalendar;

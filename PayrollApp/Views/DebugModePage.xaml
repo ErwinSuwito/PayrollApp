@@ -11,7 +11,7 @@
     <Grid>
         <ScrollViewer>
             <StackPanel Margin="16,20,0,0">
-                <TextBlock Text="Debug Mode" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                <TextBlock Text="Experiments" Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
                 <StackPanel Margin="0,8,0,0">
                     <TextBlock Text="Check account status" Style="{ThemeResource SubtitleTextBlockStyle}"/>
@@ -22,17 +22,25 @@
                     </StackPanel>
                     <TextBlock x:Name="personResultText" />
                 </StackPanel>
+                
                 <StackPanel Margin="0,16,0,0">
-                    <TextBlock Text="[NT] Reset app data" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                    <TextBlock Text="Reset app data" Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="Reset app data without app restart." />
                     <Button x:Name="ResetBtn" Content="Reset" Click="ResetBtn_Click"
                     Margin="0,8,0,0"/>
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Admin Settings page" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="Open admin settings." TextWrapping="Wrap"/>
+                    <Button x:Name="adminSettingsBtn" Content="Admin Settings" Margin="0,8,0,0"  
+                            Click="adminSettingsBtn_Click"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Calendars" Style="{ThemeResource TitleTextBlockStyle}" />
                     <TextBlock Text="View user calendars and events." TextWrapping="Wrap"/>
-                    <Button x:Name="calendarsBtn" Content="Admin Settings" Margin="0,8,0,0" Click="calendarsBtn_Click"/>
+                    <Button x:Name="calendarsBtn" Content="Calendars" Margin="0,8,0,0" Click="calendarsBtn_Click"/>
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
@@ -44,8 +52,16 @@
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Purge databse" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="Drops all table in the payroll database" 
+                               TextWrapping="Wrap"/>
+                    <Button x:Name="purgeBtn" Content="Shifts" Margin="0,8,0,0" Click="purgeBtn_Click"/>
+                </StackPanel>
+
+
+                <StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Shifts integration" Style="{ThemeResource TitleTextBlockStyle}" />
-                    <TextBlock Text="View all shared shifts data" 
+                    <TextBlock Text="View all shared shifts data in Microsoft Teams" 
                                TextWrapping="Wrap"/>
                     <Button x:Name="shiftsBtn" Content="Shifts" Margin="0,8,0,0"
                             Click="shiftsBtn_Click"/>

@@ -12,12 +12,6 @@ namespace PayrollCore
 {
     public class Operationsv2
     {
-        /* Methods needed:
-         * Generate sign in, sign out shift/meetings (with time overrides)
-         * Insert & update database items (do validation here also)
-         * Get latest sign in activity (shift/special task and meeting)
-         */
-
         private DataAccess2 da = new DataAccess2();
 
         /// <summary>

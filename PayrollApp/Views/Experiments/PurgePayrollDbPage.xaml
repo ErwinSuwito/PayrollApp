@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="PayrollApp.Views.Experiments.PurgePayrollDbPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PayrollApp.Views.Experiments"
+    xmlns:graph="using:Microsoft.Graph"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <CommandBar VerticalAlignment="Center">
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="backBtn" Style="{ThemeResource NavigationBackButtonNormalStyle}" 
+                            HorizontalAlignment="Left"  Click="backBtn_Click"/>
+                    <TextBlock Text="Purge Payroll Database" VerticalAlignment="Center" Margin="8,0,0,0"
+                               Style="{ThemeResource BaseTextBlockStyle}"/>
+                </StackPanel>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <StackPanel Grid.Row="1" Margin="12,8,0,0">
+            <TextBlock Text="Tap on the button to drop all table." TextWrapping="Wrap"/>
+            <Button Content="Purge" Margin="0,8,0,0" 
+                    Click="Button_Click"/>
+            <StackPanel x:Name="progPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="0,12,0,0">
+                <ProgressRing IsActive="True" Height="24" Width="24" VerticalAlignment="Center"/>
+                <TextBlock x:Name="progText" Text="Just a moment..." Margin="12,0,0,0"
+                                   FontSize="16" VerticalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

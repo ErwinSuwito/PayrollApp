@@ -115,5 +115,15 @@ namespace PayrollApp.Views
         {
             this.Frame.Navigate(typeof(Experiments.CalendarExperimentPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
+
+        private void adminSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(AdminSettings.NewSettingsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
+
+        private void purgeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Experiments.PurgePayrollDbPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+        }
     }
 }
