@@ -38,17 +38,16 @@ namespace PayrollApp.Views.Experiments
         {
             progPanel.Visibility = Visibility.Visible;
             progText.Text = "Preparing to purge...";
-
-            string purgeScriptPath = @"Assets\purge.sql";
-            StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            StorageFile file = await installFolder.GetFileAsync(purgeScriptPath);
-
-            if (File.Exists(file.Path))
+            
+            try
             {
-                string script = File.ReadAllText(file.Path);
+                string purgeScriptPath = @"Assets\purge.sql";
+                StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                StorageFile file = await installFolder.GetFileAsync(purgeScriptPath);
 
-                try
+                if (File.Exists(file.Path))
                 {
+                    string script = File.ReadAllText(file.Path);
                     using (SqlConnection conn = new SqlConnection(SettingsHelper.Instance.DbConnectionString))
                     {
                         conn.Open();
@@ -72,19 +71,8 @@ namespace PayrollApp.Views.Experiments
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    ContentDialog contentDialog = new ContentDialog()
-                    {
-                        Title = "Unable to purge",
-                        Content = ex.Message,
-                        CloseButtonText = "Ok"
-                    };
-
-                    await contentDialog.ShowAsync();
-                }
             }
-            else
+            catch (FileNotFoundException)
             {
                 ContentDialog contentDialog = new ContentDialog()
                 {
@@ -95,8 +83,21 @@ namespace PayrollApp.Views.Experiments
 
                 await contentDialog.ShowAsync();
             }
-
-            progPanel.Visibility = Visibility.Collapsed;
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Unable to purge",
+                    Content = ex.Message,
+                    CloseButtonText = "Ok"
+                };
+                
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                progPanel.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
