@@ -99,5 +99,71 @@ namespace PayrollApp.Views.Experiments
                 progPanel.Visibility = Visibility.Collapsed;
             }
         }
+
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            progPanel.Visibility = Visibility.Visible;
+            progText.Text = "Preparing to initialize...";
+
+            try
+            {
+                string initScriptPath = @"Assets\InitDb.sql";
+                StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                StorageFile file = await installFolder.GetFileAsync(initScriptPath);
+
+                if (File.Exists(file.Path))
+                {
+                    string script = File.ReadAllText(file.Path);
+                    using (SqlConnection conn = new SqlConnection(SettingsHelper.Instance.DbConnectionString))
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            progText.Text = "Initializing...";
+                            cmd.CommandText = script;
+                            int? result = await cmd.ExecuteNonQueryAsync();
+
+                            if (result != null)
+                            {
+                                ContentDialog contentDialog = new ContentDialog()
+                                {
+                                    Title = "Database initialized!",
+                                    Content = "Tables have been added.",
+                                    CloseButtonText = "Ok"
+                                };
+
+                                await contentDialog.ShowAsync();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Unable to initialize",
+                    Content = "An application resource cannot be found or is corrupted. Please re-install the application and try again. If the problem persists, contact the developer.",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Unable to initialize",
+                    Content = ex.Message,
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                progPanel.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }

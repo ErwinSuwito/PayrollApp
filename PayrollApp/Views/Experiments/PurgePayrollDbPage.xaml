@@ -19,16 +19,18 @@
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="backBtn" Style="{ThemeResource NavigationBackButtonNormalStyle}" 
                             HorizontalAlignment="Left"  Click="backBtn_Click"/>
-                    <TextBlock Text="Purge Payroll Database" VerticalAlignment="Center" Margin="8,0,0,0"
+                    <TextBlock Text="Payroll Database Initialization and Purge" VerticalAlignment="Center" Margin="8,0,0,0"
                                Style="{ThemeResource BaseTextBlockStyle}"/>
                 </StackPanel>
             </CommandBar.Content>
         </CommandBar>
 
         <StackPanel Grid.Row="1" Margin="12,8,0,0">
-            <TextBlock Text="Tap on the button to drop all table." TextWrapping="Wrap"/>
-            <Button Content="Purge" Margin="0,8,0,0" 
-                    Click="Button_Click"/>
+            <TextBlock Text="Tap on the button to drop all table or re-create the database." TextWrapping="Wrap"/>
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Content="Purge" Margin="0,0,8,0" Click="Button_Click"/>
+                <Button Content="Initialize database" Margin="0,0,12,0" Click="Button_Click_1"/>
+            </StackPanel>
             <StackPanel x:Name="progPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="0,12,0,0">
                 <ProgressRing IsActive="True" Height="24" Width="24" VerticalAlignment="Center"/>
                 <TextBlock x:Name="progText" Text="Just a moment..." Margin="12,0,0,0"

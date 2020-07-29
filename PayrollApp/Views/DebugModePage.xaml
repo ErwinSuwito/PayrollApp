@@ -10,7 +10,7 @@
 
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="16,20,0,0">
+            <StackPanel Margin="16,20,0,32">
                 <TextBlock Text="Experiments" Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
                 <StackPanel Margin="0,8,0,0">
@@ -52,10 +52,10 @@
                 </StackPanel>
 
                 <StackPanel Margin="0,16,0,0">
-                    <TextBlock Text="Purge databse" Style="{ThemeResource TitleTextBlockStyle}" />
-                    <TextBlock Text="Drops all table in the payroll database" 
+                    <TextBlock Text="Purge and initialize database" Style="{ThemeResource TitleTextBlockStyle}" />
+                    <TextBlock Text="Drops all table or re-create the database" 
                                TextWrapping="Wrap"/>
-                    <Button x:Name="purgeBtn" Content="Shifts" Margin="0,8,0,0" Click="purgeBtn_Click"/>
+                    <Button x:Name="purgeBtn" Content="Go" Margin="0,8,0,0" Click="purgeBtn_Click"/>
                 </StackPanel>
 
 
@@ -69,7 +69,7 @@
 
                 <StackPanel Margin="0,16,0,0">
                     <TextBlock Text="Force unhandled exception" Style="{ThemeResource TitleTextBlockStyle}" />
-                    <Button Content="Shifts" Margin="0,8,0,0" Click="Button_Click"/>
+                    <Button Content="Force exception" Margin="0,8,0,0" Click="Button_Click"/>
                 </StackPanel>
 
 
