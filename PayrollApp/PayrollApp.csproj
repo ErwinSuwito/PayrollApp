@@ -329,6 +329,7 @@
   <ItemGroup>
     <Content Include="Assets\calendar.png" />
     <Content Include="Assets\dropscript.sql" />
+    <Content Include="Assets\InitDb.sql" />
     <Content Include="Assets\wave1.mp4" />
     <Content Include="Assets\wave.jpg" />
     <None Include="Package.StoreAssociation.xml" />
