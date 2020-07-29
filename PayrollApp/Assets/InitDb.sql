@@ -93,12 +93,12 @@ CREATE TABLE Global_Settings(
 	SettingValue nvarchar(255)
 );
 
-INSERT INTO global_settings VALUES('MinHours', '40');
-INSERT INTO global_settings VALUES('DefaultTraineeGroup', '1');
-INSERT INTO global_settings VALUES('DefaultGroup', '2');
-INSERT INTO global_settings VALUES('BreakDuration', '0:30');
-INSERT INTO global_settings VALUES('NeedBreakDuration', '6:00');
-INSERT INTO global_settings VALUES('DeptName', 'Technical Assistant');
+INSERT INTO global_settings(SettingKey) VALUES('MinHours');
+INSERT INTO global_settings(SettingKey) VALUES('DefaultTraineeGroup');
+INSERT INTO global_settings(SettingKey) VALUES('DefaultGroup');
+INSERT INTO global_settings(SettingKey) VALUES('BreakDuration');
+INSERT INTO global_settings(SettingKey) VALUES('NeedBreakDuration');
+INSERT INTO global_settings(SettingKey) VALUES('DeptName');
 
 INSERT INTO rate(rateDesc, rate) VALUES('Default Duty', 5);	
 

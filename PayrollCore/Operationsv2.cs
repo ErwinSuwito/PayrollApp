@@ -24,6 +24,20 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
+        public async Task<bool> TestPayrollDb()
+        {
+            var locations = await GetLocations(false);
+            var userGroups = await GetUserGroups(false, false);
+            var rates = await GetAllRates(false);
+
+            int locationCount = locations.Count;
+            int rateCount = rates.Count;
+            int userGroupsCount = userGroups.Count;
+            string defaultGroupTest = await GetGlobalSetting("DefaultGroup");
+
+            return (locationCount > 1 && rateCount > 0 && userGroupsCount > 0 && !string.IsNullOrEmpty(defaultGroupTest));
+        }
+
         /// <summary>
         /// Gets the last exception in DataAccess
         /// </summary>

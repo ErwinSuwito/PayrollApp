@@ -10,7 +10,7 @@
 
     <Grid>
         <ScrollViewer>
-            <StackPanel Margin="16,20,0,32">
+            <StackPanel Margin="20,20,0,52">
                 <TextBlock Text="Experiments" Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
                 <StackPanel Margin="0,8,0,0">
