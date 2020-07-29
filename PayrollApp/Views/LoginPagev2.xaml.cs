@@ -251,8 +251,11 @@ namespace PayrollApp.Views
                     if (eventList != null)
                     {
                         Event firstEvent = eventList.FirstOrDefault();
-                        eventTitle.Text = firstEvent.Subject;
-                        calendarPanel.Visibility = Visibility.Visible;
+                        if (firstEvent != null)
+                        {
+                            eventTitle.Text = firstEvent.Subject;
+                            calendarPanel.Visibility = Visibility.Visible;
+                        }
 
                         return;
                     }
