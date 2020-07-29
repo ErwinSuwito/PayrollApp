@@ -262,31 +262,40 @@ namespace PayrollApp.Views.UserProfile
             {
                 if (userState.LatestActivity.outTime == DateTime.MinValue)
                 {
-                    if (userState.LatestActivity.StartShift.shiftName == "Special Task")
+                    if (!userState.LatestActivity.NoActivity)
                     {
-                        greeting = "You are signed in for special task";
-                        signButton.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        signButton.Visibility = Visibility.Visible;
-                        signButton.Content = "Sign out";
-                        specialTaskButton.Visibility = Visibility.Collapsed;
-                        if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
+                        if (userState.LatestActivity.StartShift.shiftName == "Special Task")
                         {
-                            greeting = "You are signed in";
+                            greeting = "You are signed in for special task";
+                            signButton.Visibility = Visibility.Collapsed;
                         }
                         else
                         {
-                            if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                            signButton.Visibility = Visibility.Visible;
+                            signButton.Content = "Sign out";
+                            specialTaskButton.Visibility = Visibility.Collapsed;
+                            if (userState.LatestActivity.StartShift.shiftName == "Normal sign in")
                             {
-                                greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName;
+                                greeting = "You are signed in";
                             }
                             else
                             {
-                                greeting = "You are signed in from " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName;
+                                if (userState.LatestActivity.StartShift.shiftID == userState.LatestActivity.EndShift.shiftID)
+                                {
+                                    greeting = "You are signed in for " + userState.LatestActivity.StartShift.shiftName;
+                                }
+                                else
+                                {
+                                    greeting = "You are signed in from " + userState.LatestActivity.StartShift.shiftName + " to " + userState.LatestActivity.EndShift.shiftName;
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        greeting = "You are not signed in";
+                        signButton.Visibility = Visibility.Visible;
+                        signButton.Content = "Sign in";
                     }
                 }
                 else
@@ -307,19 +316,22 @@ namespace PayrollApp.Views.UserProfile
             {
                 if (userState.LatestMeeting.outTime == DateTime.MinValue)
                 {
-                    if (string.IsNullOrEmpty(greeting))
+                    if (!userState.LatestMeeting.NoActivity)
                     {
-                        greeting = "Your meeting attendance has been recorded";
-                    }
-                    else
-                    {
-                        if (greeting == "You are not signed in")
+                        if (string.IsNullOrEmpty(greeting))
                         {
                             greeting = "Your meeting attendance has been recorded";
                         }
                         else
                         {
-                            greeting += " and for a meeting";
+                            if (greeting == "You are not signed in")
+                            {
+                                greeting = "Your meeting attendance has been recorded";
+                            }
+                            else
+                            {
+                                greeting += " and for a meeting";
+                            }
                         }
                     }
                 }
