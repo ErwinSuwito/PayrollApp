@@ -24,6 +24,10 @@ namespace PayrollCore
             da.StoreConnStrings(DbConnString, CardConnString);
         }
 
+        /// <summary>
+        /// Checks the default payroll database if it is useable for operation
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> TestPayrollDb()
         {
             var locations = await GetLocations(false);
@@ -44,6 +48,22 @@ namespace PayrollCore
                 da.lastError = ex;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks if the database pointed can be used for app operation
+        /// </summary>
+        /// <param name="connString"></param>
+        /// <returns></returns>
+        public async Task<bool> TestPayrollDb(string connString)
+        {
+            bool IsSuccess = await TestDbConnection(connString);
+            if (IsSuccess)
+            {
+                return await da.TestPayrollDb(connString);
+            }
+
+            return false;
         }
 
         /// <summary>

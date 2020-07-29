@@ -47,6 +47,31 @@ namespace PayrollCore
             }
         }
 
+        public async Task<bool> TestPayrollDb(string connString)
+        {
+            DbConnString = connString;
+
+            var locations = await GetAllLocationAsync(false);
+            var userGroups = await GetAllUserGroupsAsync(false);
+            var rates = await GetAllRatesAsync(false);
+
+            try
+            {
+                int locationCount = locations.Count;
+                int rateCount = rates.Count;
+                int userGroupsCount = userGroups.Count;
+                string defaultGroupTest = await GetGlobalSettingsByKeyAsync("DefaultGroup");
+
+                return (locationCount > 1 && rateCount > 0 && userGroupsCount > 0 && !string.IsNullOrEmpty(defaultGroupTest));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+                lastError = ex;
+                return false;
+            }
+        }
+
         #region Rate
         /// <summary>
         /// Gets the requested Rate
