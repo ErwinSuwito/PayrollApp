@@ -41,7 +41,7 @@ namespace PayrollApp.Views.Experiments
             
             try
             {
-                string purgeScriptPath = @"Assets\purge.sql";
+                string purgeScriptPath = @"Assets\dropscript.sql";
                 StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
                 StorageFile file = await installFolder.GetFileAsync(purgeScriptPath);
 
