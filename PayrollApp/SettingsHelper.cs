@@ -130,7 +130,7 @@ namespace PayrollApp
                     // Retrieves connection strings and tests them
                     DbConnectionString = localSettings.Values["DbConnString"].ToString();
                     CardConnString = localSettings.Values["CardConnString"].ToString();
-                    bool DbTest = await op2.TestDbConnection(DbConnectionString);
+                    bool DbTest = await op2.TestPayrollDb(DbConnectionString);
                     bool CardTest = await op2.TestDbConnection(CardConnString);
 
                     // Retrieves calendar Id to be shown in the login screen
