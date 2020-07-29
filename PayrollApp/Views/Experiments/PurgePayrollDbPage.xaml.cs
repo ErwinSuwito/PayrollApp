@@ -36,7 +36,7 @@ namespace PayrollApp.Views.Experiments
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            progPanel.Visibility = Visibility.Visible;
+            progPanel.Opacity = 1;
             progText.Text = "Preparing to purge...";
             
             try
@@ -96,13 +96,13 @@ namespace PayrollApp.Views.Experiments
             }
             finally
             {
-                progPanel.Visibility = Visibility.Collapsed;
+                progPanel.Opacity = 0;
             }
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            progPanel.Visibility = Visibility.Visible;
+            progPanel.Opacity = 1;
             progText.Text = "Preparing to initialize...";
 
             try
@@ -162,7 +162,35 @@ namespace PayrollApp.Views.Experiments
             }
             finally
             {
-                progPanel.Visibility = Visibility.Collapsed;
+                progPanel.Opacity = 0;
+            }
+        }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            bool IsSuccess = await SettingsHelper.Instance.op2.TestPayrollDb();
+            if (IsSuccess)
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Payroll Db useable",
+                    Content = "Important tables and data in Payroll Db is found",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+            }
+            else
+            {
+                ContentDialog contentDialog = new ContentDialog()
+                {
+                    Title = "Initialize Payroll Db",
+                    Content = "Database needs to be initialized before being used for Payroll",
+                    CloseButtonText = "Ok"
+                };
+
+                await contentDialog.ShowAsync();
+
             }
         }
     }
