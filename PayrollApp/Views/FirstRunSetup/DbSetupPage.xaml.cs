@@ -137,7 +137,7 @@ namespace PayrollApp.Views.FirstRunSetup
 
                                 if (IsSuccess)
                                 {
-                                    this.Frame.Navigate(typeof(InitializeDb.LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                                    this.Frame.Navigate(typeof(InitializeDb.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                                 }
                                 else
                                 {

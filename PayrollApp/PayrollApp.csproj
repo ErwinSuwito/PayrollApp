@@ -257,6 +257,12 @@
     <Compile Include="Views\FirstRunSetup\GraphSetupPage.xaml.cs">
       <DependentUpon>GraphSetupPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FirstRunSetup\IntializeDb\NewRatePage.xaml.cs">
+      <DependentUpon>NewRatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FirstRunSetup\IntializeDb\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstRunSetup\LocationSetupPage.xaml.cs">
       <DependentUpon>LocationSetupPage.xaml</DependentUpon>
     </Compile>
@@ -509,6 +515,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\FirstRunSetup\IntializeDb\NewRatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunSetup\IntializeDb\WelcomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FirstRunSetup\LocationSetupPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -636,9 +650,7 @@
       <Name>ServiceHelpers</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\FirstRunSetup\IntializeDb\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
