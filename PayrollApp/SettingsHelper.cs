@@ -75,7 +75,8 @@ namespace PayrollApp
             Failed,
             Success,
             Completed,
-            Setup
+            Setup,
+            InitDb
         }
 
 

@@ -257,12 +257,6 @@
     <Compile Include="Views\FirstRunSetup\GraphSetupPage.xaml.cs">
       <DependentUpon>GraphSetupPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstRunSetup\IntializeDb\NewRatePage.xaml.cs">
-      <DependentUpon>NewRatePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FirstRunSetup\IntializeDb\WelcomePage.xaml.cs">
-      <DependentUpon>WelcomePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\FirstRunSetup\LocationSetupPage.xaml.cs">
       <DependentUpon>LocationSetupPage.xaml</DependentUpon>
     </Compile>
@@ -512,14 +506,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FirstRunSetup\GraphSetupPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\FirstRunSetup\IntializeDb\NewRatePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\FirstRunSetup\IntializeDb\WelcomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
