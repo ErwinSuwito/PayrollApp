@@ -120,19 +120,75 @@ namespace PayrollApp.Views.FirstRunSetup
                             string initDbScriptPath = @"Assets\InitDb.sql";
 
                             StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-                            StorageFile purgeScript = await installFolder.GetFileAsync(purgeScriptPath);
-                            StorageFile initDbScript = await installFolder.GetFileAsync(initDbScriptPath);
+                            StorageFile purgeScriptFile = await installFolder.GetFileAsync(purgeScriptPath);
+                            StorageFile initDbScriptFile = await installFolder.GetFileAsync(initDbScriptPath);
+
+                            string purgeScript = System.IO.File.ReadAllText(purgeScriptFile.Path);
+                            string initDbScript = System.IO.File.ReadAllText(initDbScriptFile.Path);
 
                             progText.Text = "Dropping all tables...";
 
-                            SettingsHelper.Instance.op2.
+                            bool IsSuccess = await SettingsHelper.Instance.op2.ExecuteScript(connString, purgeScript);
+
+                            if (IsSuccess)
+                            {
+                                progText.Text = "Initializing database...";
+                                IsSuccess = await SettingsHelper.Instance.op2.ExecuteScript(connString, initDbScript);
+
+                                if (IsSuccess)
+                                {
+                                    this.Frame.Navigate(typeof(InitializeDb.LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                                }
+                                else
+                                {
+                                    loadGrid.Visibility = Visibility.Collapsed;
+                                    ContentDialog contentDialog1 = new ContentDialog()
+                                    {
+                                        Title = "Unable to create tables",
+                                        Content = "An error occurred when creating tables in the database. Make sure that you have the permission to create tables in the database. Try again later.",
+                                        CloseButtonText = "Ok"
+                                    };
+
+                                    await contentDialog1.ShowAsync();
+                                }
+                            }
+                            else
+                            {
+                                loadGrid.Visibility = Visibility.Collapsed;
+                                ContentDialog contentDialog1 = new ContentDialog()
+                                {
+                                    Title = "Unable to drop tables",
+                                    Content = "An error occurred when creating tables in the database. Make sure that you have the permission to drop tables in the database. Try again later.",
+                                    CloseButtonText = "Ok"
+                                };
+
+                                await contentDialog1.ShowAsync();
+
+                            }
                         }
                         catch (Exception ex)
                         {
+                            loadGrid.Visibility = Visibility.Collapsed;
+                            ContentDialog contentDialog1 = new ContentDialog()
+                            {
+                                Title = "Unable to initialize database",
+                                Content = "An error occurred when initializing the database. Please try again later. Select more info to see what's wrong.",
+                                PrimaryButtonText = "More info",
+                                CloseButtonText = "Ok"
+                            };
+                            var cdResult = await contentDialog1.ShowAsync();
+                            if (cdResult == ContentDialogResult.Primary)
+                            {
+                                contentDialog1 = new ContentDialog()
+                                {
+                                    Title = "More info",
+                                    Content = ex.Message,
+                                    CloseButtonText = "Ok"
+                                };
 
+                                await contentDialog1.ShowAsync();
+                            }
                         }
-
-                        // Call method to initialize database
                     }
                 }
             }
