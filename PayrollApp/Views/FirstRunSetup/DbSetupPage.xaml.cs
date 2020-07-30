@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -82,16 +83,57 @@ namespace PayrollApp.Views.FirstRunSetup
 
             if (CanConnect)
             {
-                SettingsHelper.Instance.SaveConnectionString(true, connString);
-
-                if (appNameText.Visibility == Visibility.Collapsed)
+                bool IsDbUseable = await SettingsHelper.Instance.op2.TestPayrollDb(connString);
+                if (IsDbUseable)
                 {
-                    SettingsHelper.Instance.userState = null;
-                    this.Frame.Navigate(typeof(AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    SettingsHelper.Instance.SaveConnectionString(true, connString);
+
+                    if (appNameText.Visibility == Visibility.Collapsed)
+                    {
+                        SettingsHelper.Instance.userState = null;
+                        this.Frame.Navigate(typeof(AppInitPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
+                    else
+                    {
+                        this.Frame.Navigate(typeof(CardDbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    }
                 }
                 else
                 {
-                    this.Frame.Navigate(typeof(CardDbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                    ContentDialog contentDialog = new ContentDialog
+                    {
+                        Title = "Initialize database?",
+                        Content = "Important data is not found in the database. If this is a new database, select initialize database. This will delete drop all tables and initialize the database for usage with apSHA.",
+                        PrimaryButtonText = "Initialize",
+                        CloseButtonText = "Cancel"
+                    };
+
+                    ContentDialogResult result = await contentDialog.ShowAsync();
+
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        loadGrid.Visibility = Visibility.Visible;
+                        progText.Text = "Preparing to initialize database...";
+                        try
+                        {
+                            string purgeScriptPath = @"Assets\dropscript.sql";
+                            string initDbScriptPath = @"Assets\InitDb.sql";
+
+                            StorageFolder installFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                            StorageFile purgeScript = await installFolder.GetFileAsync(purgeScriptPath);
+                            StorageFile initDbScript = await installFolder.GetFileAsync(initDbScriptPath);
+
+                            progText.Text = "Dropping all tables...";
+
+                            SettingsHelper.Instance.op2.
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                        // Call method to initialize database
+                    }
                 }
             }
             else

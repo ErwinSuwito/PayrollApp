@@ -76,5 +76,20 @@
                 </StackPanel>
             </Button.Content>
         </Button>
+
+        <Grid x:Name="loadGrid" Grid.RowSpan="4" Grid.ColumnSpan="3"
+              Background="{ThemeResource loadBackground}" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="0" To="1.0"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:0.2" From="1.0" To="0"/>
+            </animations:Implicit.HideAnimations>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressRing IsActive="True" />
+                <TextBlock x:Name="progText" Text="Just a moment..." Margin="4,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Page>

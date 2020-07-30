@@ -66,6 +66,11 @@ namespace PayrollCore
             return false;
         }
 
+        public async Task<bool> ExecuteScript(string connString, string script)
+        {
+            return await da.ExecuteScript(connString, script);
+        }
+
         /// <summary>
         /// Gets the last exception in DataAccess
         /// </summary>

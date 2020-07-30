@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using PayrollCore.Entities;
@@ -47,13 +48,18 @@ namespace PayrollCore
             }
         }
 
+        /// <summary>
+        /// Checks if important data is on the payroll database
+        /// </summary>
+        /// <param name="connString"></param>
+        /// <returns></returns>
         public async Task<bool> TestPayrollDb(string connString)
         {
             DbConnString = connString;
 
-            var locations = await GetAllLocationAsync(false);
-            var userGroups = await GetAllUserGroupsAsync(false);
-            var rates = await GetAllRatesAsync(false);
+            var locations = await GetAllLocationAsync(true);
+            var userGroups = await GetAllUserGroupsAsync(true);
+            var rates = await GetAllRatesAsync(true);
 
             try
             {
@@ -70,6 +76,31 @@ namespace PayrollCore
                 lastError = ex;
                 return false;
             }
+        }
+
+        public async Task<bool> ExecuteScript(string connString, string script)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = script;
+                        int? result = await cmd.ExecuteNonQueryAsync();
+
+                        return (result != null) ? true : false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+                Debug.WriteLine("[DataAccess] Exception: " + ex.Message);
+            }
+
+            return false;
         }
 
         #region Rate
