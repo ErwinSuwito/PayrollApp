@@ -112,7 +112,14 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.GoBack();
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.CardDbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else
+            {
+                this.Frame.GoBack();
+            }
         }
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
@@ -125,7 +132,14 @@ namespace PayrollApp.Views.AdminSettings.UserGroups
             bool IsSuccess = await SaveLocationInfo();
             if (IsSuccess)
             {
-                this.Frame.GoBack();
+                if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+                {
+                    this.Frame.Navigate(typeof(FirstRunSetup.LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                }
+                else
+                {
+                    this.Frame.GoBack();
+                }
             }
             else
             {
