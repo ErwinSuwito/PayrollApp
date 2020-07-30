@@ -105,7 +105,14 @@ namespace PayrollApp.Views.AdminSettings.Rates
             bool IsSuccess = await SaveLocationInfo();
             if (IsSuccess)
             {
-                this.Frame.GoBack();
+                if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+                {
+                    this.Frame.Navigate(typeof(Locations.LocationDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                }
+                else
+                {
+                    this.Frame.GoBack();
+                }
             }
             else
             {

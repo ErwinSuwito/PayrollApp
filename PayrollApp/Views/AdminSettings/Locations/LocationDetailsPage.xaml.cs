@@ -92,6 +92,11 @@ namespace PayrollApp.Views.AdminSettings.Locations
                     enableButton.Visibility = Visibility.Collapsed;
                 }
             }
+
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+            {
+                rootGrid.Children.Remove(manageMeetingsBtn);
+            }
         }
 
         private void TimeUpdater_Tick(object sender, object e)
@@ -142,7 +147,18 @@ namespace PayrollApp.Views.AdminSettings.Locations
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.DbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.Setup)
+            {
+                this.Frame.Navigate(typeof(FirstRunSetup.LocationSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(LocationListPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+            }
         }
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
@@ -150,7 +166,14 @@ namespace PayrollApp.Views.AdminSettings.Locations
             bool IsSuccess = await SaveLocation();
             if (IsSuccess)
             {
-                this.Frame.GoBack();
+                if (SettingsHelper.Instance.InitState == SettingsHelper.InitStates.InitDb)
+                {
+                    this.Frame.Navigate(typeof(UserGroups.UserGroupDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromLeft });
+                }
+                else
+                {
+                    this.Frame.GoBack();
+                }
             }
             else
             {
