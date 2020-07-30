@@ -137,7 +137,8 @@ namespace PayrollApp.Views.FirstRunSetup
 
                                 if (IsSuccess)
                                 {
-                                    this.Frame.Navigate(typeof(InitializeDb.WelcomePage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                                    SettingsHelper.Instance.InitState = SettingsHelper.InitStates.InitDb;
+                                    this.Frame.Navigate(typeof(AdminSettings.Rates.RateDetailsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                                 }
                                 else
                                 {
