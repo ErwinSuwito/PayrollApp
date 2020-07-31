@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PayrollCore.Entities;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -29,6 +31,7 @@ namespace PayrollApp.Views.FirstRunSetup
         }
 
         DispatcherTimer timeUpdater = new DispatcherTimer();
+        DispatcherTimer loadTimer = new DispatcherTimer();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -37,6 +40,21 @@ namespace PayrollApp.Views.FirstRunSetup
             timeUpdater.Interval = new TimeSpan(0, 0, 30);
             timeUpdater.Tick += TimeUpdater_Tick;
             timeUpdater.Start();
+
+            loadTimer.Interval = new TimeSpan(0, 0, 1);
+            loadTimer.Tick += LoadTimer_Tick;
+            loadTimer.Start();
+        }
+
+        private async void LoadTimer_Tick(object sender, object e)
+        {
+            loadTimer.Stop();
+
+            ObservableCollection<UserGroup> userGroups = await SettingsHelper.Instance.op2.GetUserGroups(false, false);
+            defaultTraineeGroup.ItemsSource = userGroups;
+            defaultOtherGroup.ItemsSource = userGroups;
+
+            loadGrid.Visibility = Visibility.Collapsed;
         }
 
         private void TimeUpdater_Tick(object sender, object e)
