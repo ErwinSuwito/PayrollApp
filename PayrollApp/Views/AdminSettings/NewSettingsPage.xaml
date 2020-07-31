@@ -187,7 +187,7 @@
                                     Click="openRatesBtn_Click"/>
                             </StackPanel>
 
-                            <StackPanel Margin="0,16,0,0">
+                            <StackPanel Margin="0,16,0,0" Visibility="Collapsed">
                                 <TextBlock Text="Face Identification Setup" Style="{ThemeResource TitleTextBlockStyle}" />
                                 <TextBlock Text="Manage all submitted faces here." TextWrapping="Wrap"/>
                                 <Button x:Name="faceIdSetupBtn" Content="Manage faces" Margin="0,8,0,0" 
@@ -267,7 +267,8 @@
 
         <ContentDialog x:Name="deptNameChngDiag" Title="Change department name"
                        PrimaryButtonText="Change" CloseButtonText="Cancel"
-                       Grid.RowSpan="4" Grid.ColumnSpan="3">
+                       Grid.RowSpan="4" Grid.ColumnSpan="3"
+                       d:IsHidden="True">
             <StackPanel>
                 <TextBlock Text="Current department name:" />
                 <TextBlock Text="{Binding ElementName=DeptNameText, Path=Text}" />
