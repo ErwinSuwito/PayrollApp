@@ -65,7 +65,11 @@ namespace PayrollApp.Views.FirstRunSetup
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PermissionsPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            if (string.IsNullOrEmpty(deptNameBox.Text) && defaultOtherGroup.SelectedItem != null && defaultTraineeGroup.SelectedItem != null)
+            {
+                // Saves global settings
+                this.Frame.Navigate(typeof(CardDbSetupPage), null, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+            }
         }
     }
 }
